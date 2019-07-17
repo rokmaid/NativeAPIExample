@@ -37,10 +37,10 @@
             // 
             // txtResult
             // 
-            this.txtResult.Location = new System.Drawing.Point(53, 71);
+            this.txtResult.Location = new System.Drawing.Point(31, 71);
             this.txtResult.Name = "txtResult";
             this.txtResult.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedHorizontal;
-            this.txtResult.Size = new System.Drawing.Size(278, 333);
+            this.txtResult.Size = new System.Drawing.Size(322, 459);
             this.txtResult.TabIndex = 0;
             this.txtResult.Text = "";
             // 
@@ -73,22 +73,22 @@
             this.btnGetToken.Name = "btnGetToken";
             this.btnGetToken.Size = new System.Drawing.Size(164, 51);
             this.btnGetToken.TabIndex = 3;
-            this.btnGetToken.Text = "Get Token";
+            this.btnGetToken.Text = "Get PNR";
             this.btnGetToken.UseVisualStyleBackColor = true;
             this.btnGetToken.Click += new System.EventHandler(this.btnGetToken_Click);
             // 
             // txtCommand
             // 
-            this.txtCommand.Location = new System.Drawing.Point(53, 31);
+            this.txtCommand.Location = new System.Drawing.Point(31, 31);
             this.txtCommand.Name = "txtCommand";
-            this.txtCommand.Size = new System.Drawing.Size(278, 20);
+            this.txtCommand.Size = new System.Drawing.Size(322, 20);
             this.txtCommand.TabIndex = 4;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(566, 465);
+            this.ClientSize = new System.Drawing.Size(566, 565);
             this.Controls.Add(this.txtCommand);
             this.Controls.Add(this.btnGetToken);
             this.Controls.Add(this.btnSendToEmulator);

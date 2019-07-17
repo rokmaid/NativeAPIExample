@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="9d760104-f4f8-4366-8d61-d47fa5e4b81a" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="C:\Users\sg0208525\TIR\TravelItineraryReadRQ3.10.0.wsdl" Protocol="file" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="TravelItineraryReadRQ3.xsd" MetadataType="Schema" ID="6ead837b-9b9e-4bf2-b717-f9465473f99b" SourceId="1" SourceUrl="file:///C:/Users/sg0208525/TIR/TravelItineraryReadRQ3.10.0.xsd" />
+    <MetadataFile FileName="Pricing.xsd" MetadataType="Schema" ID="95133747-5879-488d-8328-1998f9d39864" SourceId="1" SourceUrl="file:///C:/Users/sg0208525/TIR/Pricing.1.11.0.xsd" />
+    <MetadataFile FileName="xlink.xsd" MetadataType="Schema" ID="548d9749-bebe-4cdf-9e4d-1f1628822248" SourceId="1" SourceUrl="file:///C:/Users/sg0208525/TIR/xlink.xsd" />
+    <MetadataFile FileName="TravelItineraryReadRQRS3.xsd" MetadataType="Schema" ID="1686735f-ece5-4bb8-b605-7aa4026b2ba4" SourceId="1" SourceUrl="file:///C:/Users/sg0208525/TIR/TravelItineraryReadRQRS3.10.0.xsd" />
+    <MetadataFile FileName="Air.xsd" MetadataType="Schema" ID="1931d3f5-4144-460c-9abc-201ff2500654" SourceId="1" SourceUrl="file:///C:/Users/sg0208525/TIR/Air.1.11.0.xsd" />
+    <MetadataFile FileName="STL_Header_v.xsd" MetadataType="Schema" ID="5227b04b-7075-4b85-b637-fbd538f34142" SourceId="1" SourceUrl="file:///C:/Users/sg0208525/TIR/STL_Header_v.1.2.0.xsd" />
+    <MetadataFile FileName="xmldsig-core-schema.xsd" MetadataType="Schema" ID="548f18be-1dbc-4d2f-a0e3-a2eb16caeab9" SourceId="1" SourceUrl="file:///C:/Users/sg0208525/TIR/xmldsig-core-schema.xsd" />
+    <MetadataFile FileName="wsse.xsd" MetadataType="Schema" ID="eb178f9e-791f-4f4c-9b62-2697afa74e93" SourceId="1" SourceUrl="file:///C:/Users/sg0208525/TIR/wsse.xsd" />
+    <MetadataFile FileName="envelope.xsd" MetadataType="Schema" ID="3ce13cf9-24ec-499e-84f6-1d83c33e39f6" SourceId="1" SourceUrl="file:///C:/Users/sg0208525/TIR/envelope.xsd" />
+    <MetadataFile FileName="STL_For_SabreProtocol_v.xsd" MetadataType="Schema" ID="b44818ef-a4fa-45ab-bdeb-7c78fa27bbeb" SourceId="1" SourceUrl="file:///C:/Users/sg0208525/TIR/STL_For_SabreProtocol_v.1.2.0.xsd" />
+    <MetadataFile FileName="msg-header-2_0.xsd" MetadataType="Schema" ID="4dccd128-e8c3-497c-8701-6f64a7cc6202" SourceId="1" SourceUrl="file:///C:/Users/sg0208525/TIR/msg-header-2_0.xsd" />
+    <MetadataFile FileName="Ancillaries.xsd" MetadataType="Schema" ID="90a7a077-ec62-4c1c-9830-6c7c7653c69e" SourceId="1" SourceUrl="file:///C:/Users/sg0208525/TIR/Ancillaries.1.11.0.xsd" />
+    <MetadataFile FileName="TravelItineraryReadRS3.xsd" MetadataType="Schema" ID="8ce6a982-6feb-479b-8a4c-dba75fd98359" SourceId="1" SourceUrl="file:///C:/Users/sg0208525/TIR/TravelItineraryReadRS3.10.0.xsd" />
+    <MetadataFile FileName="TravelItineraryReadRQ3.wsdl" MetadataType="Wsdl" ID="760d5f24-5b64-4175-8c63-f8436f95c16b" SourceId="1" SourceUrl="file:///C:/Users/sg0208525/TIR/TravelItineraryReadRQ3.10.0.wsdl" />
+    <MetadataFile FileName="OpenReservation.xsd" MetadataType="Schema" ID="79a4b661-0738-4889-94c5-f37a657cd270" SourceId="1" SourceUrl="file:///C:/Users/sg0208525/TIR/OpenReservation.1.11.0.xsd" />
+    <MetadataFile FileName="xml.xsd" MetadataType="Schema" ID="9794e0ca-afb3-493f-a0d7-dc1c76d0e423" SourceId="1" SourceUrl="file:///C:/Users/sg0208525/TIR/xml.xsd" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

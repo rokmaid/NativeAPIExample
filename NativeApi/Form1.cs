@@ -11,7 +11,12 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 using Apache.NMS;
-using Apache.NMS.ActiveMQ; 
+using Apache.NMS.ActiveMQ;
+using NativeApi.Domain;
+using System.Xml.Serialization;
+using System.IO; 
+
+
 
 namespace NativeApi
 {
@@ -32,7 +37,7 @@ namespace NativeApi
         static ISession session;
         static IDestination destinationRequest;
         static IDestination destinationResponse;
-        static IMessageConsumer consumer; 
+
 
         public Form1()
         {
@@ -180,24 +185,34 @@ namespace NativeApi
             
             var Doc =  XDocument.Parse(xmlText);
 
-          //  txtResult.Text = Doc.Root.Name.LocalName;
-            var Hostrsp = from response in Doc.Descendants("Response") select response;
+            //   txtResult.Text = Doc.Root.Name.LocalName;
 
-            foreach(var r in Hostrsp)
+            if (Doc.Root.Name.LocalName.Equals("SendHostCommandRS"))
             {
-                txtResult.Text += r.Value;
+                var Hostrsp = from response in Doc.Descendants("Response") select response;
+
+                foreach (var r in Hostrsp)
+                {
+                    txtResult.Text += r.Value;
+
+                }
+            }
+      
+            if (Doc.Root.Name.LocalName.Equals("GetSessionSecurityTokenRS"))
+            {
+                var Othrsp = from response in Doc.Descendants("ath") select response;
+                string tokenval = "";
+                foreach (var oth in Othrsp)
+                {
+                    txtResult.Text += oth.Value;
+                    tokenval += oth.Value;
+
+                }
+                 ReadPNR(tokenval); 
 
             }
 
-            var Othrsp = from response in Doc.Descendants("ath") select response; 
-            
-            foreach(var oth in Othrsp)
-            {
-                txtResult.Text += oth.Value; 
 
-            }
-
-         
             if (Doc.Root.Name.LocalName.Equals("EventSubscriptionRS"))
             {
                 txtResult.Text = "Command Intercepted ";
@@ -219,8 +234,9 @@ namespace NativeApi
 
         private void interceptCommand(string command)
         {
-            string textmg; 
-            DialogResult dialogResult = MessageBox.Show("Do you want to Intercept the Command ? ", " ", MessageBoxButtons.YesNo);
+             string textmg;
+            DialogResult dialogResult = MessageBox.Show("Do you want to Intercept the Command   "+command+"? ", " ", MessageBoxButtons.YesNo);
+   
             if (dialogResult == DialogResult.Yes)
             {
                 
@@ -238,5 +254,105 @@ namespace NativeApi
             }
         }
 
+        private void ReadPNR(string token )
+        {
+
+            TravelItineraryRead.TravelItineraryReadPortTypeClient client = new TravelItineraryRead.TravelItineraryReadPortTypeClient();
+
+            TravelItineraryRead.MessageHeader message_header = new TravelItineraryRead.MessageHeader();
+            TravelItineraryRead.Security1 security = new TravelItineraryRead.Security1();
+
+
+            DateTime now = DateTime.Now;
+
+            // from 
+            TravelItineraryRead.From from = new TravelItineraryRead.From();
+            TravelItineraryRead.PartyId fromPartyId = new TravelItineraryRead.PartyId();
+            TravelItineraryRead.PartyId[] fromPartyIdArr = new TravelItineraryRead.PartyId[1];
+            fromPartyId.Value = "WebServiceClient";
+            fromPartyIdArr[0] = fromPartyId;
+            from.PartyId = fromPartyIdArr;
+            message_header.From = from;
+
+            // to 
+
+            TravelItineraryRead.To to = new TravelItineraryRead.To();
+            TravelItineraryRead.PartyId toPartyId = new TravelItineraryRead.PartyId();
+            TravelItineraryRead.PartyId[] toPartyIdArr = new TravelItineraryRead.PartyId[1];
+            toPartyId.Value = "WebServiceSupplier";
+            toPartyIdArr[0] = toPartyId;
+            to.PartyId = toPartyIdArr;
+            message_header.To = to;
+
+            message_header.Action = "TravelItineraryReadRQ";
+            message_header.CPAId = "IPCC";
+            TravelItineraryRead.Service service = new TravelItineraryRead.Service();
+            service.Value= "TravelItineraryReadRQ";
+           
+
+
+            message_header.Service = service;
+            TravelItineraryRead.MessageData message_data = new TravelItineraryRead.MessageData();
+            message_data.MessageId = "2529036674227040150";
+            message_data.RefToMessageId = "mid:20001209-133003-2333@clientofsabre.com";
+            message_data.Timestamp = now.ToString();
+
+            message_header.MessageData = message_data;
+            // conversation id seems to accept a timestamp 
+
+           
+            message_header.ConversationId= now.ToLongDateString();
+
+            security.BinarySecurityToken = token;
+
+            // this line is to use TLS 1.2 otherwise it cannot connect to the end point 
+
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+            TravelItineraryRead.TravelItineraryReadRS response; 
+            try
+            {
+               response = client.TravelItineraryReadRQ(ref message_header, ref security, WSPayloads.buildRequestForTravelItinRead());
+                // MessageBox.Show(response.ToString());
+                SerializeAndShowTIRResponse(response);
+            }
+            catch (Exception e )
+            {
+
+                MessageBox.Show(e.Message);
+
+            }
+            finally
+            {
+             
+            }
+       
+
+            
+        }
+
+        // This method shows the xml response from Travel Itinerary Red in a pop up message 
+
+        private void SerializeAndShowTIRResponse(TravelItineraryRead.TravelItineraryReadRS response)
+        {
+
+            XmlDocument xmlDoc = new XmlDocument();   //Represents an XML document, 
+                                                      // Initializes a new instance of the XmlDocument class.          
+            XmlSerializer xmlSerializer = new XmlSerializer(response.GetType());
+            // Creates a stream whose backing store is memory. 
+            using (MemoryStream xmlStream = new MemoryStream())
+            {
+                xmlSerializer.Serialize(xmlStream, response);
+                xmlStream.Position = 0;
+                //Loads the XML document from the specified string.
+                xmlDoc.Load(xmlStream);
+                //  MessageBox.Show(xmlDoc.InnerXml);
+                txtResult.Text = "";
+                txtResult.Text = xmlDoc.InnerXml; 
+            }
+
+
+        }
+
+    
     }
 }

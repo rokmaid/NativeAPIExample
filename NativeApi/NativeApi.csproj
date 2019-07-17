@@ -40,6 +40,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,6 +53,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connected Services\GetReservation\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\TravelItineraryRead\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Domain\WSPayloads.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -71,6 +84,119 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="Connected Services\GetReservation\Air.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetReservation\Ancillaries.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetReservation\envelope.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetReservation\GetReservationSTLRQ_v1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetReservation\GetReservationSTLRS_v1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetReservation\GetReservationWSDL.wsdl" />
+    <None Include="Connected Services\GetReservation\Lodging.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetReservation\msg-header-2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetReservation\NativeApi.GetReservation.GetReservationOperationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\GetReservation\NativeApi.GetReservation.GetReservationRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\GetReservation\NativeApi.GetReservation.MessageHeader.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\GetReservation\NativeApi.GetReservation.Security.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\GetReservation\OpenReservation.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetReservation\PNRBuilderTypes_v1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetReservation\Pricing.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetReservation\wsse.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetReservation\xlink.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetReservation\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetReservation\xmldsig-core-schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TravelItineraryRead\Air.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TravelItineraryRead\Ancillaries.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TravelItineraryRead\envelope.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TravelItineraryRead\msg-header-2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TravelItineraryRead\NativeApi.TravelItineraryRead.MessageHeader.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TravelItineraryRead\NativeApi.TravelItineraryRead.Security1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TravelItineraryRead\NativeApi.TravelItineraryRead.TravelItineraryReadRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TravelItineraryRead\NativeApi.TravelItineraryRead.TravelItineraryReadRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TravelItineraryRead\OpenReservation.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TravelItineraryRead\Pricing.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TravelItineraryRead\STL_For_SabreProtocol_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TravelItineraryRead\STL_Header_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TravelItineraryRead\TravelItineraryReadRQ3.wsdl" />
+    <None Include="Connected Services\TravelItineraryRead\TravelItineraryReadRQ3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TravelItineraryRead\TravelItineraryReadRQRS3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TravelItineraryRead\TravelItineraryReadRS3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TravelItineraryRead\wsse.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TravelItineraryRead\xlink.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TravelItineraryRead\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TravelItineraryRead\xmldsig-core-schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -83,7 +209,40 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\GetReservation\" />
+    <WCFMetadataStorage Include="Connected Services\TravelItineraryRead\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\GetReservation\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\GetReservation\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\GetReservation\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TravelItineraryRead\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TravelItineraryRead\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TravelItineraryRead\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
