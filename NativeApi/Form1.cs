@@ -25,7 +25,8 @@ namespace NativeApi
 
         // url for local broker 
         static string URL = "tcp://localhost:61616";
-
+        static string ENDPOINT = "";
+                
         // red app id for the plugin running in SRW 
 
         static string redAppID = "example-native-7lkkd5c";
@@ -37,6 +38,7 @@ namespace NativeApi
         static ISession session;
         static IDestination destinationRequest;
         static IDestination destinationResponse;
+
 
 
         public Form1()
@@ -257,6 +259,8 @@ namespace NativeApi
         private void ReadPNR(string token )
         {
 
+            ReadToken(token);
+
             TravelItineraryRead.TravelItineraryReadPortTypeClient client = new TravelItineraryRead.TravelItineraryReadPortTypeClient();
 
             TravelItineraryRead.MessageHeader message_header = new TravelItineraryRead.MessageHeader();
@@ -354,5 +358,20 @@ namespace NativeApi
         }
 
     
+        // try to determine if the token is from CERT or Prod to see what SWS endpoint we point to 
+        private void ReadToken(string token)
+        {
+
+            if (token.Contains("CRT.LB"))
+            {
+                Console.Write("CERT TOKEN !! ");
+                ENDPOINT = "https://sws-crt.cert.havail.sabre.com";
+            }else if (token.Contains("RES.LB"))
+            {
+                Console.Write("Prod token !!!");
+                ENDPOINT = "https://webservices.havail.sabre.com";
+            }
+
+        }
     }
 }
