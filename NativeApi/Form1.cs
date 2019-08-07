@@ -44,14 +44,14 @@ namespace NativeApi
         public Form1()
         {
             InitializeComponent();
-            initializeBrokerConnection();
+            InitializeBrokerConnection();
             SubscribeToEvents();
             SubscribeToSyncEvents();
 
 
         }
 
-        private void initializeBrokerConnection()
+        private void InitializeBrokerConnection()
 
         {
 
@@ -96,6 +96,8 @@ namespace NativeApi
                 Invoke(new Action(() =>
                 {
                     ITextMessage txtMsg = message as ITextMessage;
+
+
                     string body = txtMsg.Text;
 
                    //txtResult.Text = body; 
@@ -136,6 +138,20 @@ namespace NativeApi
 
         }
 
+        private void btnShowInEmu_Click(object sender, EventArgs e)
+        {
+
+            // Show a Mesage in the emulator 
+            string text = txtCommand.Text.ToUpper();
+
+            String Textmsg = "<?xml version='1.0' encoding='UTF-8'?><ns1:ShowInEmuRQ xmlns:ns1 ='http://stl.sabre.com/POS/SRW/NextGen/nativeapi/v1.0' isCommand= 'false' >" +
+   "<Message>" + text + "</Message>"+
+   "</ns1:ShowInEmuRQ>";
+
+            SendMessage(Textmsg);
+
+        }
+
         private void btnGetToken_Click(object sender, EventArgs e)
         {
             // get the session Token 
@@ -151,6 +167,7 @@ namespace NativeApi
         private void SendMessage(string Textmsg)
         {
 
+            
             // send the message 
             producer.Send(session.CreateTextMessage(Textmsg));
 
@@ -187,7 +204,7 @@ namespace NativeApi
             
             var Doc =  XDocument.Parse(xmlText);
 
-            //   txtResult.Text = Doc.Root.Name.LocalName;
+       //       txtResult.Text = Doc.Root.Name.LocalName;
 
             if (Doc.Root.Name.LocalName.Equals("SendHostCommandRS"))
             {
@@ -373,5 +390,7 @@ namespace NativeApi
             }
 
         }
+
+   
     }
 }

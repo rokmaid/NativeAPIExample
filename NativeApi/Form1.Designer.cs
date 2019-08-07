@@ -33,6 +33,7 @@
             this.btnSendToEmulator = new System.Windows.Forms.Button();
             this.btnGetToken = new System.Windows.Forms.Button();
             this.txtCommand = new System.Windows.Forms.TextBox();
+            this.btnShowInEmu = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtResult
@@ -69,7 +70,7 @@
             // btnGetToken
             // 
             this.btnGetToken.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGetToken.Location = new System.Drawing.Point(372, 176);
+            this.btnGetToken.Location = new System.Drawing.Point(372, 265);
             this.btnGetToken.Name = "btnGetToken";
             this.btnGetToken.Size = new System.Drawing.Size(164, 51);
             this.btnGetToken.TabIndex = 3;
@@ -84,11 +85,23 @@
             this.txtCommand.Size = new System.Drawing.Size(322, 20);
             this.txtCommand.TabIndex = 4;
             // 
+            // btnShowInEmu
+            // 
+            this.btnShowInEmu.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnShowInEmu.Location = new System.Drawing.Point(372, 180);
+            this.btnShowInEmu.Name = "btnShowInEmu";
+            this.btnShowInEmu.Size = new System.Drawing.Size(164, 48);
+            this.btnShowInEmu.TabIndex = 5;
+            this.btnShowInEmu.Text = "Show in Emulator";
+            this.btnShowInEmu.UseVisualStyleBackColor = true;
+            this.btnShowInEmu.Click += new System.EventHandler(this.btnShowInEmu_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(566, 565);
+            this.Controls.Add(this.btnShowInEmu);
             this.Controls.Add(this.txtCommand);
             this.Controls.Add(this.btnGetToken);
             this.Controls.Add(this.btnSendToEmulator);
@@ -109,6 +122,7 @@
         private System.Windows.Forms.Button btnSendToEmulator;
         private System.Windows.Forms.Button btnGetToken;
         private System.Windows.Forms.TextBox txtCommand;
+        private System.Windows.Forms.Button btnShowInEmu;
     }
 }
 
