@@ -63,6 +63,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Domain\TIR.cs" />
+    <Compile Include="Domain\Util.cs" />
     <Compile Include="Domain\WSPayloads.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

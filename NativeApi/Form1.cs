@@ -276,55 +276,10 @@ namespace NativeApi
         private void ReadPNR(string token )
         {
 
-            ReadToken(token);
+            TravelItineraryRead.TravelItineraryReadPortTypeClient client = TIR.returnClient(token);
 
-            TravelItineraryRead.TravelItineraryReadPortTypeClient client = new TravelItineraryRead.TravelItineraryReadPortTypeClient();
-
-            TravelItineraryRead.MessageHeader message_header = new TravelItineraryRead.MessageHeader();
-            TravelItineraryRead.Security1 security = new TravelItineraryRead.Security1();
-
-
-            DateTime now = DateTime.Now;
-
-            // from 
-            TravelItineraryRead.From from = new TravelItineraryRead.From();
-            TravelItineraryRead.PartyId fromPartyId = new TravelItineraryRead.PartyId();
-            TravelItineraryRead.PartyId[] fromPartyIdArr = new TravelItineraryRead.PartyId[1];
-            fromPartyId.Value = "WebServiceClient";
-            fromPartyIdArr[0] = fromPartyId;
-            from.PartyId = fromPartyIdArr;
-            message_header.From = from;
-
-            // to 
-
-            TravelItineraryRead.To to = new TravelItineraryRead.To();
-            TravelItineraryRead.PartyId toPartyId = new TravelItineraryRead.PartyId();
-            TravelItineraryRead.PartyId[] toPartyIdArr = new TravelItineraryRead.PartyId[1];
-            toPartyId.Value = "WebServiceSupplier";
-            toPartyIdArr[0] = toPartyId;
-            to.PartyId = toPartyIdArr;
-            message_header.To = to;
-
-            message_header.Action = "TravelItineraryReadRQ";
-            message_header.CPAId = "IPCC";
-            TravelItineraryRead.Service service = new TravelItineraryRead.Service();
-            service.Value= "TravelItineraryReadRQ";
-           
-
-
-            message_header.Service = service;
-            TravelItineraryRead.MessageData message_data = new TravelItineraryRead.MessageData();
-            message_data.MessageId = "2529036674227040150";
-            message_data.RefToMessageId = "mid:20001209-133003-2333@clientofsabre.com";
-            message_data.Timestamp = now.ToString();
-
-            message_header.MessageData = message_data;
-            // conversation id seems to accept a timestamp 
-
-           
-            message_header.ConversationId= now.ToLongDateString();
-
-            security.BinarySecurityToken = token;
+            TravelItineraryRead.MessageHeader message_header = TIR.returnMessageHeader();
+            TravelItineraryRead.Security1 security = TIR.returnSecurityHeader(token);
 
             // this line is to use TLS 1.2 otherwise it cannot connect to the end point 
 
@@ -353,7 +308,7 @@ namespace NativeApi
 
         // This method shows the xml response from Travel Itinerary Red in a pop up message 
 
-        private void SerializeAndShowTIRResponse(TravelItineraryRead.TravelItineraryReadRS response)
+        private void SerializeAndShowTIRResponse(Object response)
         {
 
             XmlDocument xmlDoc = new XmlDocument();   //Represents an XML document, 
@@ -375,21 +330,7 @@ namespace NativeApi
         }
 
     
-        // try to determine if the token is from CERT or Prod to see what SWS endpoint we point to 
-        private void ReadToken(string token)
-        {
-
-            if (token.Contains("CRT.LB"))
-            {
-                Console.Write("CERT TOKEN !! ");
-                ENDPOINT = "https://sws-crt.cert.havail.sabre.com";
-            }else if (token.Contains("RES.LB"))
-            {
-                Console.Write("Prod token !!!");
-                ENDPOINT = "https://webservices.havail.sabre.com";
-            }
-
-        }
+       
 
    
     }
