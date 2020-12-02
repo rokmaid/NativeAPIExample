@@ -34,23 +34,26 @@
             this.btnGetToken = new System.Windows.Forms.Button();
             this.txtCommand = new System.Windows.Forms.TextBox();
             this.btnShowInEmu = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtResult
             // 
-            this.txtResult.Location = new System.Drawing.Point(31, 71);
+            this.txtResult.Location = new System.Drawing.Point(51, 131);
+            this.txtResult.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.txtResult.Name = "txtResult";
             this.txtResult.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedHorizontal;
-            this.txtResult.Size = new System.Drawing.Size(322, 459);
+            this.txtResult.Size = new System.Drawing.Size(534, 844);
             this.txtResult.TabIndex = 0;
             this.txtResult.Text = "";
             // 
             // btnSendToHost
             // 
             this.btnSendToHost.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSendToHost.Location = new System.Drawing.Point(372, 31);
+            this.btnSendToHost.Location = new System.Drawing.Point(620, 58);
+            this.btnSendToHost.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnSendToHost.Name = "btnSendToHost";
-            this.btnSendToHost.Size = new System.Drawing.Size(164, 49);
+            this.btnSendToHost.Size = new System.Drawing.Size(272, 90);
             this.btnSendToHost.TabIndex = 1;
             this.btnSendToHost.Text = "Send to Host";
             this.btnSendToHost.UseVisualStyleBackColor = true;
@@ -59,9 +62,10 @@
             // btnSendToEmulator
             // 
             this.btnSendToEmulator.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSendToEmulator.Location = new System.Drawing.Point(372, 104);
+            this.btnSendToEmulator.Location = new System.Drawing.Point(620, 192);
+            this.btnSendToEmulator.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnSendToEmulator.Name = "btnSendToEmulator";
-            this.btnSendToEmulator.Size = new System.Drawing.Size(164, 48);
+            this.btnSendToEmulator.Size = new System.Drawing.Size(272, 88);
             this.btnSendToEmulator.TabIndex = 2;
             this.btnSendToEmulator.Text = "Send to Emulator";
             this.btnSendToEmulator.UseVisualStyleBackColor = true;
@@ -70,9 +74,10 @@
             // btnGetToken
             // 
             this.btnGetToken.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGetToken.Location = new System.Drawing.Point(372, 265);
+            this.btnGetToken.Location = new System.Drawing.Point(620, 490);
+            this.btnGetToken.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnGetToken.Name = "btnGetToken";
-            this.btnGetToken.Size = new System.Drawing.Size(164, 51);
+            this.btnGetToken.Size = new System.Drawing.Size(272, 93);
             this.btnGetToken.TabIndex = 3;
             this.btnGetToken.Text = "Get PNR";
             this.btnGetToken.UseVisualStyleBackColor = true;
@@ -80,34 +85,52 @@
             // 
             // txtCommand
             // 
-            this.txtCommand.Location = new System.Drawing.Point(31, 31);
+            this.txtCommand.Location = new System.Drawing.Point(51, 58);
+            this.txtCommand.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.txtCommand.Name = "txtCommand";
-            this.txtCommand.Size = new System.Drawing.Size(322, 20);
+            this.txtCommand.Size = new System.Drawing.Size(534, 32);
             this.txtCommand.TabIndex = 4;
             // 
             // btnShowInEmu
             // 
             this.btnShowInEmu.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnShowInEmu.Location = new System.Drawing.Point(372, 180);
+            this.btnShowInEmu.Location = new System.Drawing.Point(620, 332);
+            this.btnShowInEmu.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnShowInEmu.Name = "btnShowInEmu";
-            this.btnShowInEmu.Size = new System.Drawing.Size(164, 48);
+            this.btnShowInEmu.Size = new System.Drawing.Size(272, 88);
             this.btnShowInEmu.TabIndex = 5;
             this.btnShowInEmu.Text = "Show in Emulator";
             this.btnShowInEmu.UseVisualStyleBackColor = true;
             this.btnShowInEmu.Click += new System.EventHandler(this.btnShowInEmu_Click);
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(620, 612);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(272, 93);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Designar Impresoras";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(566, 565);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(878, 644);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnShowInEmu);
             this.Controls.Add(this.txtCommand);
             this.Controls.Add(this.btnGetToken);
             this.Controls.Add(this.btnSendToEmulator);
             this.Controls.Add(this.btnSendToHost);
             this.Controls.Add(this.txtResult);
+            this.Font = new System.Drawing.Font("Calibri", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.Name = "Form1";
+            this.Opacity = 0.95D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Native API Example";
             this.ResumeLayout(false);
@@ -123,6 +146,7 @@
         private System.Windows.Forms.Button btnGetToken;
         private System.Windows.Forms.TextBox txtCommand;
         private System.Windows.Forms.Button btnShowInEmu;
+        private System.Windows.Forms.Button button1;
     }
 }
 

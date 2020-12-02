@@ -8,6 +8,11 @@ namespace NativeApi.Domain
 {
     class Util
     {
+        // special chars for Sabre 
+        public static  char CHLOR = (char)0xA5;   // Cross-of-Lorraine
+        public static  char ENDITEM = (char)0xA7; // End Item key
+        public static  char CHGKEY = (char)0xA4;  // Change Key
+
         /*
          * Returns the Endpoint based on what environment the Token is for CERT Or Prod 
          */

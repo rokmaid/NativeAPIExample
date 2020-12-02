@@ -14,7 +14,8 @@ using Apache.NMS;
 using Apache.NMS.ActiveMQ;
 using NativeApi.Domain;
 using System.Xml.Serialization;
-using System.IO; 
+using System.IO;
+using System.Diagnostics;
 
 
 
@@ -24,6 +25,7 @@ namespace NativeApi
     {
 
         // url for local broker 
+        static string FailOverUrl = "failover:(tcp://localhost:61616)"; 
         static string URL = "tcp://localhost:61616";
         static string ENDPOINT = "";
                 
@@ -39,16 +41,38 @@ namespace NativeApi
         static IDestination destinationRequest;
         static IDestination destinationResponse;
 
-
+        static IConnection con;
+        static IMessageConsumer responseConsumer; 
 
         public Form1()
         {
             InitializeComponent();
-            InitializeBrokerConnection();
-            SubscribeToEvents();
-            SubscribeToSyncEvents();
+            this.FormClosing += Form1_FormClosing;
+            try
+            {
+                InitializeBrokerConnection();
+                SubscribeToEvents();
+                SubscribeToSyncEvents();
+            }
+            catch (Exception e )
+            {
+                Debug.Write(e.Message);
+                Debug.Write("### Error Starting the Connection ####"); 
+            }
+      
+    
 
+           // this.TopMost = true; 
+        }
 
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // close all connections
+            producer.Close();
+            session.Close();
+            con.Close();
+
+            Debug.Write("######### Form is closing ###########"); 
         }
 
         private void InitializeBrokerConnection()
@@ -60,13 +84,19 @@ namespace NativeApi
             String userDomain = temp[0];
             String userName = temp[1];
 
-            //  IConnectionFactory connection = 
+            Uri uri = new Uri(FailOverUrl);
+
+           // IConnectionFactory factory = new Apache.NMS.ActiveMQ.ConnectionFactory(uri);
             NMSConnectionFactory factory = new NMSConnectionFactory(URL);
 
             string RequestqueueName = redAppID + "_" + userDomain + "\\" + userName + "_request";
             string ResponsequeueName = redAppID + "_" + userDomain + "\\" + userName + "_response";
 
-            IConnection con = factory.CreateConnection();
+            con = factory.CreateConnection();
+
+            con.ConnectionInterruptedListener += new ConnectionInterruptedListener(OnConnectionInterupted);
+            con.ExceptionListener += new ExceptionListener(OnExceptionListener);
+            con.ConnectionResumedListener += new ConnectionResumedListener(OnConnectionResumedListener);
 
 
             con.Start();
@@ -74,6 +104,7 @@ namespace NativeApi
             txtResult.Text = "Connection Started !!! ";
 
             session = con.CreateSession(AcknowledgementMode.AutoAcknowledge);
+          
 
             destinationRequest = session.GetQueue(RequestqueueName);
             destinationResponse = session.GetQueue(ResponsequeueName);
@@ -85,8 +116,9 @@ namespace NativeApi
             producer = session.CreateProducer(destinationRequest);
             producer.DeliveryMode = MsgDeliveryMode.NonPersistent;
 
-            IMessageConsumer responseConsumer = session.CreateConsumer(destinationResponse);
+           responseConsumer = session.CreateConsumer(destinationResponse);
             txtResult.Text = ""; 
+            
 
             responseConsumer.Listener += (message) =>
             {
@@ -109,6 +141,32 @@ namespace NativeApi
 
         }
 
+        private void OnConnectionInterupted()
+        {
+
+            Debug.Write("Connecton was Interupted "); 
+
+        }
+
+        private void OnExceptionListener(Exception e )
+        {
+            Debug.Write(e.StackTrace);
+            Debug.Write("##### There was an Exception ####### ");
+
+            destinationRequest.Dispose();
+            destinationResponse.Dispose();
+          //  responseConsumer.Close(); 
+            producer.Close();
+            session.Close();
+            con.Close();
+        }
+
+        private void OnConnectionResumedListener()
+        {
+
+            Debug.Write("Connection was Resumed");
+
+        }
 
 
         private void btnSendToHost_Click(object sender, EventArgs e)
@@ -167,9 +225,21 @@ namespace NativeApi
         private void SendMessage(string Textmsg)
         {
 
-            
-            // send the message 
-            producer.Send(session.CreateTextMessage(Textmsg));
+            try
+            {
+                // send the message 
+                producer.Send(session.CreateTextMessage(Textmsg));
+            }
+            catch (Apache.NMS.ActiveMQ.ConnectionClosedException e )
+            {
+                Debug.Write("######## Connection closed ########## ");
+                Debug.Write(e);
+              
+            }
+            finally{
+             //   InitializeBrokerConnection();
+            }
+           
 
  
         }
@@ -227,14 +297,19 @@ namespace NativeApi
                     tokenval += oth.Value;
 
                 }
-                 ReadPNR(tokenval); 
+                // ReadPNR(tokenval); 
 
+                // SendSabreCommand(tokenval); 
+                DesignatePrinter(tokenval); 
             }
 
 
             if (Doc.Root.Name.LocalName.Equals("EventSubscriptionRS"))
             {
-                txtResult.Text = "Command Intercepted ";
+                  txtResult.Text = xmlText;
+                //txtResult.Text = "Command Intercepted ";
+
+            
             }
 
             if (Doc.Root.Name.LocalName.Equals("CommandInterceptionRQ"))
@@ -289,7 +364,7 @@ namespace NativeApi
             {
                response = client.TravelItineraryReadRQ(ref message_header, ref security, WSPayloads.buildRequestForTravelItinRead());
                 // MessageBox.Show(response.ToString());
-                SerializeAndShowTIRResponse(response);
+                SerializeAndShowWSResponse(response);
             }
             catch (Exception e )
             {
@@ -306,9 +381,79 @@ namespace NativeApi
             
         }
 
+
+        private void SendSabreCommand(String token)
+        {
+            SabreCommand.SabreCommandLLSPortTypeClient client = SabreCommandRequest.returnClient(token);
+
+            SabreCommand.MessageHeader message_header = SabreCommandRequest.returnMessageHeader();
+            SabreCommand.Security security = SabreCommandRequest.returnSecurityHeader(token);
+
+            // this line is to use TLS 1.2 otherwise it cannot connect to the end point 
+
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+            SabreCommand.SabreCommandLLSRS response;
+            //string command = txtCommand.Text.ToUpper();
+            string command = "0HHTHIGK1JFKIN07JUL-OUT08JUL/HOLIDAY INN/DBLB/65.00USD/G/SI-" + Util.CHGKEY + "1900 VAN WYKE¥S OZONE PARK NY 10405¥FONE 212-555-1957¤REQUESTED SUITE/CF-62FE77";
+            SabreCommand.SabreCommandLLSRQ req = SabreCommandRequest.getRequest(token, command);
+
+            SerializeAndShowWSResponse(req);
+            try
+            {
+                response = client.SabreCommandLLSRQ(ref message_header, ref security, req);
+
+                SerializeAndShowWSResponse(response);
+            }
+            catch (Exception e)
+            {
+
+                MessageBox.Show(e.StackTrace + "\"" + e.Message);
+                Debug.Write(e.StackTrace);
+                Debug.Write(e.Message);
+
+            }
+            finally
+            {
+
+            }
+
+
+        }
+
+       private void  DesignatePrinter(String token )
+        {
+            DesignatePrinter.DesignatePrinterPortTypeClient client = DesignatePrinterService.returnClient(token);
+
+            DesignatePrinter.MessageHeader message_header = DesignatePrinterService.returnMessageHeader();
+            DesignatePrinter.Security1 security = DesignatePrinterService.returnSecurityHeader(token);
+
+            DesignatePrinter.DesignatePrinterRQ req = DesignatePrinterService.getRequest(token,"1");
+            SerializeAndShowWSResponse(req);
+            DesignatePrinter.DesignatePrinterRS response = null; 
+            try
+            {
+                response = client.DesignatePrinterRQ(ref message_header, ref security, req);
+
+                SerializeAndShowWSResponse(response);
+            }
+            catch (Exception e)
+            {
+
+                MessageBox.Show(e.StackTrace + "\"" + e.Message);
+                Debug.Write(e.StackTrace);
+                Debug.Write(e.Message);
+
+            }
+            finally
+            {
+
+            }
+
+        }
+
         // This method shows the xml response from Travel Itinerary Red in a pop up message 
 
-        private void SerializeAndShowTIRResponse(Object response)
+        private void SerializeAndShowWSResponse(Object response)
         {
 
             XmlDocument xmlDoc = new XmlDocument();   //Represents an XML document, 
@@ -323,15 +468,24 @@ namespace NativeApi
                 xmlDoc.Load(xmlStream);
                 //  MessageBox.Show(xmlDoc.InnerXml);
                 txtResult.Text = "";
-                txtResult.Text = xmlDoc.InnerXml; 
+                txtResult.Text = xmlDoc.InnerXml;
+
+
+                Debug.Write(xmlDoc.InnerXml);
             }
 
 
         }
 
-    
-       
+        /*
+         * Designar Impresoras con DesignatePrinterLLSRQ 
+        */
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            String Textmsg = "<?xml version='1.0' encoding='UTF-8'?>" +
+"<ns1:GetSessionSecurityTokenRQ xmlns:ns1='http://stl.sabre.com/POS/SRW/NextGen/nativeapi/v1.0'/>";
 
-   
+            SendMessage(Textmsg);
+        }
     }
 }

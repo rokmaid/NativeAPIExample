@@ -53,7 +53,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connected Services\BargainFinderMax\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\DesignatePrinter\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\GetReservation\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\SabreCommand\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -63,6 +78,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Domain\BFM.cs" />
+    <Compile Include="Domain\DesignatePrinterService.cs" />
+    <Compile Include="Domain\SabreCommand.cs" />
     <Compile Include="Domain\TIR.cs" />
     <Compile Include="Domain\Util.cs" />
     <Compile Include="Domain\WSPayloads.cs" />
@@ -86,6 +104,98 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="Connected Services\BargainFinderMax\BargainFinderMaxRQRS_v5-2-0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BargainFinderMax\BargainFinderMaxRQ_v5-2-0.wsdl" />
+    <None Include="Connected Services\BargainFinderMax\envelope.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BargainFinderMax\msg-header-2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BargainFinderMax\NativeApi.BargainFinderMax.BargainFinderMaxRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BargainFinderMax\NativeApi.BargainFinderMax.MessageHeader.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BargainFinderMax\NativeApi.BargainFinderMax.OTA_AirLowFareSearchRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BargainFinderMax\NativeApi.BargainFinderMax.Security.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BargainFinderMax\OTA2003B.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BargainFinderMax\OTA2003B1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BargainFinderMax\OTA2003B2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BargainFinderMax\wsse.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BargainFinderMax\xlink.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BargainFinderMax\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\BargainFinderMax\xmldsig-core-schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DesignatePrinter\DesignatePrinterLLS2.wsdl" />
+    <None Include="Connected Services\DesignatePrinter\DesignatePrinterLLS2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DesignatePrinter\DesignatePrinterLLS21.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DesignatePrinter\DesignatePrinterLLS22.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DesignatePrinter\envelope.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DesignatePrinter\msg-header-2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DesignatePrinter\NativeApi.DesignatePrinter.DesignatePrinterRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DesignatePrinter\NativeApi.DesignatePrinter.DesignatePrinterRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DesignatePrinter\NativeApi.DesignatePrinter.MessageHeader.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DesignatePrinter\NativeApi.DesignatePrinter.Security1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DesignatePrinter\STL_For_SabreProtocol_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DesignatePrinter\STL_Header_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DesignatePrinter\sws_common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DesignatePrinter\wsse.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DesignatePrinter\xlink.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DesignatePrinter\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DesignatePrinter\xmldsig-core-schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\GetReservation\Air.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -139,6 +249,46 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\GetReservation\xmldsig-core-schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\SabreCommand\envelope.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\SabreCommand\msg-header-2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\SabreCommand\NativeApi.SabreCommand.MessageHeader.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\SabreCommand\NativeApi.SabreCommand.SabreCommandLLSRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\SabreCommand\NativeApi.SabreCommand.SabreCommandLLSRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\SabreCommand\NativeApi.SabreCommand.Security.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\SabreCommand\SabreCommandLLS1.wsdl" />
+    <None Include="Connected Services\SabreCommand\SabreCommandLLS1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\SabreCommand\SabreCommandLLS11.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\SabreCommand\SabreCommandLLS12.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\SabreCommand\wsse.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\SabreCommand\xlink.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\SabreCommand\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\SabreCommand\xmldsig-core-schema.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\TravelItineraryRead\Air.xsd">
@@ -219,7 +369,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\BargainFinderMax\" />
+    <WCFMetadataStorage Include="Connected Services\DesignatePrinter\" />
     <WCFMetadataStorage Include="Connected Services\GetReservation\" />
+    <WCFMetadataStorage Include="Connected Services\SabreCommand\" />
     <WCFMetadataStorage Include="Connected Services\TravelItineraryRead\" />
   </ItemGroup>
   <ItemGroup>
@@ -242,6 +395,42 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\TravelItineraryRead\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BargainFinderMax\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BargainFinderMax\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BargainFinderMax\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\SabreCommand\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\SabreCommand\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\SabreCommand\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\DesignatePrinter\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\DesignatePrinter\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\DesignatePrinter\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
