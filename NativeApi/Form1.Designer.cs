@@ -74,7 +74,7 @@
             // btnGetToken
             // 
             this.btnGetToken.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGetToken.Location = new System.Drawing.Point(620, 490);
+            this.btnGetToken.Location = new System.Drawing.Point(620, 460);
             this.btnGetToken.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnGetToken.Name = "btnGetToken";
             this.btnGetToken.Size = new System.Drawing.Size(272, 93);
@@ -94,7 +94,7 @@
             // btnShowInEmu
             // 
             this.btnShowInEmu.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnShowInEmu.Location = new System.Drawing.Point(620, 332);
+            this.btnShowInEmu.Location = new System.Drawing.Point(620, 324);
             this.btnShowInEmu.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnShowInEmu.Name = "btnShowInEmu";
             this.btnShowInEmu.Size = new System.Drawing.Size(272, 88);
@@ -117,9 +117,10 @@
             // 
             // Form1
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(878, 644);
+            this.ClientSize = new System.Drawing.Size(986, 732);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnShowInEmu);
             this.Controls.Add(this.txtCommand);

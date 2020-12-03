@@ -429,6 +429,9 @@ namespace NativeApi
 
             DesignatePrinter.DesignatePrinterRQ req = DesignatePrinterService.getRequest(token,"1");
             SerializeAndShowWSResponse(req);
+
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+
             DesignatePrinter.DesignatePrinterRS response = null; 
             try
             {
