@@ -1,0 +1,2099 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns="http://www.sabre.com/ns/Ticketing/EDocStl" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.sabre.com/ns/Ticketing/EDocStl" version="1.0.3" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:annotation>
+    <xsd:documentation>Updated by Eugene Almenar on 08/24/2011 from the STL provided by Dave Hollander</xsd:documentation>
+    <xsd:documentation>Aug 13, 2010 - dmh - added STL_Envelope to support SOA Message Headers standard.</xsd:documentation>
+    <xsd:documentation>October 14, 2010 - dmh - Added Notif and Ack headers.</xsd:documentation>
+  </xsd:annotation>
+  <xsd:element name="Address.Simple" type="Address.Simple" />
+  <xsd:element name="Contact.Summary" type="Contact.Summary">
+    <xsd:annotation>
+      <xsd:documentation>Represents one or more ways to contact a Party for use in a variety of communications.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="POS" type="POS" />
+  <xsd:element name="ResultRecord" type="ResultRecord" />
+  <xsd:element name="STL_Header.Ack" type="STL_Header.Ack" />
+  <xsd:element name="STL_Header.Notif" type="STL_Header.Notif" />
+  <xsd:element name="STL_Header.RQ" type="STL_Header.RQ" />
+  <xsd:element name="STL_Header.RS" type="STL_Header.RS" />
+  <xsd:complexType name="Address.Detailed">
+    <xsd:annotation>
+      <xsd:documentation>Sabre - use only when detailed and structured address is required.
+Create customized extensions and add to choice group when host applications have different detailed structure to capture.
+OTA 1.8: AddressType = Provides address information. 
+</xsd:documentation>
+      <xsd:documentation>Sabre - use only when detailed and structured address is required.
+Create customized extensions and add to choice group when host applications have different detailed structure to capture.
+OTA 1.8: AddressType = Provides address information.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="2" name="Building" type="Building">
+        <xsd:annotation>
+          <xsd:documentation>Building name, room, apartment, or suite number.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Street" type="Street">
+        <xsd:annotation>
+          <xsd:documentation>May contain the street number and street name.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="City" type="StringLength1to64">
+        <xsd:annotation>
+          <xsd:documentation>City (e.g., Dublin), town, or postal station (i.e., a postal service territory, often used in a military address).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="County" type="StringLength1to32">
+        <xsd:annotation>
+          <xsd:documentation>County or Region Name (e.g., Fairfax).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="StateProv" type="StringLength1to64">
+        <xsd:annotation>
+          <xsd:documentation>State or Province name (e.g., Texas).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Country" type="StringLength1to64">
+        <xsd:annotation>
+          <xsd:documentation>Country name (e.g., Ireland).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="PostalCode" type="StringLength1to16">
+        <xsd:annotation>
+          <xsd:documentation>Post Office Code number.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Address.Simple">
+    <xsd:annotation>
+      <xsd:documentation>Use for most addresses. Contents are semi-formatted, with simple city, state, country and postal code broken out.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="6" name="Line" type="StringLength1to255">
+        <xsd:annotation>
+          <xsd:documentation>These  lines contain free form address details.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="City" type="StringLength1to64">
+        <xsd:annotation>
+          <xsd:documentation>City (e.g., Dublin), town, or postal station (i.e., a postal service territory, often used in a military address).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="StateProv" type="StringLength1to64">
+        <xsd:annotation>
+          <xsd:documentation>State or Province name (e.g., Texas).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Country" type="StringLength1to64">
+        <xsd:annotation>
+          <xsd:documentation>Country name (e.g., Ireland).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="PostalCode" type="StringLength1to16">
+        <xsd:annotation>
+          <xsd:documentation>Post Office Code number.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Amount">
+    <xsd:simpleContent>
+      <xsd:extension base="_amount">
+        <xsd:attribute default="USD" name="currencyCode" type="CurrencyCodeList" />
+        <xsd:attribute name="currency" type="ProperName" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="ApplicationResults">
+    <xsd:annotation>
+      <xsd:documentation>From STL for Sabre Protocol v.1.2.0</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent mixed="false">
+      <xsd:extension base="Results">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="99" name="Success" type="ProblemInformationFromLLS" />
+          <xsd:element minOccurs="0" maxOccurs="99" name="Error" type="ProblemInformationFromLLS" />
+          <xsd:element minOccurs="0" maxOccurs="99" name="Warning" type="ProblemInformationFromLLS" />
+        </xsd:sequence>
+        <xsd:attribute name="status" type="CompletionCodes" use="required" />
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="Building">
+    <xsd:simpleContent>
+      <xsd:extension base="StringLength0to64">
+        <xsd:attribute name="BldgNumber" type="NumericStringLength1to19" />
+        <xsd:attribute name="RoomNumber" type="NumericStringLength1to19" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Contact.Summary">
+    <xsd:annotation>
+      <xsd:documentation>Represents one or more ways to contact a Party for use in a variety of communications.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="99" ref="Address.Simple">
+        <xsd:annotation>
+          <xsd:documentation>Postal address used to contact party (a person or organization).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="99" name="Phone" type="Telephone">
+        <xsd:annotation>
+          <xsd:documentation>Telecommunication details use to contact party.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Currency">
+    <xsd:simpleContent>
+      <xsd:extension base="CurrencyCodeList">
+        <xsd:attribute name="Name" type="ProperName" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="DiagnosticResults">
+    <xsd:sequence>
+      <xsd:any minOccurs="0" namespace="##other" processContents="strict" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ErrorMessage">
+    <xsd:annotation>
+      <xsd:documentation>Free text and code provided by the application or system that detected the error. Contants may be anything the system detecting the error chooses to convey. Used by service consumers.  Codes and/or messages should be agreed upon by service users. Do not use for structured data, use parameters instead.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="Text.Long">
+        <xsd:attribute name="code" type="xsd:integer" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="HostCommand">
+    <xsd:simpleContent>
+      <xsd:extension base="Text.Long">
+        <xsd:attribute name="LNIATA" type="xsd:string" use="optional" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Identifier.System">
+    <xsd:annotation>
+      <xsd:documentation>System identifier used to uniquily identify the specific system.
+ 	"Source" is used to return the application name responsible for fulfilling the particular request transaction.
+	"ApplicationInstance" is used to return the application instance responsible for fulfilling the particular request transaction.
+	"Cluster" is used to return the application cluster responsible for fulfilling the particular request transaction.
+	"HostName" is used to return the particular server name responsible for fulfilling the particular request transaction.
+
+	Example: <Source ApplicationInstance="PROD1" Cluster="PROD TPF SCC" HostName="PSS" xmlns="http://www.sabre.com/ns/Ticketing/EDocStl">TPF</Source></xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="Identifier">
+        <xsd:attribute name="appInstance" type="Identifier" />
+        <xsd:attribute name="cluster" type="Identifier" />
+        <xsd:attribute name="host" type="Identifier" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Location.POS">
+    <xsd:annotation>
+      <xsd:documentation>A location for an airline or agency agent. Can be used to describe the actual, pseudo or home location.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="CityCode">
+        <xsd:attribute name="country" type="CountryCode" />
+        <xsd:attribute name="province" type="AlphaLength2" />
+        <xsd:attribute name="number" type="AlphaNumericStringLength1to8">
+          <xsd:annotation>
+            <xsd:documentation>agent station number or agency iata number</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Message.Condition">
+    <xsd:annotation>
+      <xsd:documentation>Free text and code provided by the application or system that detected the condition. 
+			Contents may be anything the system detecting the error chooses to convey. Used by service consumers.  
+			Codes and/or messages should be agreed upon by service users. 
+			Do not use for structured data, use parameters instead.
+			</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="Text.Long">
+        <xsd:attribute name="code" type="xsd:string" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="MessagingRecords">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="ServiceRequestor" type="MessagingSystemRecord" />
+      <xsd:element minOccurs="0" maxOccurs="100" name="RequestProxies" type="MessagingSystemRecord" />
+      <xsd:element minOccurs="0" name="ServiceProvider" type="MessagingSystemRecord" />
+      <xsd:element minOccurs="0" maxOccurs="100" name="ResponseProxies" type="MessagingSystemRecord" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="MessagingSystemRecord">
+    <xsd:annotation>
+      <xsd:documentation>Text field used for intermediaries and proxies to record brief messages about the processes. Attributes record date-time and system identification information.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="Text">
+        <xsd:attribute name="StartTimeStamp" type="xsd:dateTime" use="required">
+          <xsd:annotation>
+            <xsd:documentation>When the system stated processing the message.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="EndTimeStamp" type="xsd:dateTime" use="required">
+          <xsd:annotation>
+            <xsd:documentation>When the system completed processing the message. Format is a sequence of characters of the form: '-'? yyyy '-' mm '-' dd 'T' hh ':' mm ':' ss ('.' s+)? (zzzzzz)?; for example, 2002-10-10T12:00:00+05:00. </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="SystemID" type="Identifier" use="required">
+          <xsd:annotation>
+            <xsd:documentation>Unique identifier for the processing system.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="SystemName" type="Identifier" use="required">
+          <xsd:annotation>
+            <xsd:documentation>Common name of the processing system.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Parameters">
+    <xsd:annotation>
+      <xsd:documentation>Name value pairs of parameters where the contents are the value associated with the name. Parameters are for deployment and operational flexibility and should not be relied upon in service design. Revisions to the service should migrate parameters into the message payload or message subject and action values.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="Text">
+        <xsd:attribute name="Name" type="Text" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="POS">
+    <xsd:annotation>
+      <xsd:documentation>Locations: 
+Psuedo - Agency PCC or Agent AAA  
+Actual - where the transaction is initiated 
+Home - assigned to the agent account</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Company" type="UpperCaseAlphaNumericLength1to3">
+        <xsd:annotation>
+          <xsd:documentation>The IATA assigned code for the Agency or Airine </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Pseudo" type="PseudoCityCode.AgencyOrAgent">
+        <xsd:annotation>
+          <xsd:documentation>Required for most sources, unless MultiHost code is provided.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="MultiHost" type="AirlineCode">
+        <xsd:annotation>
+          <xsd:documentation>Airline partition for multi-host source locations.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Actual" type="Location.POS" />
+      <xsd:element minOccurs="0" name="Home" type="Location.POS" />
+      <xsd:element minOccurs="0" name="Sine" type="StringLength1to16">
+        <xsd:annotation>
+          <xsd:documentation>Identifies the agent or party within the requesting entity.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="DutyCode" type="DutyCodeList">
+        <xsd:annotation>
+          <xsd:documentation>An authority code assigned to a requestor.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Lniata" type="Lniata">
+        <xsd:annotation>
+          <xsd:documentation>LNIATA of the Console the agent signed into. </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ProblemInformation">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Source" type="Identifier.System">
+        <xsd:annotation>
+          <xsd:documentation>The system that the error reporting system deemed to be the cause of the problem. If omitted, the reporting system is also the source of the problem. For application errors, the element may identify a system the application is dependent upon that failed to respond. For validation errors this may identify the service consumer.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="System" type="Identifier.System">
+        <xsd:annotation>
+          <xsd:documentation>The system that created the results record. If the Source system identifier is omitted, the system identified here both was the cause of the problem and created the result record.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="99" name="SystemSpecificResults" type="SystemSpecificResults" />
+    </xsd:sequence>
+    <xsd:attribute name="type" type="ErrorType" use="required">
+      <xsd:annotation>
+        <xsd:documentation>An indication of the source of error when processing the request.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="status" type="CompletionCodes" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Impact of the error on process completion. </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="timeStamp" type="xsd:dateTime" />
+  </xsd:complexType>
+  <xsd:complexType name="ProblemInformationFromLLS">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="99" name="SystemSpecificResults" type="SystemSpecificResultsFromLLS" />
+    </xsd:sequence>
+    <xsd:attribute name="type" type="ErrorType">
+      <xsd:annotation>
+        <xsd:documentation>An indication of the source of error when processing the request.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="timeStamp" type="xsd:dateTime" />
+  </xsd:complexType>
+  <xsd:complexType name="ResultRecord">
+    <xsd:annotation>
+      <xsd:documentation>Nov 9, 2010 - dmh - moved attriubtes upto the header components.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:group ref="SuccessOrErrorCG" />
+      <xsd:element minOccurs="0" maxOccurs="99" name="Warning" type="ProblemInformation" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Results" />
+  <xsd:complexType name="STL_HeaderBase" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>Sabre Standard Payload Header. Information in the header is intended to separate transport and processing information from actual message data. Header information may be replicated in the messaging system header (SOAP or JMS header). This data is inteded for use with content-based routing and other tasks asscociated with integration.  NOTE: messaging and transport systems may and should add content to the header whereas they should never change the actual message subject contents.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="ConversationID" type="TrackingID">
+        <xsd:annotation>
+          <xsd:documentation>The ConversationId element is a string identifying the set of related messages that make up a conversation between two Parties. The Party initiating a conversation determines the value of the ConversationId element that shall be reflected in all messages pertaining to that conversation. It remains constant for all messages within a conversation.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="OrchestrationID" type="TrackingID">
+        <xsd:annotation>
+          <xsd:documentation>The orchestration ID may be used to track a set of service invocations and the sequence in which they are invoked. To track an orchestration, the orchestrator assigns a unique value to the identifier and sets the sequence number to 0.  Service providers are expected to increment the OrchestrationID@seq value if it exists.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Operation" type="Text.Short">
+        <xsd:annotation>
+          <xsd:documentation>Operation is the actiion verb applied to the Service.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Service" type="Text.Short">
+        <xsd:annotation>
+          <xsd:documentation>The name of the service being requested. Typically the message subject noun.  Service frameworks may use the abstract service name to lookup the actual service provider instance to invoke.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Messaging" type="MessagingRecords">
+        <xsd:annotation>
+          <xsd:documentation>Messaging section provides an area for each system interacting with the message to record a brief message about thier interactions. Service proxies and utility services such as transformation and validation should use this area to record when they processed the message and the resulting status.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="100" name="Parameters" type="Parameters">
+        <xsd:annotation>
+          <xsd:documentation>Generalized name-value pairs. These parameters are intended for integration specific use only during development and testing. These parameters must not be relied upon for production operation.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Security" type="SecurityTokenCG" />
+      <xsd:element minOccurs="0" name="DiagnosticData" type="Text.Long" />
+    </xsd:sequence>
+    <xsd:attribute name="messageID" type="Identifier">
+      <xsd:annotation>
+        <xsd:documentation>The MessageId element is a globally unique identifier for each message [see RFC2822]. It is an unique message identifier that refers to a particular version of a particular message.  The uniqueness of the message identifier should be guaranteed by the host that generates it.  This message identifier is intended to be machine readable and not necessarily meaningful to humans.  A message identifier pertains to exactly one instantiation of a particular message; subsequent revisions to the message each receive new message identifiers.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="version" type="Identifier" />
+    <xsd:attribute name="timeStamp" type="xsd:dateTime">
+      <xsd:annotation>
+        <xsd:documentation>Date and time when the result record was created.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="customerID" type="PseudoCityCode">
+      <xsd:annotation>
+        <xsd:documentation>Identification value assigned to the service customer or consumer. The identifier will often be a pseudo city code.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="diagnosticLevel" type="DiagnosticLevels" />
+  </xsd:complexType>
+  <xsd:complexType name="STL_Header.Ack">
+    <xsd:annotation>
+      <xsd:documentation>Sabre Standard Payload Header for Acknowledgements of notifications or reciept of requests. Information in the header is intended to separate transport and processing information from actual message data. Header information may be replicated in the messaging system header. This data is inteded for use with content-based routing and other tasks asscociated with integration.  NOTE: messaging and transport systems may and should add content to the header whereas they should never change the actual message subject contents.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent mixed="false">
+      <xsd:extension base="STL_HeaderBase">
+        <xsd:sequence>
+          <xsd:element name="Results" type="ResultRecord">
+            <xsd:annotation>
+              <xsd:documentation>Response message header Results are used to exchange information about the nature of a failure or success. This record must be provided in successful service invocations. May also contain system specific error, result and diagnostic data.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="STL_Header.Notif">
+    <xsd:annotation>
+      <xsd:documentation>Sabre Standard Payload Header. The Notif header is used when a message exchange pattern is one-way, in other words when the informaiton is being pushed. If requied the STL_Header.Ack may be used to acknolwedge a Notif. Information in the header is intended to separate transport and processing information from actual message data. Header information may be replicated in the messaging system header. This data is inteded for use with content-based routing and other tasks asscociated with integration.  NOTE: messaging and transport systems may and should add content to the header whereas they should never change the actual message subject contents.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent mixed="false">
+      <xsd:extension base="STL_HeaderBase" />
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="STL_Header.RQ">
+    <xsd:annotation>
+      <xsd:documentation>Sabre Standard Payload Header. Information in the header is intended to separate transport and processing information from actual message data. Header information may be replicated in the messaging system header. This data is inteded for use with content-based routing and other tasks asscociated with integration.  NOTE: messaging and transport systems may and should add content to the header whereas they should never change the actual message subject contents.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent mixed="false">
+      <xsd:extension base="STL_HeaderBase">
+        <xsd:attribute name="ttl" type="xsd:nonNegativeInteger">
+          <xsd:annotation>
+            <xsd:documentation>Time-To-Live (TTL) is the number of seconds a system is requested wait after receipt of the message for a response before forcing the transaction to be over.  A TTL fault condition is handled as an error, closing and/or freeing all open resources. This value may override a contract specified value if allowed by the contract and associated SLA.
+Note: gateways and proxies are not expected to manipulate the TTL value. The value used by “inner” or "downsteam" applications should be less than or equal to the TTL value.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="STL_Header.RS">
+    <xsd:annotation>
+      <xsd:documentation>Sabre Standard Payload Header. Information in the header is intended to separate transport and processing information from actual message data. Header information may be replicated in the messaging system header. This data is inteded for use with content-based routing and other tasks asscociated with integration.  NOTE: messaging and transport systems may and should add content to the header whereas they should never change the actual message subject contents.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent mixed="false">
+      <xsd:extension base="STL_HeaderBase">
+        <xsd:sequence>
+          <xsd:element name="Results" type="ResultRecord">
+            <xsd:annotation>
+              <xsd:documentation>Response message header Results are used to exchange information about the nature of a failure or success. This record must be provided in successful service invocations. May also contain system specific error, result and diagnostic data.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="SecurityTokenCG">
+    <xsd:choice>
+      <xsd:element name="UsernameToken" type="UsernameToken" />
+      <xsd:element name="SecurityToken" type="Text.Long" />
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="Street">
+    <xsd:simpleContent>
+      <xsd:extension base="ProperName">
+        <xsd:attribute name="StreetNmbrSuffix" type="StringLength1to8">
+          <xsd:annotation>
+            <xsd:documentation>Usually a letter right after the street number (A in 66-A, B in 123-B etc).</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="StreetDirection" type="StringLength1to8">
+          <xsd:annotation>
+            <xsd:documentation>Street direction of an address (e.g., N, E, S, NW, SW).</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="RuralRouteNmbr" type="NumericStringLength1to5">
+          <xsd:annotation>
+            <xsd:documentation>Numerical equivalent of a rural township as defined within a given area (e.g., 12, 99).</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="PO_Box" type="StringLength1to16">
+          <xsd:annotation>
+            <xsd:documentation>Defines a Post Office Box number.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Success">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="System" type="Identifier.System">
+        <xsd:annotation>
+          <xsd:documentation>Endpoint address or system name of the system that created the results record. May not identify the specific system. The id attribute is an unique identifier of the specific system that created the results record.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Source" type="Identifier.System">
+        <xsd:annotation>
+          <xsd:documentation>Endpoint address or system name of the system that the error reporting system deemed to be the cause of the failure. For application errors, the element may be omitted or identify a system the application is dependent upon that failed to respond. For validation errors this may be the service consumer.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:group name="SuccessOrErrorCG">
+    <xsd:choice>
+      <xsd:element name="Success" type="Success">
+        <xsd:annotation>
+          <xsd:documentation>Success is an empty element with no children which indicates that the request was processed successfully.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Error" type="ProblemInformation" />
+    </xsd:choice>
+  </xsd:group>
+  <xsd:complexType name="SystemSpecificResults">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="ErrorMessage" type="ErrorMessage">
+        <xsd:annotation>
+          <xsd:documentation>Application specific Error code and Message. A textual description to provide more information about the specific error  with code attribute as numeric value.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ShortText" type="Text.Short">
+        <xsd:annotation>
+          <xsd:documentation>An abbreviated version of the error in textual format.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Element" type="Text.Long">
+        <xsd:annotation>
+          <xsd:documentation>If present, this attribute may identify an unknown or misspelled tag that caused an error in processing. It is recommended that the Tag attribute use XPath notation to identify the location of a tag in the event that more than one tag of the same name is present in the document. Alternatively, the tag name alone can be used to identify missing data [Type=ReqFieldMissing].</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="RecordID" type="Identifier">
+        <xsd:annotation>
+          <xsd:documentation>If present, this attribute allows for batch processing and the identification of the record that failed amongst a group of records. This value may contain a concatenation of a unique failed transaction ID with specific record(s) associated with that transaction.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="DocURL" type="xsd:anyURI">
+        <xsd:annotation>
+          <xsd:documentation>If present, this attribute refers to an online description of the error that occurred.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="DiagnosticResults" type="DiagnosticResults">
+        <xsd:annotation>
+          <xsd:documentation>For data not defined elsewhere in the results record. Structure of the contents must be defined elsewhere in the target schema namespace.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="timeStamp" type="xsd:dateTime" />
+  </xsd:complexType>
+  <xsd:complexType name="SystemSpecificResultsFromLLS">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="HostCommand" type="HostCommand">
+        <xsd:annotation>
+          <xsd:documentation>Host system command run to create this result.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="99" name="Message" type="Message.Condition">
+        <xsd:annotation>
+          <xsd:documentation>Application specific code and Message. A textual description to provide more 
+					information about the specific condition, warning or error  with code attribute as numeric value.
+					</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ShortText" type="Text.Short">
+        <xsd:annotation>
+          <xsd:documentation>An abbreviated version of the error in textual format.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Element" type="Text.Long">
+        <xsd:annotation>
+          <xsd:documentation>If present, this attribute may identify an unknown or misspelled tag that caused 
+					an error in processing. It is recommended that the Tag attribute use XPath notation to identify the 
+					location of a tag in the event that more than one tag of the same name is present in the document. 
+					Alternatively, the tag name alone can be used to identify missing data [Type=ReqFieldMissing].
+					</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="RecordID" type="Identifier">
+        <xsd:annotation>
+          <xsd:documentation>If present, this attribute allows for batch processing and the identification of the 
+					record that failed amongst a group of records. This value may contain a concatenation of a unique failed 
+					transaction ID with specific record(s) associated with that transaction.
+					</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="DocURL" type="xsd:anyURI">
+        <xsd:annotation>
+          <xsd:documentation>If present, this attribute refers to an online description of the error that occurred.
+					</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="timeStamp" type="xsd:dateTime" />
+  </xsd:complexType>
+  <xsd:complexType name="Telephone">
+    <xsd:simpleContent>
+      <xsd:extension base="PhoneNumber">
+        <xsd:attribute name="location">
+          <xsd:annotation>
+            <xsd:documentation>List will be based on PPP Codes
+						Refer to OTA Code List Phone Location Type (PLT).
+	1	Brand reservations office
+	2	Central reservations office
+	3	Property reservation Office
+	4	Property direct
+	5	Sales office
+	6	Home
+	7	Office
+	8	Other
+	9	Managing company</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="use" type="StringLength1to5">
+          <xsd:annotation>
+            <xsd:documentation>List will be based on PPP Codes
+
+						Describes the type of telephone number, in the context of its general use (e.g. Home, Business, Emergency Contact, Travel Arranger, Day, Evening). Refer to OTA Code List Phone Use Type (PUT).
+1	Emergency contact
+2	Travel arranger
+3	Daytime contact
+4	Evening contact
+5	Contact
+6	Toll free number
+7	Guest use
+8	Pickup contact</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="countryCode">
+          <xsd:annotation>
+            <xsd:documentation>Code assigned by telecommunications authorities for international country access identifier.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="extension">
+          <xsd:annotation>
+            <xsd:documentation>Extension to reach a specific party at the phone number.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="remark">
+          <xsd:annotation>
+            <xsd:documentation>A remark associated with the telephone number.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="TrackingID">
+    <xsd:annotation>
+      <xsd:documentation>Tracking Identifier is an identifier intended for use to a set of related items and provide an optional sequence number for the items. </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="Identifier">
+        <xsd:attribute name="seq" type="xsd:integer" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="TransactionInfo">
+    <xsd:annotation>
+      <xsd:documentation>Base type for transaction specific and tracking information. Intended to be extended when used in service schemas.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="ID" type="StringLength0to128">
+        <xsd:annotation>
+          <xsd:documentation>Transaction Identifier created by service consumer.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="UsernameToken">
+    <xsd:sequence>
+      <xsd:element name="Username" type="Text" />
+      <xsd:element name="Password" type="Text" />
+      <xsd:element name="Organization" type="Text" />
+      <xsd:element minOccurs="0" name="Domain" type="Text" />
+      <xsd:element minOccurs="0" name="Lniata" type="Text" />
+      <xsd:element minOccurs="0" name="Locid" type="Text" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:simpleType name="AgentSine">
+    <xsd:restriction base="StringLength1to16" />
+  </xsd:simpleType>
+  <xsd:simpleType name="AirlineCode">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[A-Z0-9]{2}[A-Z]?" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="AirlineCode.2Char">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[A-Z0-9]{2}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="AirlineCode.2to4Char">
+    <xsd:restriction base="StringLength2to4" />
+  </xsd:simpleType>
+  <xsd:simpleType name="AlphaLength2">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[a-zA-Z]{2}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="AlphaLength3">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[a-zA-Z]{3}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="AlphaNumericStringLength1to8">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[0-9a-zA-Z]{1,8}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="AlphaNumericStringLength2">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[0-9a-zA-Z]{2}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="AlphaNumericStringLength4">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[0-9a-zA-Z]{4}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="CabinType.3Chars">
+    <xsd:restriction base="UpperCaseAlphaLength1to3" />
+  </xsd:simpleType>
+  <xsd:simpleType name="CityCode">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[a-zA-Z]{3,5}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="CompletionCodes">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="Complete" />
+      <xsd:enumeration value="Incomplete" />
+      <xsd:enumeration value="NotProcessed" />
+      <xsd:enumeration value="Unknown" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="CountryCode">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[a-zA-Z]{2}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="CRSCode">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="\d{4}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="CouponNumber">
+    <xsd:restriction base="Numeric1to4" />
+  </xsd:simpleType>
+  <xsd:simpleType name="CurrencyCodeList">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="VEF" />
+      <xsd:enumeration value="ADP">
+        <xsd:annotation>
+          <xsd:documentation>Andorran Peseta: Andorra</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="AED">
+        <xsd:annotation>
+          <xsd:documentation>UAE Dirham: United Arab Emirates</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="AFA">
+        <xsd:annotation>
+          <xsd:documentation>Afghani: Afghanistan</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ALL">
+        <xsd:annotation>
+          <xsd:documentation>Lek: Albania</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="AMD">
+        <xsd:annotation>
+          <xsd:documentation>Armenian Dram: Armenia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ANG">
+        <xsd:annotation>
+          <xsd:documentation>Antillian Guilder: Netherlands Antilles</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="AON">
+        <xsd:annotation>
+          <xsd:documentation>New Kwanza: Angola</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="AOR">
+        <xsd:annotation>
+          <xsd:documentation>Kwanza Reajustado: Angola</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ARS">
+        <xsd:annotation>
+          <xsd:documentation>Argentine Peso: Argentina</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ATS">
+        <xsd:annotation>
+          <xsd:documentation>Schilling: Austria</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="AUD">
+        <xsd:annotation>
+          <xsd:documentation>Australian Dollar: Australia, Christmas Island, Cocos (Keeling) Islands, Heard and Mcdonald Islands, Kiribati, Nauru, Norfolk Island, Tuvalu</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="AWG">
+        <xsd:annotation>
+          <xsd:documentation>Aruban Guilder: Aruba</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="AZM">
+        <xsd:annotation>
+          <xsd:documentation>Azerbaijanian Manat: Azerbaijan</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="BAM">
+        <xsd:annotation>
+          <xsd:documentation>Convertible Marks: Bosnia and Herzegovina</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="BBD">
+        <xsd:annotation>
+          <xsd:documentation>Barbados Dollar: Barbados</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="BDT">
+        <xsd:annotation>
+          <xsd:documentation>Taka: Bangladesh</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="BEF">
+        <xsd:annotation>
+          <xsd:documentation>Belgian Franc: Belgium</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="BGL">
+        <xsd:annotation>
+          <xsd:documentation>Lev: Bulgaria</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="BGN">
+        <xsd:annotation>
+          <xsd:documentation>Bulgarian LEV: Bulgaria</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="BHD">
+        <xsd:annotation>
+          <xsd:documentation>Bahraini Dinar: Bahrain</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="BIF">
+        <xsd:annotation>
+          <xsd:documentation>Burundi Franc: Burundi</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="BMD">
+        <xsd:annotation>
+          <xsd:documentation>Bermudian Dollar: Bermuda</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="BND">
+        <xsd:annotation>
+          <xsd:documentation>Brunei Dollar: Brunei Darussalam</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="BRL">
+        <xsd:annotation>
+          <xsd:documentation>Brazilian Real: Brazil</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="BSD">
+        <xsd:annotation>
+          <xsd:documentation>Bahamian Dollar: Bahamas</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="BTN">
+        <xsd:annotation>
+          <xsd:documentation>Ngultrum: Bhutan</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="BWP">
+        <xsd:annotation>
+          <xsd:documentation>Pula: Botswana</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="BYR">
+        <xsd:annotation>
+          <xsd:documentation>Belarussian Ruble: Belarus</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="BZD">
+        <xsd:annotation>
+          <xsd:documentation>Belize Dollar: Belize</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="CAD">
+        <xsd:annotation>
+          <xsd:documentation>Canadian Dollar: Canada</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="CDF">
+        <xsd:annotation>
+          <xsd:documentation>Franc Congolais: Congo, The Democratic Republic Of</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="CHF">
+        <xsd:annotation>
+          <xsd:documentation>Swiss Franc: Liechtenstein, Switzerland</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="CLF">
+        <xsd:annotation>
+          <xsd:documentation>Unidades de fomento: Chile</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="CLP">
+        <xsd:annotation>
+          <xsd:documentation>Chilean Peso: Chile</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="CNY">
+        <xsd:annotation>
+          <xsd:documentation>Yuan Renminbi: China</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="COP">
+        <xsd:annotation>
+          <xsd:documentation>Colombian Peso: Colombia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="CRC">
+        <xsd:annotation>
+          <xsd:documentation>Costa Rican Colon: Costa Rica</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="CUP">
+        <xsd:annotation>
+          <xsd:documentation>Cuban Peso: Cuba</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="CVE">
+        <xsd:annotation>
+          <xsd:documentation>Cape Verde Escudo: Cape Verde</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="CYP">
+        <xsd:annotation>
+          <xsd:documentation>Cyprus Pound: Cyprus</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="CZK">
+        <xsd:annotation>
+          <xsd:documentation>Czech Koruna: Czech Republic</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="DEM">
+        <xsd:annotation>
+          <xsd:documentation>Deutsche Mark: Germany</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="DJF">
+        <xsd:annotation>
+          <xsd:documentation>Djibouti Franc: Djibouti</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="DKK">
+        <xsd:annotation>
+          <xsd:documentation>Danish Krone: Denmark, Faeroe Islands, Greenland</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="DOP">
+        <xsd:annotation>
+          <xsd:documentation>Dominican Peso: Dominican Republic</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="DZD">
+        <xsd:annotation>
+          <xsd:documentation>Algerian Dinar: Algeria</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ECS">
+        <xsd:annotation>
+          <xsd:documentation>Sucre: Ecuador</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ECV">
+        <xsd:annotation>
+          <xsd:documentation>Unidad de Valor Constante (UVC): Ecuador</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="EEK">
+        <xsd:annotation>
+          <xsd:documentation>Kroon: Estonia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="EGP">
+        <xsd:annotation>
+          <xsd:documentation>Egyptian Pound: Egypt</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ERN">
+        <xsd:annotation>
+          <xsd:documentation>Nakfa: Eritrea</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ESP">
+        <xsd:annotation>
+          <xsd:documentation>Spanish Peseta: Andorra, Spain</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ETB">
+        <xsd:annotation>
+          <xsd:documentation>Ethiopian Birr: Ethiopia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="EUR">
+        <xsd:annotation>
+          <xsd:documentation>Euro:</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="FIM">
+        <xsd:annotation>
+          <xsd:documentation>Markka: Finland</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="FJD">
+        <xsd:annotation>
+          <xsd:documentation>Fiji Dollar: Fiji</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="FKP">
+        <xsd:annotation>
+          <xsd:documentation>Pound: Falkland Islands (Malvinas)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="FRF">
+        <xsd:annotation>
+          <xsd:documentation>French Franc: Andorra, France, French Guiana, French Southern Territories, Guadeloupe, Martinique, Monaco, Reunion, St Pierre and Miquelon</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="GBP">
+        <xsd:annotation>
+          <xsd:documentation>Pound Sterling: United Kingdom</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="GEL">
+        <xsd:annotation>
+          <xsd:documentation>Lari: Georgia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="GHC">
+        <xsd:annotation>
+          <xsd:documentation>Cedi: Ghana</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="GIP">
+        <xsd:annotation>
+          <xsd:documentation>Gibraltar Pound: Gibraltar</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="GMD">
+        <xsd:annotation>
+          <xsd:documentation>Dalasi: Gambia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="GNF">
+        <xsd:annotation>
+          <xsd:documentation>Guinea Franc: Guinea</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="GRD">
+        <xsd:annotation>
+          <xsd:documentation>Drachma: Greece</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="GTQ">
+        <xsd:annotation>
+          <xsd:documentation>Quetzal: Guatemala</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="GWP">
+        <xsd:annotation>
+          <xsd:documentation>Guinea-Bissau Peso: Guinea-Bissau</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="GYD">
+        <xsd:annotation>
+          <xsd:documentation>Guyana Dollar: Guyana</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="HKD">
+        <xsd:annotation>
+          <xsd:documentation>Hong Kong Dollar: Hong Kong</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="HNL">
+        <xsd:annotation>
+          <xsd:documentation>Lempira: Honduras</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="HRK">
+        <xsd:annotation>
+          <xsd:documentation>Kuna: Croatia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="HTG">
+        <xsd:annotation>
+          <xsd:documentation>Gourde: Haiti</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="HUF">
+        <xsd:annotation>
+          <xsd:documentation>Forint: Hungary</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="IDR">
+        <xsd:annotation>
+          <xsd:documentation>Rupiah: East Timor, Indonesia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="IEP">
+        <xsd:annotation>
+          <xsd:documentation>Irish Pound: Ireland</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ILS">
+        <xsd:annotation>
+          <xsd:documentation>New Israeli Sheqel: Israel</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="INR">
+        <xsd:annotation>
+          <xsd:documentation>Indian Rupee: Bhutan, India</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="IQD">
+        <xsd:annotation>
+          <xsd:documentation>Iraqi Dinar: Iraq</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="IRR">
+        <xsd:annotation>
+          <xsd:documentation>Iranian Rial: Iran (Islamic Republic Of)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ISK">
+        <xsd:annotation>
+          <xsd:documentation>Iceland Krona: Iceland</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ITL">
+        <xsd:annotation>
+          <xsd:documentation>Italian Lira: Italy, San Marino, Vatican City State (Holy See)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="JMD">
+        <xsd:annotation>
+          <xsd:documentation>Jamaican Dollar: Jamaica</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="JOD">
+        <xsd:annotation>
+          <xsd:documentation>Jordanian Dinar: Jordan</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="JPY">
+        <xsd:annotation>
+          <xsd:documentation>Yen: Japan</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="KES">
+        <xsd:annotation>
+          <xsd:documentation>Kenyan Shilling: Kenya</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="KGS">
+        <xsd:annotation>
+          <xsd:documentation>Som: Kyrgyzstan</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="KHR">
+        <xsd:annotation>
+          <xsd:documentation>Riel: Cambodia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="KMF">
+        <xsd:annotation>
+          <xsd:documentation>Comoro Franc: Comoros</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="KPW">
+        <xsd:annotation>
+          <xsd:documentation>North Korean Won: Korea, Democratic People's Republic Of</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="KRW">
+        <xsd:annotation>
+          <xsd:documentation>Won: Korea, Republic Of</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="KWD">
+        <xsd:annotation>
+          <xsd:documentation>Kuwaiti Dinar: Kuwait</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="KYD">
+        <xsd:annotation>
+          <xsd:documentation>Cayman Islands Dollar: Cayman Islands</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="KZT">
+        <xsd:annotation>
+          <xsd:documentation>Tenge: Kazakhstan</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="LAK">
+        <xsd:annotation>
+          <xsd:documentation>Kip: Lao People's Democratic Republic</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="LBP">
+        <xsd:annotation>
+          <xsd:documentation>Lebanese Pound: Lebanon</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="LKR">
+        <xsd:annotation>
+          <xsd:documentation>Sri Lanka Rupee: Sri Lanka</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="LRD">
+        <xsd:annotation>
+          <xsd:documentation>Liberian Dollar: Liberia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="LSL">
+        <xsd:annotation>
+          <xsd:documentation>Loti: Lesotho</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="LTL">
+        <xsd:annotation>
+          <xsd:documentation>Lithuanian Litas: Lithuania</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="LUF">
+        <xsd:annotation>
+          <xsd:documentation>Luxembourg Franc: Luxembourg</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="LVL">
+        <xsd:annotation>
+          <xsd:documentation>Latvian Lats: Latvia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="LYD">
+        <xsd:annotation>
+          <xsd:documentation>Libyan Dinar: Libyan Arab Jamahiriya</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MAD">
+        <xsd:annotation>
+          <xsd:documentation>Moroccan Dirham: Morocco, Western Sahara</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MDL">
+        <xsd:annotation>
+          <xsd:documentation>Moldovan Leu: Moldova, Republic Of</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MGF">
+        <xsd:annotation>
+          <xsd:documentation>Malagasy Franc: Madagascar</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MKD">
+        <xsd:annotation>
+          <xsd:documentation>Denar: Macedonia, The Former Yugoslav Republic Of</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MMK">
+        <xsd:annotation>
+          <xsd:documentation>Kyat: Myanmar</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MNT">
+        <xsd:annotation>
+          <xsd:documentation>Tugrik: Mongolia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MOP">
+        <xsd:annotation>
+          <xsd:documentation>Pataca: Macau</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MRO">
+        <xsd:annotation>
+          <xsd:documentation>Ouguiya: Mauritania</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MTL">
+        <xsd:annotation>
+          <xsd:documentation>Maltese Lira: Malta</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MUR">
+        <xsd:annotation>
+          <xsd:documentation>Mauritius Rupee: Mauritius</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MVR">
+        <xsd:annotation>
+          <xsd:documentation>Rufiyaa: Maldives</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MWK">
+        <xsd:annotation>
+          <xsd:documentation>Kwacha: Malawi</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MXN">
+        <xsd:annotation>
+          <xsd:documentation>Mexican Peso: Mexico</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MXV">
+        <xsd:annotation>
+          <xsd:documentation>Mexican Unidad de Inversion (UDI): Mexico</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MYR">
+        <xsd:annotation>
+          <xsd:documentation>Malaysian Ringgit: Malaysia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MZM">
+        <xsd:annotation>
+          <xsd:documentation>Metical: Mozambique</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="NAD">
+        <xsd:annotation>
+          <xsd:documentation>Namibia Dollar: Namibia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="NGN">
+        <xsd:annotation>
+          <xsd:documentation>Naira: Nigeria</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="NIO">
+        <xsd:annotation>
+          <xsd:documentation>Cordoba Oro: Nicaragua</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="NLG">
+        <xsd:annotation>
+          <xsd:documentation>Netherlands Guilder: Netherlands</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="NOK">
+        <xsd:annotation>
+          <xsd:documentation>Norwegian Krone: Bouvet Island, Norway, Svalbard and Jan Mayen Islands</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="NPR">
+        <xsd:annotation>
+          <xsd:documentation>Nepalese Rupee: Nepal</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="NZD">
+        <xsd:annotation>
+          <xsd:documentation>New Zealand Dollar: Cook Islands, New Zealand, Niue, Pitcairn, Tokelau</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="OMR">
+        <xsd:annotation>
+          <xsd:documentation>Rial Omani: Oman</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="PAB">
+        <xsd:annotation>
+          <xsd:documentation>Balboa: Panama</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="PEN">
+        <xsd:annotation>
+          <xsd:documentation>Nuevo Sol: Peru</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="PGK">
+        <xsd:annotation>
+          <xsd:documentation>Kina: Papua New Guinea</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="PHP">
+        <xsd:annotation>
+          <xsd:documentation>Philippine Peso: Philippines</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="PKR">
+        <xsd:annotation>
+          <xsd:documentation>Pakistan Rupee: Pakistan</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="PLN">
+        <xsd:annotation>
+          <xsd:documentation>Zloty: Poland</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="PTE">
+        <xsd:annotation>
+          <xsd:documentation>Portuguese Escudo: Portugal</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="PYG">
+        <xsd:annotation>
+          <xsd:documentation>Guarani: Paraguay</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="QAR">
+        <xsd:annotation>
+          <xsd:documentation>Qatari Rial: Qatar</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ROL">
+        <xsd:annotation>
+          <xsd:documentation>Leu: Romania</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="RUB">
+        <xsd:annotation>
+          <xsd:documentation>Russian Ruble: Russian Federation</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="RUR">
+        <xsd:annotation>
+          <xsd:documentation>Russian Ruble: Russian Federation</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="RWF">
+        <xsd:annotation>
+          <xsd:documentation>Rwanda Franc: Rwanda</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SAR">
+        <xsd:annotation>
+          <xsd:documentation>Saudi Riyal: Saudi Arabia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SBD">
+        <xsd:annotation>
+          <xsd:documentation>Solomon Islands Dollar: Solomon Islands</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SCR">
+        <xsd:annotation>
+          <xsd:documentation>Seychelles Rupee: Seychelles</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SDD">
+        <xsd:annotation>
+          <xsd:documentation>Sudanese Dinar: Sudan</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SEK">
+        <xsd:annotation>
+          <xsd:documentation>Swedish Krona: Sweden</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SGD">
+        <xsd:annotation>
+          <xsd:documentation>Singapore Dollar: Singapore</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SHP">
+        <xsd:annotation>
+          <xsd:documentation>St Helena Pound: St Helena</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SIT">
+        <xsd:annotation>
+          <xsd:documentation>Tolar: Slovenia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SKK">
+        <xsd:annotation>
+          <xsd:documentation>Slovak Koruna: Slovakia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SLL">
+        <xsd:annotation>
+          <xsd:documentation>Leone: Sierra Leone</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SOS">
+        <xsd:annotation>
+          <xsd:documentation>Somali Shilling: Somalia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SRG">
+        <xsd:annotation>
+          <xsd:documentation>Surinam Guilder: Suriname</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="STD">
+        <xsd:annotation>
+          <xsd:documentation>Dobra: Sao Tome and Principe</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SVC">
+        <xsd:annotation>
+          <xsd:documentation>El Salvador Colon: El Salvador</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SYP">
+        <xsd:annotation>
+          <xsd:documentation>Syrian Pound: Syrian Arab Republic</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SZL">
+        <xsd:annotation>
+          <xsd:documentation>Lilangeni: Swaziland</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="THB">
+        <xsd:annotation>
+          <xsd:documentation>Baht: Thailand</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TJR">
+        <xsd:annotation>
+          <xsd:documentation>Tajik Ruble (old): Tajikistan (Old)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TJS">
+        <xsd:annotation>
+          <xsd:documentation>Somoni: Tajikistan</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TMM">
+        <xsd:annotation>
+          <xsd:documentation>Manat: Turkmenistan</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TND">
+        <xsd:annotation>
+          <xsd:documentation>Tunisian Dinar: Tunisia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TOP">
+        <xsd:annotation>
+          <xsd:documentation>Pa'anga: Tonga</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TPE">
+        <xsd:annotation>
+          <xsd:documentation>Timor Escudo: East Timor</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TRL">
+        <xsd:annotation>
+          <xsd:documentation>Turkish Lira: Turkey</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TTD">
+        <xsd:annotation>
+          <xsd:documentation>Trinidad and Tobago Dollar: Trinidad and Tobago</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TWD">
+        <xsd:annotation>
+          <xsd:documentation>New Taiwan Dollar: Taiwan, Province Of China</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TZS">
+        <xsd:annotation>
+          <xsd:documentation>Tanzanian Shilling: Tanzania, United Republic Of</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="UAH">
+        <xsd:annotation>
+          <xsd:documentation>Hryvnia: Ukraine</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="UGX">
+        <xsd:annotation>
+          <xsd:documentation>Uganda Shilling: Uganda</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="USD">
+        <xsd:annotation>
+          <xsd:documentation>US Dollar: American Samoa, British Indian Ocean Territory,, Guam, Haiti, Marshall Islands, Micronesia, Northern Mariana Islands, Palau, Panama, Puerto Rico, Turks and Caicos Islands, United States, United States Minor Outlaying Islands, Virgin Islands (British), Virgin Islands (U.S.)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="USN">
+        <xsd:annotation>
+          <xsd:documentation>(Next day): United States</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="USS">
+        <xsd:annotation>
+          <xsd:documentation>(Same day): United States</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="UYU">
+        <xsd:annotation>
+          <xsd:documentation>Peso Uruguayo: Uruguay</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="UZS">
+        <xsd:annotation>
+          <xsd:documentation>Uzbekistan Sum: Uzbekistan</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="VEB">
+        <xsd:annotation>
+          <xsd:documentation>Bolivar: Venezuela</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="VND">
+        <xsd:annotation>
+          <xsd:documentation>Dong: Vietnam</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="VUV">
+        <xsd:annotation>
+          <xsd:documentation>Vatu: Vanuatu</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="WST">
+        <xsd:annotation>
+          <xsd:documentation>Tala: Samoa</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="XAF">
+        <xsd:annotation>
+          <xsd:documentation>CFA Franc BEAC: Cameroon, Central African Republic, Chad, Congo, Equatorial Guinea, Gabon</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="XAG">
+        <xsd:annotation>
+          <xsd:documentation>Silver: Bond Markets Units</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="XAU">
+        <xsd:annotation>
+          <xsd:documentation>Gold Bond Markets Units:</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="XBA">
+        <xsd:annotation>
+          <xsd:documentation>European Composite Unit (EURCO): Bond Markets Units</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="XBB">
+        <xsd:annotation>
+          <xsd:documentation>European Monetary Unit (E.M.U.-6): Bond Markets Units</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="XBC">
+        <xsd:annotation>
+          <xsd:documentation>European Unit of Account 9 (E.U.A.- 9): Bond Markets Units</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="XBD">
+        <xsd:annotation>
+          <xsd:documentation>European Unit of Account 17 (E.U.A.- 17): Bond Markets Units</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="XCD">
+        <xsd:annotation>
+          <xsd:documentation>East Caribbean Dollar: Anguilla, Antigua and Barbuda, Dominica, Grenada, Montserrat, St Kitts - Nevis, Saint Lucia, Saint Vincent and The Grenadines</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="XDR">
+        <xsd:annotation>
+          <xsd:documentation>SDR: International Monetary Fund (Imf)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="XFO">
+        <xsd:annotation>
+          <xsd:documentation>Gold-Franc: Special settlement currencies</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="XFU">
+        <xsd:annotation>
+          <xsd:documentation>UIC-Franc: Special settlement currencies</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="XOF">
+        <xsd:annotation>
+          <xsd:documentation>CFA Franc BCEAO: Benin, Burkina Faso, Cote D'ivoire, Guinea-Bissau, Mali, Niger, Senegal, Togo</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="XPD">
+        <xsd:annotation>
+          <xsd:documentation>Palladium: Bond Markets Units</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="XPF">
+        <xsd:annotation>
+          <xsd:documentation>CFP Franc: French Polynesia, New Caledonia, Wallis and Futuna Islands</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="XPT">
+        <xsd:annotation>
+          <xsd:documentation>Platinum: Bond Markets Units</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="XTS">
+        <xsd:annotation>
+          <xsd:documentation>Codes specifically reserved for testing purposes:</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="XXX">
+        <xsd:annotation>
+          <xsd:documentation>The codes assigned for transactions where no currency is involved are::</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="YER">
+        <xsd:annotation>
+          <xsd:documentation>Yemeni Rial: Yemen</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="YUM">
+        <xsd:annotation>
+          <xsd:documentation>New Dinar: Yugoslavia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ZAL">
+        <xsd:annotation>
+          <xsd:documentation>(financial Rand): Lesotho</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ZAR">
+        <xsd:annotation>
+          <xsd:documentation>Rand: Lesotho, Namibia, South Africa</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ZMK">
+        <xsd:annotation>
+          <xsd:documentation>Kwacha: Zambia</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ZRN">
+        <xsd:annotation>
+          <xsd:documentation>New Zaire: Zaire</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ZWD">
+        <xsd:annotation>
+          <xsd:documentation>Zimbabwe Dollar: Zimbabwe</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="DiagnosticLevels">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="Mock">
+        <xsd:annotation>
+          <xsd:documentation>Return a sample message without invoking service logic.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Simulate">
+        <xsd:annotation>
+          <xsd:documentation>Compute response without making changes to service data, state or status. Test Mock access to de</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="DutyCodeList">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="1" />
+      <xsd:enumeration value="2" />
+      <xsd:enumeration value="4" />
+      <xsd:enumeration value="5" />
+      <xsd:enumeration value="6" />
+      <xsd:enumeration value="7" />
+      <xsd:enumeration value="8" />
+      <xsd:enumeration value="9" />
+      <xsd:enumeration value="#" />
+      <xsd:enumeration value="@" />
+      <xsd:enumeration value="'" />
+      <xsd:enumeration value="*" />
+      <xsd:enumeration value="-" />
+      <xsd:enumeration value="$" />
+      <xsd:enumeration value="/" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ErrorType">
+    <xsd:restriction base="xsd:NMTOKEN">
+      <xsd:enumeration value="Transport">
+        <xsd:annotation>
+          <xsd:documentation>Transport errors occur when the infrastructure systems are unable to deliver the request message to the service provider or the service response is not delivered within the allotted time frame. These errors are always detected by the transport infrastructure systems. The detecting system should indicate the need for compensation in Severity and Status values. These errors may be transient and consumers may choose to retry their request.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Validation">
+        <xsd:annotation>
+          <xsd:documentation>Validation errors occur when the message is determined to not conform to the interface specifications.  For example, it is an validation error when the request violates security requirements or the message is not schema valid according to the service interface schema. These errors may be detected by either the transport or application systems.  Applications must not make changes that will require compensation when validation errors are detected. These errors are caused by the structure or content of the request and consumers should not attempt to retry their unmodified request.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Application">
+        <xsd:annotation>
+          <xsd:documentation>Application errors occur when a valid message is delivered to the service provider yet the request cannot be completely processed. This can occur when the provider has technical issues such as internal exceptions, database locks, or connectivity failure to a system it is dependent upon. These errors are always detected by the application system. The application should indicate the need for compensation in Severity and Status values. These errors may be transient and consumers may choose to retry their request.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="BusinessLogic">
+        <xsd:annotation>
+          <xsd:documentation>Business logic errors occur when a service provider is able to process the request message but the request violates pre-condition or internal application business logic.  Example business logic errors are a request for flight information but the flight does not exist or a request to reserve more seats than are on the aircraft. The response message will likely provide details about the error condition and may or may not use a standard error response record. Business logic errors are always detected by the application system. Applications must not make changes that will require compensation when business logic errors are detected. These errors are caused by content of the request; consumers should only attempt to retry their unmodified request if the business condition described in the application specific response indicates the condition may be transient. Service providers should use the ErrorMessage and code attribute to describe the business condition and document those conditions in their service contract.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="FlightNumber">
+    <xsd:union memberTypes="_flightNumberPattern _flightNumberLiterals" />
+  </xsd:simpleType>
+  <xsd:simpleType name="Identifier">
+    <xsd:restriction base="StringLength1to255" />
+  </xsd:simpleType>
+  <xsd:simpleType name="Lniata">
+    <xsd:restriction base="xsd:string">
+      <xsd:length value="6" />
+      <xsd:pattern value="[A-F0-9]+" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="MMYYDate">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="(0[1-9]|1[0-2])[0-9][0-9]" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Numeric1to4">
+    <xsd:restriction base="xsd:integer">
+      <xsd:minInclusive value="1" />
+      <xsd:maxInclusive value="4" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="NumericStringLength1to19">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[0-9]{1,19}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="NumericStringLength1to5">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[0-9]{1,5}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="NumericStringLength1to8">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[0-9]{1,8}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Percentage">
+    <xsd:restriction base="xsd:decimal">
+      <xsd:minInclusive value="0.00" />
+      <xsd:maxInclusive value="100.00" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="PhoneNumber">
+    <xsd:restriction base="StringLength1to16" />
+  </xsd:simpleType>
+  <xsd:simpleType name="ProperName">
+    <xsd:restriction base="StringLength1to100" />
+  </xsd:simpleType>
+  <xsd:simpleType name="PseudoCityCode">
+    <xsd:restriction base="StringLength1to16" />
+  </xsd:simpleType>
+  <xsd:simpleType name="PseudoCityCode.AgencyOrAgent">
+    <xsd:annotation>
+      <xsd:documentation>Pseudo City Code (PCC) or geographic city code.  If the agent used the "AAA" entry to change his Agent's Assembly Area (AAA), this attribute will contain the city that the AAA was changed to.  Otherwise, it will equal the Emploee Profile Recor (EPR) Create City or Home Station.  If the segment was created via teletype, this is the city code from the signature line (Communications Reference Element) of the teletype message.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[0-9A-Z]{3,5}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength0to128">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="0" />
+      <xsd:maxLength value="128" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength0to4096">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="0" />
+      <xsd:maxLength value="4096" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength0to64">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="0" />
+      <xsd:maxLength value="64" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength1to10">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="10" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength1to15">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="15" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength1to100">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="100" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength1to128">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="128" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength1to13">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="13" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength1to14">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="14" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength1to16">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="16" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength1to255">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="255" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength1to32">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="32" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength1to30">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="30" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength1to5">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="5" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength0to20">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="0" />
+      <xsd:maxLength value="20" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength1to64">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="64" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength1to8">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="8" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength2to4">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="2" />
+      <xsd:maxLength value="4" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength1to21">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="21" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringLength1to3">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="3" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Text">
+    <xsd:restriction base="StringLength1to255" />
+  </xsd:simpleType>
+  <xsd:simpleType name="Text.Long">
+    <xsd:annotation>
+      <xsd:documentation>A field text characters and no other constraints.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="StringLength0to4096" />
+  </xsd:simpleType>
+  <xsd:simpleType name="Text.Short">
+    <xsd:annotation>
+      <xsd:documentation>A field of text characters and no other constraints.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="StringLength1to128" />
+  </xsd:simpleType>
+  <xsd:simpleType name="TravelSectorType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="Air" />
+      <xsd:enumeration value="Car" />
+      <xsd:enumeration value="Cruise" />
+      <xsd:enumeration value="Excursion" />
+      <xsd:enumeration value="Ferry" />
+      <xsd:enumeration value="Golf" />
+      <xsd:enumeration value="GroundTransport" />
+      <xsd:enumeration value="Hotel" />
+      <xsd:enumeration value="Insurance" />
+      <xsd:enumeration value="Rail" />
+      <xsd:enumeration value="Tour" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="UpperCaseAlphaLength1to2">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[A-Z]{1,2}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="UpperCaseAlphaLength1to3">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[A-Z]{1,3}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="UpperCaseAlphaNumericLength1to3">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[A-Z0-9]{1,3}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="VendorCode">
+    <xsd:restriction base="StringLength1to10" />
+  </xsd:simpleType>
+  <xsd:simpleType name="_amount">
+    <xsd:restriction base="xsd:decimal" />
+  </xsd:simpleType>
+  <xsd:simpleType name="_flightNumberLiterals">
+    <xsd:annotation>
+      <xsd:documentation>This private type enumerates flight number literals used for ground links and open segments in an itinerary.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="OPEN">
+        <xsd:annotation>
+          <xsd:documentation>Used in lieu of a flight number when a specific flight number is unknown but service is present.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ARNK">
+        <xsd:annotation>
+          <xsd:documentation>Used in lieu of a flight number when surface transportation is used when there is a break in the continuity of the flight itinerary.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="VOID">
+        <xsd:annotation>
+          <xsd:documentation>Used for arunk coupon types</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="_flightNumberPattern">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[0-9]{1,5}[A-Z]?" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:attributeGroup name="CurrencyCodeGroup">
+    <xsd:attribute name="CurrencyCode" type="AlphaLength3">
+      <xsd:annotation>
+        <xsd:documentation>The code specifying a monetary unit. Use ISO 4217, three alpha code.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="DecimalPlaces" type="xsd:nonNegativeInteger">
+      <xsd:annotation>
+        <xsd:documentation>Indicates the number of decimal places for a particular currency. This is equivalent to the ISO 4217 standard "minor unit". Typically used when the amount provided includes the minor unit of currency without a decimal point (e.g., USD 8500 needs DecimalPlaces="2" to represent $85).</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:attributeGroup>
+</xsd:schema>

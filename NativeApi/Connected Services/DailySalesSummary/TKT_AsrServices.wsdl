@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:eb="http://www.ebxml.org/namespaces/messageHeader" xmlns:TT="http://www.sabre.com/ns/Ticketing/AsrServices/1.0" name="TKT_AsrServices" targetNamespace="http://www.sabre.com/ns/Ticketing/AsrServices/1.0" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:import schemaLocation="TKT_AsrServices_v.1.2.2.xsd" namespace="http://www.sabre.com/ns/Ticketing/AsrServices/1.0" />
+      <xsd:import schemaLocation="msg-header-2_0.xsd" namespace="http://www.ebxml.org/namespaces/messageHeader" />
+      <xsd:import schemaLocation="wsse2.xsd" namespace="http://schemas.xmlsoap.org/ws/2002/12/secext" />
+    </xsd:schema>
+  </types>
+  <message name="CachedReportInput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:CachedReportRQ" />
+  </message>
+  <message name="CachedReportOutput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:CachedReportRS" />
+  </message>
+  <message name="CachedReportFault">
+    <part name="body" element="TT:CachedReportRS" />
+  </message>
+  <message name="SalesSummaryInput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:SalesSummaryRQ" />
+  </message>
+  <message name="SalesSummaryOutput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:SalesSummaryRS" />
+  </message>
+  <message name="SalesSummaryFault">
+    <part name="body" element="TT:SalesSummaryRS" />
+  </message>
+  <message name="DailySalesSummaryInput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:DailySalesSummaryRQ" />
+  </message>
+  <message name="DailySalesSummaryOutput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:DailySalesSummaryRS" />
+  </message>
+  <message name="DailySalesSummaryFault">
+    <part name="body" element="TT:DailySalesSummaryRS" />
+  </message>
+  <message name="DetailInput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:DetailRQ" />
+  </message>
+  <message name="DetailOutput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:DetailRS" />
+  </message>
+  <message name="DetailFault">
+    <part name="body" element="TT:DetailRS" />
+  </message>
+  <message name="CreditCardInput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:CreditCardRQ" />
+  </message>
+  <message name="CreditCardOutput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:CreditCardRS" />
+  </message>
+  <message name="CreditCardFault">
+    <part name="body" element="TT:CreditCardRS" />
+  </message>
+  <message name="AccountingInput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:AccountingRQ" />
+  </message>
+  <message name="AccountingOutput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:AccountingRS" />
+  </message>
+  <message name="AccountingFault">
+    <part name="body" element="TT:AccountingRS" />
+  </message>
+  <message name="StationSummaryInput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:StationSummaryRQ" />
+  </message>
+  <message name="StationSummaryOutput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:StationSummaryRS" />
+  </message>
+  <message name="StationSummaryFault">
+    <part name="body" element="TT:StationSummaryRS" />
+  </message>
+  <message name="AgentListInput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:AgentListRQ" />
+  </message>
+  <message name="AgentListOutput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:AgentListRS" />
+  </message>
+  <message name="AgentListFault">
+    <part name="body" element="TT:AgentListRS" />
+  </message>
+  <message name="StationManagerInput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:StationManagerRQ" />
+  </message>
+  <message name="StationManagerOutput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:StationManagerRS" />
+  </message>
+  <message name="StationManagerFault">
+    <part name="body" element="TT:StationManagerRS" />
+  </message>
+  <message name="StationActivityInput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:StationActivityRQ" />
+  </message>
+  <message name="StationActivityOutput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:StationActivityRS" />
+  </message>
+  <message name="StationActivityFault">
+    <part name="body" element="TT:StationActivityRS" />
+  </message>
+  <message name="TaxInput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:TaxRQ" />
+  </message>
+  <message name="TaxOutput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:TaxRS" />
+  </message>
+  <message name="TaxFault">
+    <part name="body" element="TT:TaxRS" />
+  </message>
+  <message name="ExceptionInput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:ExceptionRQ" />
+  </message>
+  <message name="ExceptionOutput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="TT:ExceptionRS" />
+  </message>
+  <message name="ExceptionFault">
+    <part name="body" element="TT:ExceptionRS" />
+  </message>
+  <portType name="CachedReportPortType">
+    <operation name="CachedReportRQ">
+      <input message="TT:CachedReportInput" />
+      <output message="TT:CachedReportOutput" />
+      <fault name="CachedReportSoapFault" message="TT:CachedReportFault" />
+    </operation>
+  </portType>
+  <portType name="SalesSummaryPortType">
+    <operation name="SalesSummaryRQ">
+      <input message="TT:SalesSummaryInput" />
+      <output message="TT:SalesSummaryOutput" />
+      <fault name="SalesSummarySoapFault" message="TT:SalesSummaryFault" />
+    </operation>
+  </portType>
+  <portType name="DailySalesSummaryPortType">
+    <operation name="DailySalesSummaryRQ">
+      <input message="TT:DailySalesSummaryInput" />
+      <output message="TT:DailySalesSummaryOutput" />
+      <fault name="DailySalesSummarySoapFault" message="TT:DailySalesSummaryFault" />
+    </operation>
+  </portType>
+  <portType name="DetailPortType">
+    <operation name="DetailRQ">
+      <input message="TT:DetailInput" />
+      <output message="TT:DetailOutput" />
+      <fault name="DetailSoapFault" message="TT:DetailFault" />
+    </operation>
+  </portType>
+  <portType name="CreditCardPortType">
+    <operation name="CreditCardRQ">
+      <input message="TT:CreditCardInput" />
+      <output message="TT:CreditCardOutput" />
+      <fault name="CreditCardSoapFault" message="TT:CreditCardFault" />
+    </operation>
+  </portType>
+  <portType name="AccountingPortType">
+    <operation name="AccountingRQ">
+      <input message="TT:AccountingInput" />
+      <output message="TT:AccountingOutput" />
+      <fault name="AccountingSoapFault" message="TT:AccountingFault" />
+    </operation>
+  </portType>
+  <portType name="StationSummaryPortType">
+    <operation name="StationSummaryRQ">
+      <input message="TT:StationSummaryInput" />
+      <output message="TT:StationSummaryOutput" />
+      <fault name="StationSummarySoapFault" message="TT:StationSummaryFault" />
+    </operation>
+  </portType>
+  <portType name="AgentListPortType">
+    <operation name="AgentListRQ">
+      <input message="TT:AgentListInput" />
+      <output message="TT:AgentListOutput" />
+      <fault name="AgentListSoapFault" message="TT:AgentListFault" />
+    </operation>
+  </portType>
+  <portType name="StationManagerPortType">
+    <operation name="StationManagerRQ">
+      <input message="TT:StationManagerInput" />
+      <output message="TT:StationManagerOutput" />
+      <fault name="StationManagerSoapFault" message="TT:StationManagerFault" />
+    </operation>
+  </portType>
+  <portType name="StationActivityPortType">
+    <operation name="StationActivityRQ">
+      <input message="TT:StationActivityInput" />
+      <output message="TT:StationActivityOutput" />
+      <fault name="StationActivitySoapFault" message="TT:StationActivityFault" />
+    </operation>
+  </portType>
+  <portType name="TaxPortType">
+    <operation name="TaxRQ">
+      <input message="TT:TaxInput" />
+      <output message="TT:TaxOutput" />
+      <fault name="TaxSoapFault" message="TT:TaxFault" />
+    </operation>
+  </portType>
+  <portType name="ExceptionPortType">
+    <operation name="ExceptionRQ">
+      <input message="TT:ExceptionInput" />
+      <output message="TT:ExceptionOutput" />
+      <fault name="ExceptionSoapFault" message="TT:ExceptionFault" />
+    </operation>
+  </portType>
+  <binding name="CachedReportSoapBinding" type="TT:CachedReportPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="CachedReportRQ">
+      <soap:operation soapAction="OTA" />
+      <input>
+        <soap:header message="TT:CachedReportInput" part="header" use="literal" />
+        <soap:header message="TT:CachedReportInput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </input>
+      <output>
+        <soap:header message="TT:CachedReportOutput" part="header" use="literal" />
+        <soap:header message="TT:CachedReportOutput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </output>
+      <fault name="CachedReportSoapFault">
+        <soap:fault use="literal" name="CachedReportSoapFault" namespace="" />
+      </fault>
+    </operation>
+  </binding>
+  <binding name="SalesSummarySoapBinding" type="TT:SalesSummaryPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="SalesSummaryRQ">
+      <soap:operation soapAction="OTA" />
+      <input>
+        <soap:header message="TT:SalesSummaryInput" part="header" use="literal" />
+        <soap:header message="TT:SalesSummaryInput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </input>
+      <output>
+        <soap:header message="TT:SalesSummaryOutput" part="header" use="literal" />
+        <soap:header message="TT:SalesSummaryOutput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </output>
+      <fault name="SalesSummarySoapFault">
+        <soap:fault use="literal" name="SalesSummarySoapFault" namespace="" />
+      </fault>
+    </operation>
+  </binding>
+  <binding name="DailySalesSummarySoapBinding" type="TT:DailySalesSummaryPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="DailySalesSummaryRQ">
+      <soap:operation soapAction="OTA" />
+      <input>
+        <soap:header message="TT:DailySalesSummaryInput" part="header" use="literal" />
+        <soap:header message="TT:DailySalesSummaryInput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </input>
+      <output>
+        <soap:header message="TT:DailySalesSummaryOutput" part="header" use="literal" />
+        <soap:header message="TT:DailySalesSummaryOutput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </output>
+      <fault name="DailySalesSummarySoapFault">
+        <soap:fault use="literal" name="DailySalesSummarySoapFault" namespace="" />
+      </fault>
+    </operation>
+  </binding>
+  <binding name="DetailSoapBinding" type="TT:DetailPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="DetailRQ">
+      <soap:operation soapAction="OTA" />
+      <input>
+        <soap:header message="TT:DetailInput" part="header" use="literal" />
+        <soap:header message="TT:DetailInput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </input>
+      <output>
+        <soap:header message="TT:DetailOutput" part="header" use="literal" />
+        <soap:header message="TT:DetailOutput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </output>
+      <fault name="DetailSoapFault">
+        <soap:fault use="literal" name="DetailSoapFault" namespace="" />
+      </fault>
+    </operation>
+  </binding>
+  <binding name="CreditCardSoapBinding" type="TT:CreditCardPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="CreditCardRQ">
+      <soap:operation soapAction="OTA" />
+      <input>
+        <soap:header message="TT:CreditCardInput" part="header" use="literal" />
+        <soap:header message="TT:CreditCardInput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </input>
+      <output>
+        <soap:header message="TT:CreditCardOutput" part="header" use="literal" />
+        <soap:header message="TT:CreditCardOutput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </output>
+      <fault name="CreditCardSoapFault">
+        <soap:fault use="literal" name="CreditCardSoapFault" namespace="" />
+      </fault>
+    </operation>
+  </binding>
+  <binding name="AccountingSoapBinding" type="TT:AccountingPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="AccountingRQ">
+      <soap:operation soapAction="OTA" />
+      <input>
+        <soap:header message="TT:AccountingInput" part="header" use="literal" />
+        <soap:header message="TT:AccountingInput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </input>
+      <output>
+        <soap:header message="TT:AccountingOutput" part="header" use="literal" />
+        <soap:header message="TT:AccountingOutput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </output>
+      <fault name="AccountingSoapFault">
+        <soap:fault use="literal" name="AccountingSoapFault" namespace="" />
+      </fault>
+    </operation>
+  </binding>
+  <binding name="StationSummarySoapBinding" type="TT:StationSummaryPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="StationSummaryRQ">
+      <soap:operation soapAction="OTA" />
+      <input>
+        <soap:header message="TT:StationSummaryInput" part="header" use="literal" />
+        <soap:header message="TT:StationSummaryInput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </input>
+      <output>
+        <soap:header message="TT:StationSummaryOutput" part="header" use="literal" />
+        <soap:header message="TT:StationSummaryOutput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </output>
+      <fault name="StationSummarySoapFault">
+        <soap:fault use="literal" name="StationSummarySoapFault" namespace="" />
+      </fault>
+    </operation>
+  </binding>
+  <binding name="AgentListSoapBinding" type="TT:AgentListPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="AgentListRQ">
+      <soap:operation soapAction="OTA" />
+      <input>
+        <soap:header message="TT:AgentListInput" part="header" use="literal" />
+        <soap:header message="TT:AgentListInput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </input>
+      <output>
+        <soap:header message="TT:AgentListOutput" part="header" use="literal" />
+        <soap:header message="TT:AgentListOutput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </output>
+      <fault name="AgentListSoapFault">
+        <soap:fault use="literal" name="AgentListSoapFault" namespace="" />
+      </fault>
+    </operation>
+  </binding>
+  <binding name="StationManagerSoapBinding" type="TT:StationManagerPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="StationManagerRQ">
+      <soap:operation soapAction="OTA" />
+      <input>
+        <soap:header message="TT:StationManagerInput" part="header" use="literal" />
+        <soap:header message="TT:StationManagerInput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </input>
+      <output>
+        <soap:header message="TT:StationManagerOutput" part="header" use="literal" />
+        <soap:header message="TT:StationManagerOutput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </output>
+      <fault name="StationManagerSoapFault">
+        <soap:fault use="literal" name="StationManagerSoapFault" namespace="" />
+      </fault>
+    </operation>
+  </binding>
+  <binding name="StationActivitySoapBinding" type="TT:StationActivityPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="StationActivityRQ">
+      <soap:operation soapAction="OTA" />
+      <input>
+        <soap:header message="TT:StationActivityInput" part="header" use="literal" />
+        <soap:header message="TT:StationActivityInput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </input>
+      <output>
+        <soap:header message="TT:StationActivityOutput" part="header" use="literal" />
+        <soap:header message="TT:StationActivityOutput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </output>
+      <fault name="StationActivitySoapFault">
+        <soap:fault use="literal" name="StationActivitySoapFault" namespace="" />
+      </fault>
+    </operation>
+  </binding>
+  <binding name="TaxSoapBinding" type="TT:TaxPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="TaxRQ">
+      <soap:operation soapAction="OTA" />
+      <input>
+        <soap:header message="TT:TaxInput" part="header" use="literal" />
+        <soap:header message="TT:TaxInput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </input>
+      <output>
+        <soap:header message="TT:TaxOutput" part="header" use="literal" />
+        <soap:header message="TT:TaxOutput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </output>
+      <fault name="TaxSoapFault">
+        <soap:fault use="literal" name="TaxSoapFault" namespace="" />
+      </fault>
+    </operation>
+  </binding>
+  <binding name="ExceptionSoapBinding" type="TT:ExceptionPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="ExceptionRQ">
+      <soap:operation soapAction="OTA" />
+      <input>
+        <soap:header message="TT:ExceptionInput" part="header" use="literal" />
+        <soap:header message="TT:ExceptionInput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </input>
+      <output>
+        <soap:header message="TT:ExceptionOutput" part="header" use="literal" />
+        <soap:header message="TT:ExceptionOutput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </output>
+      <fault name="ExceptionSoapFault">
+        <soap:fault use="literal" name="ExceptionSoapFault" namespace="" />
+      </fault>
+    </operation>
+  </binding>
+  <service name="TKT_AsrServices">
+    <port name="CachedReportPortType" binding="TT:CachedReportSoapBinding">
+      <soap:address location="https://webservices.havail.sabre.com/websvc" />
+    </port>
+    <port name="SalesSummaryPortType" binding="TT:SalesSummarySoapBinding">
+      <soap:address location="https://webservices.havail.sabre.com/websvc" />
+    </port>
+    <port name="DailySalesSummaryPortType" binding="TT:DailySalesSummarySoapBinding">
+      <soap:address location="https://webservices.havail.sabre.com/websvc" />
+    </port>
+    <port name="DetailPortType" binding="TT:DetailSoapBinding">
+      <soap:address location="https://webservices.havail.sabre.com/websvc" />
+    </port>
+    <port name="CreditCardPortType" binding="TT:CreditCardSoapBinding">
+      <soap:address location="https://webservices.havail.sabre.com/websvc" />
+    </port>
+    <port name="AccountingPortType" binding="TT:AccountingSoapBinding">
+      <soap:address location="https://webservices.havail.sabre.com/websvc" />
+    </port>
+    <port name="StationSummaryPortType" binding="TT:StationSummarySoapBinding">
+      <soap:address location="https://webservices.havail.sabre.com/websvc" />
+    </port>
+    <port name="AgentListPortType" binding="TT:AgentListSoapBinding">
+      <soap:address location="https://webservices.havail.sabre.com/websvc" />
+    </port>
+    <port name="StationManagerPortType" binding="TT:StationManagerSoapBinding">
+      <soap:address location="https://webservices.havail.sabre.com/websvc" />
+    </port>
+    <port name="StationActivityPortType" binding="TT:StationActivitySoapBinding">
+      <soap:address location="https://webservices.havail.sabre.com/websvc" />
+    </port>
+    <port name="TaxPortType" binding="TT:TaxSoapBinding">
+      <soap:address location="https://webservices.havail.sabre.com/websvc" />
+    </port>
+    <port name="ExceptionPortType" binding="TT:ExceptionSoapBinding">
+      <soap:address location="https://webservices.havail.sabre.com/websvc" />
+    </port>
+  </service>
+</definitions>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns2="http://www.w3.org/2000/09/xmldsig#" xmlns:tns="https://webservices.sabre.com/websvc" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eb="http://www.ebxml.org/namespaces/messageHeader" xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext" xmlns:edoc="http://www.sabre.com/ns/Ticketing/EDoc" xmlns:ns1="http://schemas.xmlsoap.org/soap/envelope/" targetNamespace="https://webservices.sabre.com/websvc" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <import xmlns="http://schemas.xmlsoap.org/wsdl/soap/" namespace="eb" location="https://webservices.havail.sabre.com/websvc" />
+  <import xmlns="http://schemas.xmlsoap.org/wsdl/soap/" namespace="wsse" location="https://webservices.havail.sabre.com/websvc" />
+  <import xmlns="http://schemas.xmlsoap.org/wsdl/soap/" namespace="edoc" location="https://webservices.havail.sabre.com/websvc" />
+  <types>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:import schemaLocation="TKT_ElectronicDocumentServices_v.1.0.0.xsd" namespace="http://www.sabre.com/ns/Ticketing/EDoc" />
+      <xsd:import schemaLocation="msg-header-2_0.xsd" namespace="http://www.ebxml.org/namespaces/messageHeader" />
+      <xsd:import schemaLocation="wsse2.xsd" namespace="http://schemas.xmlsoap.org/ws/2002/12/secext" />
+    </xsd:schema>
+  </types>
+  <message name="GetElectronicDocumentInput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="edoc:GetElectronicDocumentRQ" />
+  </message>
+  <message name="GetElectronicDocumentOutput">
+    <part name="header" element="eb:MessageHeader" />
+    <part name="header2" element="wsse:Security" />
+    <part name="body" element="edoc:GetElectronicDocumentRS" />
+  </message>
+  <portType name="GetElectronicDocumentPortType">
+    <operation name="GetElectronicDocumentRQ">
+      <input message="tns:GetElectronicDocumentInput" />
+      <output message="tns:GetElectronicDocumentOutput" />
+    </operation>
+  </portType>
+  <binding name="GetElectronicDocumentSoapBinding" type="tns:GetElectronicDocumentPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="GetElectronicDocumentRQ">
+      <soap:operation soapAction="OTA" />
+      <input>
+        <soap:header message="tns:GetElectronicDocumentInput" part="header" use="literal" />
+        <soap:header message="tns:GetElectronicDocumentInput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </input>
+      <output>
+        <soap:header message="tns:GetElectronicDocumentOutput" part="header" use="literal" />
+        <soap:header message="tns:GetElectronicDocumentOutput" part="header2" use="literal" />
+        <soap:body use="literal" parts="body" />
+      </output>
+    </operation>
+  </binding>
+  <service name="TKT_ElectronicDocumentService">
+    <port name="GetElectronicDocumentPortType" binding="tns:GetElectronicDocumentSoapBinding">
+      <soap:address location="https://webservices.havail.sabre.com/websvc" />
+    </port>
+  </service>
+</definitions>

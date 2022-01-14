@@ -1,0 +1,3762 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:STL="http://www.sabre.com/ns/Ticketing/EDocStl" xmlns="http://www.sabre.com/ns/Ticketing/EDoc" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.sabre.com/ns/Ticketing/EDoc" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:import schemaLocation="STL_For_TKT_ElectronicDocumentServices_v.1.0.0.xsd" namespace="http://www.sabre.com/ns/Ticketing/EDocStl" />
+  <xsd:annotation>
+    <xsd:documentation>Created by Eugene Almenar on 05/18/2012</xsd:documentation>
+    <xsd:documentation>from the NewModel package with namespace http://www.sabre.com/ns/Ticketing/EDoc
+        </xsd:documentation>
+  </xsd:annotation>
+  <xsd:element name="GetElectronicDocumentRQ" type="GetElectronicDocumentRQ">
+    <xsd:annotation>
+      <xsd:documentation>A request to get information about an electronic ticket or EMD from the carrier database (similar to WETR/WEMD)</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="GetElectronicDocumentRS" type="GetElectronicDocumentRS">
+    <xsd:annotation>
+      <xsd:documentation>A response message received with information about an electronic ticket or EMD from the carrier database
+            </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="Affinity.FrequentFlyer.ED">
+    <xsd:annotation>
+      <xsd:documentation>Frequent Flyer Information</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Provider" type="Code.TicketingProviderCode">
+        <xsd:annotation>
+          <xsd:documentation>The 2 digit code that identifies the airline of the frequent flyer program
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Number" type="Identifier.Affinity">
+        <xsd:annotation>
+          <xsd:documentation>An individual airline identifier assigned to a traveler who is a member of the frequent flyer program.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Amount">
+    <xsd:annotation>
+      <xsd:documentation>Amount</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="STL:_amount">
+        <xsd:attribute name="currencyCode" type="Code.CurrencyType">
+          <xsd:annotation>
+            <xsd:documentation>3 digit currency code Eg: USD, EUR</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="decimalPlace" type="Number.DecimalPlace">
+          <xsd:annotation>
+            <xsd:documentation>Number of places for decimal. Value can be 0, 2 or 3.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Amount.Basic">
+    <xsd:annotation>
+      <xsd:documentation>Amount with basic parameters</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Amount" type="Amount">
+        <xsd:annotation>
+          <xsd:documentation>Actual Amount with currency code and decimal place.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Text" type="String.Short">
+        <xsd:annotation>
+          <xsd:documentation>Free text</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ApplyCreditInd" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>Indicates credit amount</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Amount.Commission">
+    <xsd:annotation>
+      <xsd:documentation>Amount related to Commission</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent mixed="false">
+      <xsd:extension base="Amount.Rate" />
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="Amount.Commission.Agency">
+    <xsd:annotation>
+      <xsd:documentation>Amount related to Commission</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Commission" type="Amount.Commission">
+        <xsd:annotation>
+          <xsd:documentation>Commission details</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Amount.Commission.Category35">
+    <xsd:annotation>
+      <xsd:documentation>Amount related to CAT35</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Commission" type="Amount.Commission">
+        <xsd:annotation>
+          <xsd:documentation>Commission details</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="MarkUp" type="Amount.Commission">
+        <xsd:annotation>
+          <xsd:documentation>Markup amounts</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Amount.Commission.ED">
+    <xsd:annotation>
+      <xsd:documentation>Amount related to commision for electronic document</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent mixed="false">
+      <xsd:extension base="Amount.Rate">
+        <xsd:attribute name="provider" type="Code.TicketingProviderCode">
+          <xsd:annotation>
+            <xsd:documentation>Provider info</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="Amount.Details">
+    <xsd:annotation>
+      <xsd:documentation> Details of amounts</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Amount" type="Amount">
+        <xsd:annotation>
+          <xsd:documentation>Amount information</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Text" type="String.Short">
+        <xsd:annotation>
+          <xsd:documentation>Free text</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ApplyCreditInd" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>If "N", this indicates a positive amount</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ValueCode" type="Code.AmountValue">
+        <xsd:annotation>
+          <xsd:documentation>Value code</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Amount.Details.CurrencyConversion">
+    <xsd:annotation>
+      <xsd:documentation>Currency conversion amounts</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent mixed="false">
+      <xsd:extension base="Amount.Details">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="CurrencyConversion" type="TicketingDocument.CurrencyConversion">
+            <xsd:annotation>
+              <xsd:documentation>Currency Conversion</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="Amount.Details.ED">
+    <xsd:annotation>
+      <xsd:documentation> Details of amounts for electronic documents</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Amount" type="Amount">
+        <xsd:annotation>
+          <xsd:documentation>Amount info</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Text" type="String.Short">
+        <xsd:annotation>
+          <xsd:documentation>Free text</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ApplyCreditInd" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>If the Indicator 'N' then the amounts are assumed to be Positive.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Amount.Details.RateofExchange">
+    <xsd:annotation>
+      <xsd:documentation>Rate of exchange amounts</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent mixed="false">
+      <xsd:extension base="Amount.Details">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="RateOfExchange" type="CurrencyConversion.Details">
+            <xsd:annotation>
+              <xsd:documentation>Rate of exchange</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="Amount.Rate">
+    <xsd:annotation>
+      <xsd:documentation>Rate - needs more text</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Amount" type="Amount">
+        <xsd:annotation>
+          <xsd:documentation>Amount info</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="PercentageRate" type="STL:Percentage">
+        <xsd:annotation>
+          <xsd:documentation>Percentage rate</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Text" type="String.Short">
+        <xsd:annotation>
+          <xsd:documentation>Free text</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Amounts.Commission">
+    <xsd:annotation>
+      <xsd:documentation>Commission Amounts</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Category35" type="Amount.Commission.Category35">
+        <xsd:annotation>
+          <xsd:documentation>Commission type associated to automated commission rules
+					</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Agency" type="Amount.Commission.Agency">
+        <xsd:annotation>
+          <xsd:documentation>Agency Managed Commission
+					</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Manual" type="Amount.Commission">
+        <xsd:annotation>
+          <xsd:documentation>Manual commission
+					</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Amounts.New">
+    <xsd:annotation>
+      <xsd:documentation>Amounts</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Base" type="Amount.Details">
+        <xsd:annotation>
+          <xsd:documentation>Base amount</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Equivalent" type="Amount.Details.CurrencyConversion">
+        <xsd:annotation>
+          <xsd:documentation>Equivalent amount</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="TotalTax" type="Amount.Details">
+        <xsd:annotation>
+          <xsd:documentation>Total Fee Charge Tax -- Refers to unpaid tax</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Total" type="Amount.Details.RateofExchange">
+        <xsd:annotation>
+          <xsd:documentation>Total amount</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Net" type="Amount.Details">
+        <xsd:annotation>
+          <xsd:documentation>Net amount</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="3" name="Tax" type="Tax.Details">
+        <xsd:annotation>
+          <xsd:documentation>This contains taxes that exist in the tax boxes 1, 2, 3.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Amounts.New.ED">
+    <xsd:annotation>
+      <xsd:documentation>Amounts defined for electronic document</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Base" type="Amount.Details.ED">
+        <xsd:annotation>
+          <xsd:documentation>Base amounts</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Equivalent" type="Amount.Details.ED">
+        <xsd:annotation>
+          <xsd:documentation>Equivalent amounts</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Total" type="Amount.Details.ED">
+        <xsd:annotation>
+          <xsd:documentation>Total amounts</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Amounts.RelatedDocument">
+    <xsd:annotation>
+      <xsd:documentation>Amounts associated with related documents</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Original" type="Amount.Basic">
+        <xsd:annotation>
+          <xsd:documentation>Original amounts</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Base" type="Amount.Basic">
+        <xsd:annotation>
+          <xsd:documentation>Base amounts</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Equivalent" type="Amount.Basic">
+        <xsd:annotation>
+          <xsd:documentation>Equivalent amounts</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="TotalTax" type="Amount.Basic">
+        <xsd:annotation>
+          <xsd:documentation>Total Taxes</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Total" type="Amount.Basic">
+        <xsd:annotation>
+          <xsd:documentation>Total amounts</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ClassOfService.Details">
+    <xsd:annotation>
+      <xsd:documentation>Class of service</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="Code.ClassOfService">
+        <xsd:attribute name="name" type="String.Short">
+          <xsd:annotation>
+            <xsd:documentation>Cl;ass of service</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Code.Approval">
+    <xsd:annotation>
+      <xsd:documentation>Approval code</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="Identifier.Approval">
+        <xsd:attribute name="source" type="Code.ApprovalSource">
+          <xsd:annotation>
+            <xsd:documentation>Source of approval code Eg: "S"</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="type" type="Code.ApprovalType">
+          <xsd:annotation>
+            <xsd:documentation>1 digit value that indicates the means by which the approval code was obtained by the payment process. Eg: S, Z</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="CurrencyConversion.Details">
+    <xsd:annotation>
+      <xsd:documentation>Currency conversion</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:decimal">
+        <xsd:attribute name="decimalPlace" type="Number.DecimalPlace">
+          <xsd:annotation>
+            <xsd:documentation>deimal place for the rate</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Code.BaggageAllowance">
+    <xsd:attribute name="code" use="required">
+      <xsd:annotation>
+        <xsd:documentation>
+K - Kilos
+L- Pounds
+PC - Pices
+NIL - No free baggage allowance
+10K - Infant with no seat
+					</xsd:documentation>
+      </xsd:annotation>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="K" />
+          <xsd:enumeration value="L" />
+          <xsd:enumeration value="PC" />
+          <xsd:enumeration value="NIL" />
+          <xsd:enumeration value="10K" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="amount">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:int">
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="Customer.Traveler.Details.ED">
+    <xsd:annotation>
+      <xsd:documentation>Traveler information for electronic documents</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Name" type="ProperName.29Character">
+        <xsd:annotation>
+          <xsd:documentation>The customer's full name.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="FirstName" type="ProperName.29Character">
+        <xsd:annotation>
+          <xsd:documentation>The customer's first name.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="LastName" type="ProperName.29Character">
+        <xsd:annotation>
+          <xsd:documentation>The customer's last name.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ExternalNumber" type="Number.TicketingExternalCustomer">
+        <xsd:annotation>
+          <xsd:documentation>Free text following a * in the name entry input by the user during PNR creation. Also known as a "name reference" or MAN number</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="DateRange">
+    <xsd:annotation>
+      <xsd:documentation>date range</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="afterDate" type="xsd:date" use="required">
+          <xsd:annotation>
+            <xsd:documentation>After date</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="beforeDate" type="xsd:date" use="required">
+          <xsd:annotation>
+            <xsd:documentation>Before Date</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Diagnostic">
+    <xsd:annotation>
+      <xsd:documentation>Used for passing diagnostic information as text</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="DataText" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Diagnostic data </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="DataXML">
+        <xsd:annotation>
+          <xsd:documentation>Diagnostic XML</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+          </xsd:sequence>
+          <xsd:anyAttribute namespace="##any" processContents="lax">
+            <xsd:annotation>
+              <xsd:documentation>
+                                Prose in the spec does not specify that attributes are allowed on the DataXML element
+                            </xsd:documentation>
+            </xsd:annotation>
+          </xsd:anyAttribute>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="type" type="STL:StringLength1to128" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Type of data</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="DynamicCurrencyConversion">
+    <xsd:annotation>
+      <xsd:documentation>Dynamic Currency conversion</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Amount" type="Amount">
+        <xsd:annotation>
+          <xsd:documentation>The payment amount in credit card currency with corresponding amount currency and
+                        decimal places
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Text" type="STL:StringLength1to15">
+        <xsd:annotation>
+          <xsd:documentation>The payment amount in credit card currency in text form</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Rate" type="CurrencyConversion.Details">
+        <xsd:annotation>
+          <xsd:documentation>Rate of exchange between payment and credit card currency with corresponding
+                        decimal places
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ElectronicDocument.SearchParameters">
+    <xsd:annotation>
+      <xsd:documentation>Search parameters for electronic document display</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="DocumentNumber" type="Identifier.TicketingDocument">
+        <xsd:annotation>
+          <xsd:documentation>Electronic document number (13 digit Ticket or EMD) dispensed and assigned by the system upon issuance; this is the primary document number.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="DocumentType" type="Code.DocumentType">
+        <xsd:annotation>
+          <xsd:documentation>Electronic document TYPE    TKT- Electronic Ticket    EMD - Electronic Misc Document 
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="LineNumber" type="Number.LineNumber">
+        <xsd:annotation>
+          <xsd:documentation>Ticket line number from *T field in the PNR
+                       
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="CCView" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>Indicates whether the CC infomration shoul dbe unmasked in the response</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="resultType" type="Code.GetTicketingResultType">
+      <xsd:annotation>
+        <xsd:documentation>Two types of requests are supported                         W - WETR*/WEMD* display H - WETR*/H display</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="FareCalculation.Details">
+    <xsd:annotation>
+      <xsd:documentation>Fare calculation</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="String.Text" />
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="GetElectronicDocumentRQ">
+    <xsd:annotation>
+      <xsd:documentation>A request message to get information about an electronic ticket or EMD</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="STL:STL_Header.RQ" />
+      <xsd:element ref="STL:POS" />
+      <xsd:element name="SearchParameters" type="ElectronicDocument.SearchParameters">
+        <xsd:annotation>
+          <xsd:documentation>Search parameters</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="5000" name="Diagnostic" type="Diagnostic">
+        <xsd:annotation>
+          <xsd:documentation>Internal use ONLY</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attributeGroup ref="TicketingDocumentStdAttributes" />
+    <xsd:attribute name="requestType" type="Code.GetTicketingRequestType">
+      <xsd:annotation>
+        <xsd:documentation>request Type  W - WETR/WEMD request  H - WETRH request</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="GetElectronicDocumentRS">
+    <xsd:annotation>
+      <xsd:documentation>A response message received with information about an electronic ticket or EMD
+            </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="STL:STL_Header.RS" />
+      <xsd:element name="Agent" type="Ticketing.Agent.ED">
+        <xsd:annotation>
+          <xsd:documentation>Agent details</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="TransactionInfo" type="Ticketing.TransactionInfo.ED">
+        <xsd:annotation>
+          <xsd:documentation>Transactional details</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:group minOccurs="0" ref="GetEDDisplayResultsChoice.CG" />
+      <xsd:element minOccurs="0" maxOccurs="5000" name="Diagnostic" type="Diagnostic">
+        <xsd:annotation>
+          <xsd:documentation>Diagnostic information</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attributeGroup ref="TicketingDocumentStdAttributes" />
+  </xsd:complexType>
+  <xsd:complexType name="Identifier.PaymentAccount">
+    <xsd:annotation>
+      <xsd:documentation>Payment account</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="Identifier.Account">
+        <xsd:attribute name="type" type="Code.VirtualPayment">
+          <xsd:annotation>
+            <xsd:documentation>Payment account type</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Identifier.Provider">
+    <xsd:annotation>
+      <xsd:documentation>Provider</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="Code.TicketingProviderCode">
+        <xsd:attribute name="number" type="Identifier.TicketingProviderAccounting">
+          <xsd:annotation>
+            <xsd:documentation>Provider number</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="checkDigit" type="Number.CheckDigit">
+          <xsd:annotation>
+            <xsd:documentation>Single numeric digit used internally to authenticate the electronic ticket number</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="name" type="String.ProviderName">
+          <xsd:annotation>
+            <xsd:documentation>reserved for future use</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Identifier.Reservation">
+    <xsd:annotation>
+      <xsd:documentation>Reservation information</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="PNR_Locator">
+        <xsd:attribute name="provider" type="Code.TicketingProviderCode">
+          <xsd:annotation>
+            <xsd:documentation>Provider</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="purgeDate" type="xsd:dateTime">
+          <xsd:annotation>
+            <xsd:documentation>Purge Date</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="createDate" type="xsd:dateTime">
+          <xsd:annotation>
+            <xsd:documentation>PNR creation date</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Miscellaneous.Indicators">
+    <xsd:annotation>
+      <xsd:documentation>Miscellaneous indicators</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="feeOverride" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>A boolean (Y/N) indicator which determines whether the fee/taxes that should have been guaranteed have been altered by the agent</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="consumed" type="Code.IATAIndicators">
+      <xsd:annotation>
+        <xsd:documentation>A boolean (Y/N) indicator which determines whether the service was consumed at the time of issuance or not
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="taxExempt" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>A boolean (Y/N) indicator which determines whether all taxes for this service/item are tax exempt or not
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="Number.AssociatedDocument">
+    <xsd:annotation>
+      <xsd:documentation>Associated document number</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="STL:StringLength1to15">
+        <xsd:attribute name="associationType" type="Code.AssociationType">
+          <xsd:annotation>
+            <xsd:documentation>Association type</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="couponNumber" type="Number.CouponSequence">
+          <xsd:annotation>
+            <xsd:documentation>Coupon number</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="checkDigit" type="Number.CheckDigit">
+          <xsd:annotation>
+            <xsd:documentation>check digit</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="OptionalService">
+    <xsd:annotation>
+      <xsd:documentation>Optional service</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="FeeProvider" type="Identifier.Provider">
+        <xsd:annotation>
+          <xsd:documentation>Fee provider </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Indicators" type="Miscellaneous.Indicators">
+        <xsd:annotation>
+          <xsd:documentation>Indicators </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="PresentTo" type="Remark.Details">
+        <xsd:annotation>
+          <xsd:documentation>The company or airline who is presented with a service coupon by the customer</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="PresentAt" type="Remark.Details">
+        <xsd:annotation>
+          <xsd:documentation>The place where the company or airline is located</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="group" type="Code.FeeGroup" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Reason for issuance code (RFIC)</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="groupDescription" type="String.Text" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Group description</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="reason" type="Code.ItemReasonForIssuance" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Reason for issuance sub-code (RFISC).   </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="ssr" type="Code.SSR">
+      <xsd:annotation>
+        <xsd:documentation>Special service request (SSR) code in the PNR associated to the item.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="filingSource" type="Code.FilingSource">
+      <xsd:annotation>
+        <xsd:documentation>Ancillary item filing source code </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="journeyType" type="Code.JourneyType">
+      <xsd:annotation>
+        <xsd:documentation>Needed for EMD. The value can be sector (S) or portion (P)</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="Payment.BankCard.ED">
+    <xsd:annotation>
+      <xsd:documentation>Bank card information</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="MaskedCardNumber" type="Number.CreditCard">
+        <xsd:annotation>
+          <xsd:documentation>All numbers except the last 4 will be masked with "X" in the card number unless the user requested unmasking and has appropriate privileges to view it. Eg:XXXXXXXXXXXX0010 </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ExpireDate" type="Expire_Date">
+        <xsd:annotation>
+          <xsd:documentation>Expiration date of the card will be masked unless the user requsted unmasking and has appropriate privileges.    Format is MMDD. Masked expiration date will appear as XXXX.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ApprovalCode" type="Code.Approval">
+        <xsd:annotation>
+          <xsd:documentation>6 digit alphanumeric value assigned by the merchant bank during the payment process.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ExtendedPayment" type="Code.ExtendedPayment">
+        <xsd:annotation>
+          <xsd:documentation>Presence indicates extended payment feature when issuing a ticket. This only applies to American Express.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Details" type="String.Text">
+        <xsd:annotation>
+          <xsd:documentation>Free text</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Authorized" type="Amount.Basic">
+        <xsd:annotation>
+          <xsd:documentation>Authorized amount (CC)
+</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="AddressVerification" type="Code.AddressVerification">
+        <xsd:annotation>
+          <xsd:documentation>Address Verification (CC)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="TransactionId" type="Identifier.Transaction">
+        <xsd:annotation>
+          <xsd:documentation>Credit card transaction information</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="cardType" type="Code.OTA">
+      <xsd:annotation>
+        <xsd:documentation>2 digit CC code or Vendor code. Eg: VI, MC, AX</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="Payment.BankCheck">
+    <xsd:annotation>
+      <xsd:documentation>Check information</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="RoutingNumber" type="xsd:integer">
+        <xsd:annotation>
+          <xsd:documentation>Represents the numeric code identifying the financial institution for a specific account.
+
+                        Currently not used in Ticketing.
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ApprovalCode" type="Code.CheckApproval">
+        <xsd:annotation>
+          <xsd:documentation>A series of characters assigned by the applicable Bank authorization system to  confirm the approval of a sale transaction paid with check.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Payment.Cash">
+    <xsd:annotation>
+      <xsd:documentation>Cash information</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute default="true" name="cashIndicator" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>If true, this indicates cash is being used.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="Payment.Certficate">
+    <xsd:annotation>
+      <xsd:documentation>Certificate information</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Number" type="STL:StringLength1to14">
+        <xsd:annotation>
+          <xsd:documentation>Cetificate number</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Payment.GovernmentTravel">
+    <xsd:annotation>
+      <xsd:documentation>Government travel information</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Number" type="STL:StringLength1to13">
+        <xsd:annotation>
+          <xsd:documentation>Government travel</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Payment.Invoice">
+    <xsd:annotation>
+      <xsd:documentation>Invoice payment</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Number" type="STL:StringLength1to14">
+        <xsd:annotation>
+          <xsd:documentation>Invoice</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Payment.Miscellaneous">
+    <xsd:annotation>
+      <xsd:documentation>Miscellaneous payment</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute default="true" name="miscIndicator" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>If true, this indicates miscellaneous (unknown) payment is being used. </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="Payment.Other">
+    <xsd:annotation>
+      <xsd:documentation>Other forms of payment</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Details" type="String.FormOfPayment">
+        <xsd:annotation>
+          <xsd:documentation>Other form of payment</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Payment.PrepaidTicketAdvise">
+    <xsd:annotation>
+      <xsd:documentation>Prepaid ticket advice</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Number" type="STL:StringLength1to14">
+        <xsd:annotation>
+          <xsd:documentation>Prepaid ticket advice number</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Payment.RevenueAccounting">
+    <xsd:annotation>
+      <xsd:documentation>Revenue accounting</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Number" type="STL:StringLength1to10">
+        <xsd:annotation>
+          <xsd:documentation>Revenue accounting number</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Payment.TravelDocument">
+    <xsd:annotation>
+      <xsd:documentation>Travel document</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Number" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>An identifier for issued document.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Expiration" type="xsd:dateTime">
+        <xsd:annotation>
+          <xsd:documentation>The last day an unused travel document may be used as a form of payment
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Issue" type="xsd:dateTime">
+        <xsd:annotation>
+          <xsd:documentation>The date the document was issued</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Amount" type="STL:Amount">
+        <xsd:annotation>
+          <xsd:documentation>The amount that is available to be used as a form of payment for other
+                        services.
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="FormOfPayment" type="String.FormOfPayment">
+        <xsd:annotation>
+          <xsd:documentation>The form of payment is not in the Sabre ticketing system. It is a manually
+                        entered field used to track the form of payment for the document.
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="PlaceOfIssuance" type="String.ProperName">
+        <xsd:annotation>
+          <xsd:documentation>Place of issuance</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ServiceCoupon" type="String.ServiceCoupon">
+        <xsd:annotation>
+          <xsd:documentation>Number of the ticket document coupon used as a form a payment.
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Payment.Voucher">
+    <xsd:annotation>
+      <xsd:documentation>Voucher</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="ExpireDate" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Expiration date</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="SeriesCode" type="Code.VoucherSeries">
+        <xsd:annotation>
+          <xsd:documentation>Not currently used</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="PaymentAmount">
+    <xsd:annotation>
+      <xsd:documentation>Payment amount</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="STL:_amount">
+        <xsd:attribute name="currencyCode" type="Code.CurrencyType">
+          <xsd:annotation>
+            <xsd:documentation>3 digit currency code Eg: USD, EUR</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="decimalPlace" type="Number.DecimalPlace">
+          <xsd:annotation>
+            <xsd:documentation>Number of places for decimal. Value can be 0, 2 or 3.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="PaymentAmount.Basic">
+    <xsd:annotation>
+      <xsd:documentation>Basic payment amount</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Amount" type="PaymentAmount">
+        <xsd:annotation>
+          <xsd:documentation>Actual Amount with currency code and decimal place. Eg: USD 25.55  </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ApplyCreditInd" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>If the Indicator is false hen the amounts are assumed to be positive.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="RelatedDocument.Abbreviated">
+    <xsd:annotation>
+      <xsd:documentation>Abbreviated info for related doucments</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Number" type="Identifier.TicketingDocument">
+        <xsd:annotation>
+          <xsd:documentation>Document number</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="CheckDigit" type="Number.CheckDigit">
+        <xsd:annotation>
+          <xsd:documentation>check digit</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IssueDate" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Issue date</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="16" name="AssociatedTicketNumber" type="Number.AssociatedDocument">
+        <xsd:annotation>
+          <xsd:documentation>Asscoaited Ticket number</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="sequence" type="xsd:integer">
+      <xsd:annotation>
+        <xsd:documentation>Orde of documents presented</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="type" type="Code.DocumentType">
+      <xsd:annotation>
+        <xsd:documentation>Document type</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="electronic" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>A Y/N indicator which identifies whether the document is produced electronically.                  Default is "N", which means PAPER</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="status" type="Code.DocumentStatus">
+      <xsd:annotation>
+        <xsd:documentation>Current status of the ticketing document
+
+             </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="primary" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>A Y/N indicator which identifies whether the linked document is primary or not.
+
+                    Default is "N", which means not primary document.
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="RelatedDocument.Basic">
+    <xsd:annotation>
+      <xsd:documentation>Basic info for related documents</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Number" type="Identifier.TicketingDocument">
+        <xsd:annotation>
+          <xsd:documentation>The 13 digit electronic document number dispensed and assigned by the system upon issuance.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="sequence" type="xsd:integer">
+      <xsd:annotation>
+        <xsd:documentation>The order in which the tickets were issued</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="RelatedDocument.Details">
+    <xsd:annotation>
+      <xsd:documentation>Details for related documents</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Number" type="Identifier.TicketingDocument">
+        <xsd:annotation>
+          <xsd:documentation>Original document info</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Payment" type="String.FormOfPayment">
+        <xsd:annotation>
+          <xsd:documentation>Payment info</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="CheckDigit" type="Number.CheckDigit">
+        <xsd:annotation>
+          <xsd:documentation>Check digit</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Coupon" type="String.ServiceCoupon">
+        <xsd:annotation>
+          <xsd:documentation>Coupon </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IssueDate" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Issue date</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IssueTime" type="xsd:time">
+        <xsd:annotation>
+          <xsd:documentation>Issue time</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IssueCity" type="Identifier.Location">
+        <xsd:annotation>
+          <xsd:documentation>Issue city</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IataNumber" type="Identifier.Industry">
+        <xsd:annotation>
+          <xsd:documentation>Iata number</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Amounts" type="Amounts.RelatedDocument">
+        <xsd:annotation>
+          <xsd:documentation>Amounts for related documents</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Remark" type="String.TicketingRemark">
+        <xsd:annotation>
+          <xsd:documentation>Issued in exchange for data.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="TransactionId" type="Identifier.Transaction">
+        <xsd:annotation>
+          <xsd:documentation>Related Document credit card transaction information</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="DynamicCurrencyConversion" type="DynamicCurrencyConversion">
+        <xsd:annotation>
+          <xsd:documentation>Details related to payment amount conversion to the credit card currency code for related document</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="3" name="OriginalPayment" type="TicketingDocument.Payment.ED">
+        <xsd:annotation>
+          <xsd:documentation>Original form of payment</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="sequence" type="xsd:integer">
+      <xsd:annotation>
+        <xsd:documentation>Document sequence number</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="notInVcr" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>Set to 'Y' if data is missing in the source record
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="paymentConfirmation" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>Indicates that payment confirmation needs to be sent after
+                    successful transaction</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="RelatedDocument.Details.ED">
+    <xsd:annotation>
+      <xsd:documentation>Details for related documents, specific to electronic documents</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Number" type="Identifier.TicketingDocument">
+        <xsd:annotation>
+          <xsd:documentation>The 13 digit electronic document number dispensed and assigned by the system upon issuance.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Payment" type="String.FormOfPayment">
+        <xsd:annotation>
+          <xsd:documentation>Payment Remarks</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Coupon" type="String.ServiceCoupon">
+        <xsd:annotation>
+          <xsd:documentation>Coupon number </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IssueDate" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Date electronic ticket was issued</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IssueTime" type="xsd:time">
+        <xsd:annotation>
+          <xsd:documentation>Time electronic ticket was issued</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IssueCity" type="Identifier.Location">
+        <xsd:annotation>
+          <xsd:documentation>City code of travel agency as per TJR where the electronic ticket electronic ticket was issued</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IataNumber" type="Identifier.Industry">
+        <xsd:annotation>
+          <xsd:documentation>IATA number for the agency per TJR where the electronic ticket is issued</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="3" name="OriginalPayment" type="TicketingDocument.Payment.ED">
+        <xsd:annotation>
+          <xsd:documentation>Original form of payment</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="sequence" type="xsd:integer">
+      <xsd:annotation>
+        <xsd:documentation>The sequence in which the documents were issued</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="RelatedDocument.Details.Original.TKT">
+    <xsd:annotation>
+      <xsd:documentation>Details for the original ticket</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Number" type="Identifier.TicketingDocument">
+        <xsd:annotation>
+          <xsd:documentation>Mapped to T2 database:
+                        TKT_REL_DOC.REL_DOC_ID
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Payment" type="String.FormOfPayment">
+        <xsd:annotation>
+          <xsd:documentation>Mapped to T2 database: TKT_REL_DOC.REL_DOC_PAYMNT_RMK_TXT</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="CheckDigit" type="Number.CheckDigit">
+        <xsd:annotation>
+          <xsd:documentation>Mapped to T2 database: TKT_REL_DOC.REL_DOC_CHK_DIGT_NBR</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Coupon" type="String.ServiceCoupon">
+        <xsd:annotation>
+          <xsd:documentation>Mapped to T2 database: TKT_REL_DOC.REL_DOC_SVC_CPN_NBR_TXT</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IssueDate" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Mapped to T2 database: TKT_REL_DOC.REL_DOC_LCL_ISSUE_DTM</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IssueTime" type="xsd:time">
+        <xsd:annotation>
+          <xsd:documentation>Mapped to T2 database: ???</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IssueCity" type="Identifier.LocationExtended">
+        <xsd:annotation>
+          <xsd:documentation>Mapped to T2 database: TKT_REL_DOC.REL_DOC_ISSUING_AGT_WRK_LOC_ID
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IataNumber" type="Identifier.Industry">
+        <xsd:annotation>
+          <xsd:documentation>Mapped to T2 database: TKT_REL_DOC.REL_DOC_ISSUING_AGT_INDSTRY_ID
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Amounts" type="Amounts.RelatedDocument">
+        <xsd:annotation>
+          <xsd:documentation>Mapped to T2 database: TKT_AMT.TKT_AMT_CAT_CD = 'EXD'</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Remark" type="String.TicketingRemark">
+        <xsd:annotation>
+          <xsd:documentation>Issued in exchange for data.
+
+                        Mapped to T2 database:
+                        TKT_REL_DOC.REL_DOC_RMK_TXT
+
+                        Mapped to VCR:
+                        VCR_78_IIE
+
+                        Mapped to TPF file:
+                        #FS01_8078_IIE_001 (FS01_80_VAR)
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="TransactionId" type="Identifier.Transaction">
+        <xsd:annotation>
+          <xsd:documentation>Related Document credit card transaction information
+
+                        Mapped to T2 database:
+                        TKT_REL_DOC.BANK_CARD_TNA_ID
+
+                        Mapped to VCR Record:
+                        ????
+
+                        Mapped to FS01 Record:
+                        ????
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="3" name="OriginalPayment" type="TicketingDocument.Payment">
+        <xsd:annotation>
+          <xsd:documentation>Original form of payment</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="sequence" type="xsd:integer">
+      <xsd:annotation>
+        <xsd:documentation>Mapped to T2 database:
+                    TKT_REL_DOC.REL_TKT_DOC_SEQ
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="notInVcr" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>Set to 'Y' if data is missing in the source record (i.e. VCR_78_OTN is blank)
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="paymentConfirmation" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>Indicates that payment confirmation needs to be sent to Payment System after
+                    successful transaction
+
+                    Mapped to T2 Database
+                    TKT_REL_DOC.PAYMNT_CONF_IND
+
+                    Mapped to FS01 Record:
+                    VCR_78_IN1#BIT 2 ??? ON = Payment conf(Orig doc)
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="RelatedDocument.Details.Original.TKT.ED">
+    <xsd:annotation>
+      <xsd:documentation>Details for the original ticket for electronc documents</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Number" type="Identifier.TicketingDocument">
+        <xsd:annotation>
+          <xsd:documentation>The 13 digit electronic document number dispensed and assigned by the system upon issuance. Each ticket can accomodate 1-4 flight coupons. If the passenger's itinerary requires more than 4 flight coupons, additional 13 digit document numbers will be created by the system (in numeric sequence). When more than one document number is required, this is known as a conjuctive series. The maximum number of 13 digit document numbers in a conjuctive series is 4. </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Payment" type="String.FormOfPayment">
+        <xsd:annotation>
+          <xsd:documentation>Payment remarks</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Coupon" type="String.ServiceCoupon">
+        <xsd:annotation>
+          <xsd:documentation>Coupon number </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IssueDate" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Date electronic ticket was issued</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IssueTime" type="xsd:time">
+        <xsd:annotation>
+          <xsd:documentation>Time electronic ticket was issued</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IssueCity" type="Identifier.LocationExtended">
+        <xsd:annotation>
+          <xsd:documentation>City code of travel agency as per TJR where the electronic ticket electronic ticket was issued</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IataNumber" type="Identifier.Industry">
+        <xsd:annotation>
+          <xsd:documentation>IATA number for the agency per TJR where the electronic ticket is issued</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="3" name="OriginalPayment" type="TicketingDocument.Payment.ED">
+        <xsd:annotation>
+          <xsd:documentation>Original form of payment</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="sequence" type="xsd:integer">
+      <xsd:annotation>
+        <xsd:documentation>The order in which the tickets were issued</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="Remark.Details">
+    <xsd:annotation>
+      <xsd:documentation>Details of remarks</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="String.TicketingRemark">
+        <xsd:attribute name="sequence" type="xsd:integer" use="required">
+          <xsd:annotation>
+            <xsd:documentation>Reserved for future use</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Remark.DetailsWithHeader">
+    <xsd:annotation>
+      <xsd:documentation>Remarks with details and headers</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="String.TicketingRemark">
+        <xsd:attribute name="sequence" type="xsd:integer" use="required">
+          <xsd:annotation>
+            <xsd:documentation>reserved for internal use</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="header" type="String.TicketingRemark">
+          <xsd:annotation>
+            <xsd:documentation>Header text obtained from a control text table</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Remark.DetailsWithType">
+    <xsd:annotation>
+      <xsd:documentation>Details with type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="String.TicketingRemark">
+        <xsd:attribute name="sequence" type="xsd:integer" use="required">
+          <xsd:annotation>
+            <xsd:documentation>Remark sequence number</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="type" type="Code.RemarkType">
+          <xsd:annotation>
+            <xsd:documentation>Remark type - e.g. FOP1, FOP2, etc.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Reservation.Details.ED">
+    <xsd:annotation>
+      <xsd:documentation>Reservation info for electronic documents</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Sabre" type="PNR_Locator">
+        <xsd:annotation>
+          <xsd:documentation>6 digit alpha code which identifies the reservation in the CRS.                 </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="OtherSystem" type="PNR_Locator">
+        <xsd:annotation>
+          <xsd:documentation>6 digit alpha or 6 digit alphanumeric code which identifies the reservation in the airline's system (may or may not be present depending on the airline)          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ServiceCoupon.InvoluntaryReroute">
+    <xsd:annotation>
+      <xsd:documentation>Service coupon involuntary reroute</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Reason" type="Code.InvoluntaryReason">
+        <xsd:annotation>
+          <xsd:documentation>Code identifying the reason for the involuntary reroute</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Date" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>The date for the involuntary reroute</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Provider" type="Code.TicketingProviderCode">
+        <xsd:annotation>
+          <xsd:documentation>Involuntary reroute airline code</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Tax.Details">
+    <xsd:annotation>
+      <xsd:documentation>Tax details </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Amount" type="TaxAmount">
+        <xsd:annotation>
+          <xsd:documentation>Amount of tax that is applied to the document or item.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ApplyCreditInd" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>If the Indicator 'N' then the amounts are assumed to be Positive.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Text" type="String.Short">
+        <xsd:annotation>
+          <xsd:documentation>Free text</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="sequence" type="xsd:integer">
+      <xsd:annotation>
+        <xsd:documentation>The number associated to the order of the tax item as it was shown in the document.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="code" type="Code.Tax" use="required">
+      <xsd:annotation>
+        <xsd:documentation>A code which identifies a type of tax being applied to a transaction.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="status" type="Code.TaxStatus">
+      <xsd:annotation>
+        <xsd:documentation>A code which identifies the status of the tax (e.g. Y-paid)</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="exempt" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>Indicates exempt or non-exempt</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="name" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>Name</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="Tax.Details.Airport">
+    <xsd:annotation>
+      <xsd:documentation>Tax details for airport</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Amount" type="TaxAmount">
+        <xsd:annotation>
+          <xsd:documentation>Amount of tax that is applied to the document or item.
+
+                        Mapped to T2 database: TKT_TAX.TKT_TAX_AMT
+
+                        Mapped to TPF file:
+                        #FS01_8054_NXF_002
+                        (FS01_80_VAR,
+                        FS01_80_PZT_PZC, FS01_80_PZT_PZD)
+
+                        Mapped to VCR record:
+                        VCR_52_BMT,
+                        VCR_52_CUR, VCR_52_DEC
+
+                        Mapped to DM0Y record:
+                        DM0Y_85_CURR
+                        DM0Y_85_CAMT
+                        DM0Y_85_DECP
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="AirportCode" type="STL:CityCode">
+        <xsd:annotation>
+          <xsd:documentation>
+                        Mapped to T2 database:
+                        TKT_TAX.TAX_ARPT_CD
+
+                        Mapped to TPF file:
+                        #FS01_8054_NXF_002 (FS01_80_PZT_PZA)
+
+                        Mapped to VCR record:
+                        VCR_52_CTY
+
+                        Mapped to DM0Y record:
+                        DM0Y_85_ARPT
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Text" type="String.Short">
+        <xsd:annotation>
+          <xsd:documentation>Mapped to T2 database:
+                        TKT_TAX.TKT_TAX_AMT_TXT
+
+                        Mapped to TPF file:
+                        #FS01_8054_NXF_002
+                        (FS01_80_VAR)
+
+                        Mapped to VCR: VCR_52_CMT
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="sequence" type="xsd:integer">
+      <xsd:annotation>
+        <xsd:documentation>The number associated to the order of the tax item as it was shown in the document.
+                    Mapped to T2 database: TKT_TAX.TKT_TAX_SEQ
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="code" type="Code.Tax" use="required">
+      <xsd:annotation>
+        <xsd:documentation>A code which identifies a type of tax being applied to a transaction.
+
+                    Mapped to T2 database: TKT_TAX.TAX_CD
+
+                    Set to 'XF'
+
+                    Mapped to DM0Y record:
+                    DM0Y_85_ITYP, #DM0Y_85_PFC
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="exempt" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>Mapped to T2 database: TKT_TAX.TAX_XMP_IND
+
+                    Mapped to TPF file:
+                    #FS01_8054_NXF_002 (FS01_80_PZT_RFT)
+
+                    Mapped to VCR record:
+                    VCR_52_IN1
+
+                    Mapped to DM0Y record:
+                    DM0Y_85_PFCR
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="Tax.Details.Domestic">
+    <xsd:annotation>
+      <xsd:documentation>Domestic tax details</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Amount" type="TaxAmount">
+        <xsd:annotation>
+          <xsd:documentation>Amount of tax that is applied to the document or item.
+
+                        Mapped to VCR record:
+                        VCR_53_BMT, VCR_53_CUR, VCR_53_DEC
+
+                        Mapped to T2 database: TKT_TAX.TKT_TAX_AMT
+
+                        Mapped to TPF file:
+                        #FS01_8054_NZP_003
+                        (FS01_80_VAR,
+                        FS01_80_PZT_PZC, FS01_80_PZT_PZD)
+
+                        Mapped to DM0Y record:
+                        DM0Y_85_CURR
+                        DM0Y_85_CAMT
+                        DM0Y_85_DECP
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="AirportCode" type="STL:CityCode">
+        <xsd:annotation>
+          <xsd:documentation>
+                        Mapped to T2 database:
+                        TKT_TAX.TAX_ARPT_CD
+
+                        Mapped to TPF file:
+                        #FS01_8054_NZP_003 (FS01_80_PZT_PZA)
+
+                        Mapped to VCR record:
+                        VCR_53_CTY
+
+                        Mapped to DM0Y record:
+                        DM0Y_85_ARPT
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Text" type="String.Short">
+        <xsd:annotation>
+          <xsd:documentation>Mapped to T2 database:
+                        TKT_TAX.TKT_TAX_AMT_TXT
+
+                        Mapped to TPF file:
+                        #FS01_8054_NZP_003
+                        (FS01_80_VAR)
+
+                        Mapped to VCR record:
+                        VCR_53_BMT
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="sequence" type="xsd:integer">
+      <xsd:annotation>
+        <xsd:documentation>The number associated to the order of the tax item as it was shown in the document.
+                    Mapped to T2 database: TKT_TAX.TKT_TAX_SEQ
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="code" type="Code.Tax" use="required">
+      <xsd:annotation>
+        <xsd:documentation>A code which identifies a type of tax being applied to a transaction.
+
+                    Mapped to T2 database: TKT_TAX.TAX_CD
+
+                    Set to 'ZP'
+
+                    Mapped to DM0Y record:
+                    DM0Y_85_ITYP, #DM0Y_85_ZPT
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="exempt" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>Mapped to T2 database: TKT_TAX.TAX_XMP_IND
+
+                    Mapped to TPF file:
+                    #FS01_8054_NZP_003 (FS01_80_PZT_PZ1, #FS01_80_PZT_RUR)
+
+                    Mapped to VCR record:
+                    VCR_53_IN1,#VCR_53_RUR
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="Tax.Details.ED">
+    <xsd:annotation>
+      <xsd:documentation>Tax details for electronic documents</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Amount" type="TaxAmount">
+        <xsd:annotation>
+          <xsd:documentation>Amount of tax that is applied to the document or item.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Text" type="String.Short">
+        <xsd:annotation>
+          <xsd:documentation>Free text</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ApplyCreditInd" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>If the Indicator is false hen the amounts are assumed to be positive.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="sequence" type="xsd:integer">
+      <xsd:annotation>
+        <xsd:documentation>The number associated to the order of the tax item as it was shown in the document.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="code" type="Code.Tax" use="required">
+      <xsd:annotation>
+        <xsd:documentation>A code which identifies a type of tax being applied to a transaction.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="status" type="Code.TaxStatus">
+      <xsd:annotation>
+        <xsd:documentation>A code which identifies the status of the tax (e.g. Y-paid)</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="exempt" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>Indicates exempt or non-exempt</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="Tax.Misc">
+    <xsd:annotation>
+      <xsd:documentation>Misc tax</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Amount" type="TaxAmount.Coupon">
+        <xsd:annotation>
+          <xsd:documentation>Amount of tax that is applied to the document or item.
+</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="sequence" type="xsd:integer">
+      <xsd:annotation>
+        <xsd:documentation>The number associated to the order of the tax item as it was shown in the document.
+
+                    Mapped to T2 database: TKT_TAX.TKT_TAX_SEQ
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="code" type="Code.Tax" use="required">
+      <xsd:annotation>
+        <xsd:documentation>A code which identifies a type of tax being applied to a transaction.
+
+  </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="exempt" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>A Y/N value to indicate that the specific tax code has been exempted and was not
+                    collected.
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="status" type="Code.TaxStatus">
+      <xsd:annotation>
+        <xsd:documentation>A code which identifies the status of the tax (e.g. Y-paid)
+
+	</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="TaxAmount">
+    <xsd:annotation>
+      <xsd:documentation>Tax amounts</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="STL:_amount">
+        <xsd:attribute name="currencyCode" type="Code.CurrencyType">
+          <xsd:annotation>
+            <xsd:documentation>3 digit currency code Eg: USD, EUR</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="decimalPlace" type="Number.DecimalPlace">
+          <xsd:annotation>
+            <xsd:documentation>Number of places for decimal. Value can be 0, 2 or 3.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="TaxAmount.Coupon">
+    <xsd:annotation>
+      <xsd:documentation>Tax amount coupon</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="STL:_amount">
+        <xsd:attribute name="currencyCode" type="Code.CurrencyType">
+          <xsd:annotation>
+            <xsd:documentation>Currency code</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="decimalPlace" type="Number.DecimalPlace">
+          <xsd:annotation>
+            <xsd:documentation>
+Decimal place</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Taxes.New.Tax">
+    <xsd:annotation>
+      <xsd:documentation>Taxes info</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="99" name="Tax" type="Tax.Details">
+        <xsd:annotation>
+          <xsd:documentation>Taxes info</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Ticketing.Agent.ED">
+    <xsd:annotation>
+      <xsd:documentation>Agent information</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="TicketingProvider" type="Code.TicketingProviderCode">
+        <xsd:annotation>
+          <xsd:documentation>Airline or Carrier Code</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="WorkLocation" type="Identifier.LocationExtended">
+        <xsd:annotation>
+          <xsd:documentation>The PCC where the agent issued the electronic document. This is normallly the agent's home PCC or authorized branch PCC.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="HomeLocation" type="Identifier.Location">
+        <xsd:annotation>
+          <xsd:documentation>3 digit all-alpha pseudo city code found in the requestor???s TJR under AA CITY and LOR CITY</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IsoCountryCode" type="STL:CountryCode">
+        <xsd:annotation>
+          <xsd:documentation>The code which identifies the country of issuance as defined in IATA.                </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IataNumber" type="Identifier.Industry">
+        <xsd:annotation>
+          <xsd:documentation>An IATA assigned numeric code to identify the agent location authorized to issue   an electronic document.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="CompanyName" type="STL:StringLength1to128">
+        <xsd:annotation>
+          <xsd:documentation>The name of the company where the agent belongs to. This comes from the agency's TJR. </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="CRSCode" type="STL:CRSCode">
+        <xsd:annotation>
+          <xsd:documentation>Abacus CRS CODE:7766	Infini CRS CODE:7884 Sabre CRS CODE:0011 </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="type" type="Code.AgentType">
+      <xsd:annotation>
+        <xsd:documentation>A code assigned to the type of agent who issued the transaction. 
+                                 IATA Values can be:
+A - Airline (AIR) ?????
+T - Travel Agent (TVL)  </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="sine" type="STL:AgentSine">
+      <xsd:annotation>
+        <xsd:documentation>The last 2 digits of the Agent sine who issued the document.                            </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="Ticketing.Document.EMD.ED">
+    <xsd:annotation>
+      <xsd:documentation>EMD info</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Indicators" type="TicketingDocument.Indicators.EMD">
+        <xsd:annotation>
+          <xsd:documentation>Ticketing document indicators with boolen values; default to 'false'
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Details" type="TicketingDocument.Details.EMD.ED">
+        <xsd:annotation>
+          <xsd:documentation>Details </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Customer" type="TicketingDocument.Customer.ED">
+        <xsd:annotation>
+          <xsd:documentation>Customer information</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="16" name="Miscellaneous" type="TicketingDocument.Miscellaneous.ED">
+        <xsd:annotation>
+          <xsd:documentation>EMD details</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Amounts" type="TicketingDocument.Amounts.EMD">
+        <xsd:annotation>
+          <xsd:documentation>Any amounts associated to the ticketing document</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Taxes" type="TicketingDocument.Taxes.EMD">
+        <xsd:annotation>
+          <xsd:documentation>Tax amounts</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="2" name="Payment" type="TicketingDocument.Payment.ED">
+        <xsd:annotation>
+          <xsd:documentation>Payment iinformation</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="99" name="Remark" type="TicketingDocument.Remark.EMD">
+        <xsd:annotation>
+          <xsd:documentation>Remarks such as endorsements</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="RelatedDocument" type="TicketingDocument.Related">
+        <xsd:annotation>
+          <xsd:documentation>Related document info</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="ValueCalculation" type="TicketingDocument.ValueCalculation">
+        <xsd:annotation>
+          <xsd:documentation>Value calculation</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="type" type="Code.DocumentType" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Ticketing document type issued by the agent.
+
+                    Possible values can be:
+                    TKT - Ticket
+                    EMD - Electronic Miscellaneous Document</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="number" type="Identifier.TicketingDocument" use="required">
+      <xsd:annotation>
+        <xsd:documentation>The 13 digit electronic document number dispensed and assigned by the system upon issuance. Each EMD number can accomodate 1-4 service coupons. If more than 4 service coupons are required, additional 13 digit EMD numbers will be created by the system (in numeric sequence). When more than one EMD number is required, this is known as a conjuctive series. The maximum number of 13 digit EMD numbers in a conjuctive series is 4.  </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="Ticketing.Document.Ticket.ED">
+    <xsd:annotation>
+      <xsd:documentation>TKT info</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Details" type="TicketingDocument.Details.Ticket.ED">
+        <xsd:annotation>
+          <xsd:documentation>Detail information specific to an electronic ticket</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Customer" type="TicketingDocument.Customer.ED">
+        <xsd:annotation>
+          <xsd:documentation>Customer information</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Affinity" type="TicketingDocument.Affinity.ED">
+        <xsd:annotation>
+          <xsd:documentation>Loyalty information such as frequent flyer</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="16" name="ServiceCoupon" type="TicketingDocument.ServiceCoupon.Ticket.ED">
+        <xsd:annotation>
+          <xsd:documentation>An electronic ticket can have 1 to 16 coupons (including coniuctive series) </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="RelatedDocument" type="TicketingDocument.Related.Ticket.ED">
+        <xsd:annotation>
+          <xsd:documentation>Other documents that are related to the primary document upon issuance
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Amounts" type="TicketingDocument.Amounts.Ticket.ED">
+        <xsd:annotation>
+          <xsd:documentation>Any amounts associated to the ticketing document</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Taxes" type="TicketingDocument.Taxes.Ticket.ED">
+        <xsd:annotation>
+          <xsd:documentation>Any taxes paid by the customer</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="3" name="Payment" type="TicketingDocument.Payment.ED">
+        <xsd:annotation>
+          <xsd:documentation>Two forms of payment are allowed. In case of exchanges, there could be another form of paymemt code 'ET' that signifies the use of travel documents to issue another ticketing    document.
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Remark" type="TicketingDocument.Remark.ED">
+        <xsd:annotation>
+          <xsd:documentation>Remarks such as endorsements
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="FareCalculation">
+        <xsd:annotation>
+          <xsd:documentation>Fare calculation text</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="New" type="FareCalculation.Details">
+              <xsd:annotation>
+                <xsd:documentation>Free text indicating fare calculation details</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="type" type="Code.DocumentType" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Ticketing document type issued by the agent.
+
+                    Possible values can be:
+                    TKT - Ticket
+                    EMD - Electronic Miscellaneous Document</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="number" type="Identifier.TicketingDocument" use="required">
+      <xsd:annotation>
+        <xsd:documentation>The 13 digit electronic document number dispensed and assigned by the system upon issuance. Each ticket can accomodate 1-4 flight coupons. If the passenger's itinerary requires more than 4 flight coupons, additional 13 digit document numbers will be created by the system (in numeric sequence). When more than one document number is required, this is known as a conjuctive series. The maximum number of 13 digit document numbers in a conjuctive series is 4. </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="Ticketing.TransactionInfo.ED">
+    <xsd:annotation>
+      <xsd:documentation>Transaction info</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent mixed="false">
+      <xsd:extension base="STL:TransactionInfo">
+        <xsd:sequence>
+          <xsd:element name="LocalDateTime" type="xsd:dateTime">
+            <xsd:annotation>
+              <xsd:documentation>Date and time when the agent issued the ticketing transaction.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="SystemDateTime" type="xsd:dateTime">
+            <xsd:annotation>
+              <xsd:documentation>Date and time that the document was created in the ticketing system</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="SystemProvider" type="Identifier.Provider">
+            <xsd:annotation>
+              <xsd:documentation>Global distribution system within the Sabre System or a carrier reservation system that issued a document.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="InputEntry" type="String.Message">
+            <xsd:annotation>
+              <xsd:documentation>Input entry initiated for this transaction that generates the ticketing document                   </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="sequence" type="xsd:integer">
+          <xsd:annotation>
+            <xsd:documentation>A number received from the host system that identifies the sequence that this transaction is sent. It is optional and only applies to the VCR where the system of record is PSS.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="type" type="Code.TicketingTransactionType">
+          <xsd:annotation>
+            <xsd:documentation>A code associated to the transaction type as received from PSS host system.
+                            Values can be:
+                            SALE
+                            EXCH
+                            RFND
+                            ARMK
+                            STAT
+                            PNRA
+                            VOID  </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.Affinity.ED">
+    <xsd:annotation>
+      <xsd:documentation>Frequent flyer info</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="FrequentFlyer" type="Affinity.FrequentFlyer.ED">
+        <xsd:annotation>
+          <xsd:documentation>Frequent Flyer information</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.Amounts.EMD">
+    <xsd:annotation>
+      <xsd:documentation>Amounts for EMD</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="New" type="Amounts.New">
+        <xsd:annotation>
+          <xsd:documentation>New amounts associated to the ticketing document                   </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.Amounts.Ticket.ED">
+    <xsd:annotation>
+      <xsd:documentation>Amounts for ticket</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="New" type="Amounts.New.ED">
+        <xsd:annotation>
+          <xsd:documentation>Amounts</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Other" type="Amounts.Other.ED">
+        <xsd:annotation>
+          <xsd:documentation>Other Amounts</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Amounts.Other.ED">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="AddCollect" type="Amount.Basic" />
+      <xsd:element minOccurs="0" name="Commission" type="Amount.Commission" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.CurrencyConversion">
+    <xsd:annotation>
+      <xsd:documentation>Currency conversion</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="BankerSellingRate" type="CurrencyConversion.Details">
+        <xsd:annotation>
+          <xsd:documentation>Banker Selling rate</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="BankerBuyingRate" type="CurrencyConversion.Details">
+        <xsd:annotation>
+          <xsd:documentation>Banker Buying Rate</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="IataClearingHouseRate" type="CurrencyConversion.Details">
+        <xsd:annotation>
+          <xsd:documentation>Iata Clearing House rate</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.Customer.ED">
+    <xsd:annotation>
+      <xsd:documentation>Customer information</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Traveler" type="Customer.Traveler.Details.ED">
+        <xsd:annotation>
+          <xsd:documentation>A person who owns the document for travel and/or services</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.Details.EMD.ED">
+    <xsd:annotation>
+      <xsd:documentation>EMD details</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="TourNumber" type="Identifier.Tour">
+        <xsd:annotation>
+          <xsd:documentation>A tour number (or tour code) is a 1-15 alphanumeric code which identifies a tour or was filed with the fare or was input by the agent to satisfy specific instructions from the airline.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Reservation" type="Reservation.Details.ED">
+        <xsd:annotation>
+          <xsd:documentation>Booking reference number provided by the airline or a GDS. This is also known as a Passenger Name Record (PNR).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="LocalIssueDateTime" type="xsd:dateTime">
+        <xsd:annotation>
+          <xsd:documentation>The date and time when the EMD was issued in the agent's time zone as per the city code in the agency's TJR.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ValidatingProvider" type="Identifier.Provider">
+        <xsd:annotation>
+          <xsd:documentation>reserved for future use</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ItineraryType" type="Code.ItineraryType">
+        <xsd:annotation>
+          <xsd:documentation>1 digit indicator to specify domestic or international (D - domestic, I- international)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="SettlementAuthorization" type="Identifier.TicketingSettlementAuthorization">
+        <xsd:annotation>
+          <xsd:documentation>A reference number generated by the Validating carrier authorising settlement of a coupon, usually present only for exchange and void transaction.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ElectronicMiscType" type="Code.ElectronicMiscType">
+        <xsd:annotation>
+          <xsd:documentation>The type of the electronic miscellaneous document (A- Associated, S - Standalone)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ReasonForIssue" type="Code.TicketingDocumentReasonIssuanceCode_ATPCO_RFIC">
+        <xsd:annotation>
+          <xsd:documentation>A single character code associated to the reason for issuance as defined by IATA. Eg: D = financial impact  </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="InvoiceNumber" type="Number.Invoice">
+        <xsd:annotation>
+          <xsd:documentation>An agency assigned number to internally identify the associated invoice or combined itinerary/invoice document</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="AgencyBillingNumber" type="Number.AgencyBilling">
+        <xsd:annotation>
+          <xsd:documentation>illing reference number attached to the electronic document when it is issued by the agency. Also known as the Customer number or DK number.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.Details.Ticket.ED">
+    <xsd:annotation>
+      <xsd:documentation>TKT details</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="TourNumber" type="Identifier.Tour">
+        <xsd:annotation>
+          <xsd:documentation>A tour number (or tour code) is a 1-15 alphanumeric code which identifies a tour or was filed with the fare or was input by the agent to satisfy specific instructions from the airline.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Reservation" type="Reservation.Details.ED">
+        <xsd:annotation>
+          <xsd:documentation>6 digit booking reference number provided by the airline or a GDS. This is also known as a Passenger Name Record (PNR).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="LocalIssueDateTime" type="xsd:dateTime">
+        <xsd:annotation>
+          <xsd:documentation>The date and time when the ticketing document was issued in the agent's time zone as per the city code in the agency's TJR.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="AgencyBillingNumber" type="Number.AgencyBilling">
+        <xsd:annotation>
+          <xsd:documentation>Billing reference number attached to the electronic document when it is issued by the agency. Also known as the Customer number or DK number</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="InvoiceNumber" type="Number.Invoice">
+        <xsd:annotation>
+          <xsd:documentation>An agency assigned number to internally identify the associated invoice or combined itinerary/invoice document</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="FareCalculationPricing" type="Code.FareCalculationPricing">
+        <xsd:annotation>
+          <xsd:documentation>A single digit numeric identifier reflecting the method of pricing for this transaction as entered on the electronic ticket.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.History.ED">
+    <xsd:annotation>
+      <xsd:documentation>Document history details</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="9999" name="Text" type="Remark.Details">
+        <xsd:annotation>
+          <xsd:documentation>Reserved for future use</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.Indicators.EMD">
+    <xsd:annotation>
+      <xsd:documentation>EMD indicators</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="commisionable" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>A Y/N indicator to allow or disallow commission.           </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="electronic" type="xsd:boolean" use="required">
+      <xsd:annotation>
+        <xsd:documentation>A boolean (Y/N) indicator which identifies whether the document is produced electronically.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="interlineable" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>A Y/N value representing that the document can be shared with another carrier.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="refundable" type="Code.IATAIndicators">
+      <xsd:annotation>
+        <xsd:documentation>A Y/N indicator representing whether the document is refundable.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="historical" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>reserved for future use</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.Miscellaneous.ED">
+    <xsd:annotation>
+      <xsd:documentation>Miscellaneous info</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Fee" type="Fee.Details" />
+      <xsd:element minOccurs="0" name="OptionalService" type="OptionalService">
+        <xsd:annotation>
+          <xsd:documentation>Reason for issuance sub-code  (RFISC) as published in ATPCO.
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="CouponDetails" type="TicketingDocument.ServiceCoupon.EMD.ED">
+        <xsd:annotation>
+          <xsd:documentation>Each EMD service coupon contains all the infromation needed for the airline to deliver the services for that coupon</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="99" name="Tax" type="Tax.Misc">
+        <xsd:annotation>
+          <xsd:documentation>Taxes info</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="AssociatedTicketNumber" type="Number.AssociatedDocument">
+        <xsd:annotation>
+          <xsd:documentation>Fee can be associated to a ticket number</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Affinity" type="TicketingDocument.Affinity.ED">
+        <xsd:annotation>
+          <xsd:documentation>Frequent flyer information</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Fee.Details">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Base" type="Amount.Basic">
+        <xsd:annotation>
+          <xsd:documentation>The base fee amount associated to the item or service which does not include taxes.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Equivalent" type="Amount.Basic">
+        <xsd:annotation>
+          <xsd:documentation>The equivalent or converted fee amount associated to the item or service which does not include taxes. </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="TotalTax" type="Amount.Basic">
+        <xsd:annotation>
+          <xsd:documentation>The total fee taxes associated to the item or service purchased. </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Total" type="Amount.Basic">
+        <xsd:annotation>
+          <xsd:documentation>The total fee amount associated to the service including taxes.  </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Filed" type="Amount.Basic.BankerSellingRate">
+        <xsd:annotation>
+          <xsd:documentation>The filed fee amount associated to the service.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="description" type="String.ItemDescription" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Description of the purchased item or service.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="quantity" type="xsd:int">
+      <xsd:annotation>
+        <xsd:documentation>The number of items purchased per PRAS code.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="coupon" type="Number.CouponSequence">
+      <xsd:annotation>
+        <xsd:documentation />
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="Amount.Basic.BankerSellingRate">
+    <xsd:complexContent mixed="false">
+      <xsd:extension base="Amount.Basic">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="BankerSellingRate" type="CurrencyConversion.Details">
+            <xsd:annotation>
+              <xsd:documentation />
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.Payment">
+    <xsd:annotation>
+      <xsd:documentation>Payment</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Base" type="PaymentAmount.Basic">
+        <xsd:annotation>
+          <xsd:documentation>Base amount paid</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Tax" type="PaymentAmount.Basic">
+        <xsd:annotation>
+          <xsd:documentation>Tax amount paid</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Total" type="PaymentAmount.Basic">
+        <xsd:annotation>
+          <xsd:documentation>Total amount paid</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Remarks" type="String.FormOfPayment">
+        <xsd:annotation>
+          <xsd:documentation>Remarks</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="AccountCode" type="Identifier.PaymentAccount">
+        <xsd:annotation>
+          <xsd:documentation>Account code</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="DeploymentId" type="Identifier.Deployment">
+        <xsd:annotation>
+          <xsd:documentation>A number generated by the supplier of virtual payments with details of the actual financial transaction</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:group ref="PaymentInstrument.CG" />
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:ID">
+      <xsd:annotation>
+        <xsd:documentation>Is a generated identifier assigned for a payment media for uniqueness in the
+                    system.
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="type" type="Code.PaymentType" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Same as payment instrument code</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="sequence" type="xsd:integer" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Defines the order of payments made.
+
+                    Mapped to T2 database: TKT_DOC_PAYMNT.PAYMNT_SEQ_NBR
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="code" type="Code.FopVCR">
+      <xsd:annotation>
+        <xsd:documentation>Mapped to VCR_55_FPI
+
+                    Applies only to VCR
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="missingPayAmtInd" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>Set to 'Y' if Total Payment Amount is missing in the source record (i.e. VCR_55_FPA
+                    is blank)
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="paymentConfirmation" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation>Indicates that payment confirmation needs to be sent to Payment System after       successful transaction</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.Payment.ED">
+    <xsd:annotation>
+      <xsd:documentation>Payment info for electronic documents</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Base" type="PaymentAmount.Basic">
+        <xsd:annotation>
+          <xsd:documentation>Base amount paid</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Tax" type="PaymentAmount.Basic">
+        <xsd:annotation>
+          <xsd:documentation>Tax amount paid</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Total" type="PaymentAmount.Basic">
+        <xsd:annotation>
+          <xsd:documentation>Total amount paid</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Remarks" type="String.FormOfPayment">
+        <xsd:annotation>
+          <xsd:documentation>Additional information about the specified form of payment</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:group ref="PaymentInstrument.CG" />
+    </xsd:sequence>
+    <xsd:attribute name="type" type="Code.PaymentType" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Same as payment instrument code</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="sequence" type="xsd:integer" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Defines the order of payments made.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.Related">
+    <xsd:annotation>
+      <xsd:documentation>Related documents</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="8" name="Conjunctive" type="RelatedDocument.Basic">
+        <xsd:annotation>
+          <xsd:documentation>Conjuctive ticket info</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Original" type="RelatedDocument.Details">
+        <xsd:annotation>
+          <xsd:documentation>Original ticket information</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="11" name="Exchange" type="RelatedDocument.Details">
+        <xsd:annotation>
+          <xsd:documentation>Exchanged ticket information</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="11" name="Refund" type="RelatedDocument.Details">
+        <xsd:annotation>
+          <xsd:documentation>Refund information</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="99" name="Linked" type="RelatedDocument.Abbreviated">
+        <xsd:annotation>
+          <xsd:documentation>Linked information</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="6" name="Miscellaneous" type="RelatedDocument.Basic">
+        <xsd:annotation>
+          <xsd:documentation>Miscellaneous</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.Related.Ticket.ED">
+    <xsd:annotation>
+      <xsd:documentation>Related tickets info</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="3" name="Conjunctive" type="RelatedDocument.Basic">
+        <xsd:annotation>
+          <xsd:documentation>Each ticket can accomodate 1-4 flight coupons. If the passenger's itinerary requires more than 4 flight coupons, additional 13 digit document numbers will be created by the system (in numeric sequence). When more than one document number is required, this is known as a conjuctive series. The maximum number of 13 digit document numbers in a conjuctive series is 4. </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Original" type="RelatedDocument.Details.Original.TKT.ED">
+        <xsd:annotation>
+          <xsd:documentation>Details for the original ticket</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="11" name="Exchange" type="RelatedDocument.Details.ED">
+        <xsd:annotation>
+          <xsd:documentation>Details for the exchanged ticket</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.Remark.ED">
+    <xsd:annotation>
+      <xsd:documentation>Remarks</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="999" name="Endorsements" type="Remark.DetailsWithType">
+        <xsd:annotation>
+          <xsd:documentation>Endorsements</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Manual" type="Remark.Details">
+        <xsd:annotation>
+          <xsd:documentation>Additional remarks</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.Remark.EMD">
+    <xsd:annotation>
+      <xsd:documentation>Remarks</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="Endorsements" type="Remark.Details">
+        <xsd:annotation>
+          <xsd:documentation>Endorsements
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="Manual" type="Remark.Details">
+        <xsd:annotation>
+          <xsd:documentation>Manual remarks</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="10" name="Passenger" type="Remark.DetailsWithHeader">
+        <xsd:annotation>
+          <xsd:documentation>Passengers</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="20" name="Other" type="Remark.DetailsWithType">
+        <xsd:annotation>
+          <xsd:documentation>Other remarks</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.ServiceCoupon.EMD.ED">
+    <xsd:annotation>
+      <xsd:documentation>Service coupon</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="MarketingProvider" type="Identifier.Provider">
+        <xsd:annotation>
+          <xsd:documentation>Code identifying the Marketing Carrier for each coupon as it was sold</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="MarketingFlightNumber" type="STL:FlightNumber">
+        <xsd:annotation>
+          <xsd:documentation>Marketing carrier's flight number for each coupon as it was sold
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="OperatingProvider" type="Identifier.Provider">
+        <xsd:annotation>
+          <xsd:documentation>Code identifying the Operating Carrier  for each coupon as it was sold (only populated for codeshare flights)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ClassOfService" type="ClassOfService.Details">
+        <xsd:annotation>
+          <xsd:documentation>RBB code retruned by the airline for this flight coupon</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="StartLocation">
+        <xsd:annotation>
+          <xsd:documentation>The airport or city code identifying the start location of the flight or service                    </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="STL:CityCode">
+              <xsd:attribute name="name" type="String.LocationName">
+                <xsd:annotation>
+                  <xsd:documentation>Start location city name</xsd:documentation>
+                </xsd:annotation>
+              </xsd:attribute>
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="StartDateTime" type="xsd:dateTime">
+        <xsd:annotation>
+          <xsd:documentation>The flight departure date and time or the start date and time when the service is applied</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="EndLocation">
+        <xsd:annotation>
+          <xsd:documentation>The airport or city code identifying the end location of the flight or service</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="STL:CityCode">
+              <xsd:attribute name="name" type="String.LocationName">
+                <xsd:annotation>
+                  <xsd:documentation>End location city name</xsd:documentation>
+                </xsd:annotation>
+              </xsd:attribute>
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="EndDateTime" type="xsd:dateTime">
+        <xsd:annotation>
+          <xsd:documentation>The flight arrival date and time or the end date and time when the service is applied</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="NotValidBeforeDate" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>The date before which travel or service for this segment is no longer applicable </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="NotValidAfterDate" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>The date after which travel or service for this segment is no longer applicable </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="SettlementAuthorization" type="Identifier.TicketingSettlementAuthorization">
+        <xsd:annotation>
+          <xsd:documentation>A reference number generated by the Valicating carrier authorising settlement of an EMD</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="BookingStatus">
+        <xsd:annotation>
+          <xsd:documentation>Code associated to the status of the booked segment Eg: HI = fulfilled, HD = Payment required</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="Code.BookingStatus">
+              <xsd:attribute name="name" type="String.Short">
+                <xsd:annotation>
+                  <xsd:documentation>Booking status</xsd:documentation>
+                </xsd:annotation>
+              </xsd:attribute>
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="CouponStatus" type="Code.ServiceCouponStatus">
+        <xsd:annotation>
+          <xsd:documentation>A 1 to 2 digit code returned by EDIFACT which corresponds to the 4 digit coupon status code seen in the green screen display. </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="coupon" type="Number.CouponSequence" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Coupon number 1 through 16</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="description" type="String.ItemDescription" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Description of the purchased item or service.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="quantity" type="xsd:int">
+      <xsd:annotation>
+        <xsd:documentation>The number of items purchased per PRAS code.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.ServiceCoupon.Ticket.ED">
+    <xsd:annotation>
+      <xsd:documentation>Service coupon</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="MarketingProvider" type="Identifier.Provider">
+        <xsd:annotation>
+          <xsd:documentation>Code identifying the Marketing Carrier for each coupon as it was sold</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="MarketingFlightNumber" type="STL:FlightNumber">
+        <xsd:annotation>
+          <xsd:documentation>Marketing carrier's flight number for each coupon as it was sold</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="OperatingProvider" type="Identifier.Provider">
+        <xsd:annotation>
+          <xsd:documentation>Code identifying the Operating Carrier  for each coupon as it was sold (only populated for codeshare flights)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ClassOfService" type="ClassOfService.Details">
+        <xsd:annotation>
+          <xsd:documentation>RBD code retruned by the airline for this flight coupon</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="FareBasis" type="Code.FareBasis">
+        <xsd:annotation>
+          <xsd:documentation>Code that identifies the fare basis used on this coupon</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="TicketDesignator" type="Code.TicketFareDesignator">
+        <xsd:annotation>
+          <xsd:documentation>Code following fare basis code either publilshed with the fare or manually input by the agent</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="StartLocation">
+        <xsd:annotation>
+          <xsd:documentation>The airport or city code identifying the start location of the flight or service</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="STL:CityCode">
+              <xsd:attribute name="name" type="String.LocationName">
+                <xsd:annotation>
+                  <xsd:documentation>Start location city name</xsd:documentation>
+                </xsd:annotation>
+              </xsd:attribute>
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="StartDateTime" type="xsd:dateTime">
+        <xsd:annotation>
+          <xsd:documentation>The flight departure date and time or the start date and time when the service is applied</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="EndLocation">
+        <xsd:annotation>
+          <xsd:documentation>The airport or city code identifying the end location of the flight or service</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="STL:CityCode">
+              <xsd:attribute name="name" type="String.LocationName">
+                <xsd:annotation>
+                  <xsd:documentation>End location city name</xsd:documentation>
+                </xsd:annotation>
+              </xsd:attribute>
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="EndDateTime" type="xsd:dateTime">
+        <xsd:annotation>
+          <xsd:documentation>The flight arrival date and time or the end date and time when the service is applied</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="NotValidBeforeDate" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>The date before which travel cannot commence.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="NotValidAfterDate" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>The date after which travel or service for this coupon must be completed</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="SettlementAuthorization" type="Identifier.TicketingSettlementAuthorization">
+        <xsd:annotation>
+          <xsd:documentation>A reference number generated by the Validating carrier authorising settlement of a coupon, usually present only for exchange and void transaction</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="BookingStatus">
+        <xsd:annotation>
+          <xsd:documentation>2 digit code associated to the status of the flight segment at the time of ticketing</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="Code.BookingStatus">
+              <xsd:attribute name="name" type="String.Short">
+                <xsd:annotation>
+                  <xsd:documentation>Booking status</xsd:documentation>
+                </xsd:annotation>
+              </xsd:attribute>
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="CurrentStatus" type="Code.ServiceCouponStatus">
+        <xsd:annotation>
+          <xsd:documentation>A 1 to 2 digit code returned by EDIFACT which corresponds to the 4 digit coupon status code seen in the green screen display.  </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="BagAllowance" type="Code.BaggageAllowance">
+        <xsd:annotation>
+          <xsd:documentation>The applicable baggage allowance</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="coupon" type="Number.CouponSequence" use="required">
+      <xsd:annotation>
+        <xsd:documentation>The number representing the order in which this coupon was used or is to be used.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="type" type="Code.SegmentType" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Code associated to the segment type
+
+                    Possible values can be:
+
+                    A - Arunk
+                    O - Open
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.Taxes.EMD">
+    <xsd:annotation>
+      <xsd:documentation>Taxes info</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="New" type="Taxes.New.Tax">
+        <xsd:annotation>
+          <xsd:documentation>Tax amounts</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.Taxes.New.ED">
+    <xsd:annotation>
+      <xsd:documentation>Taxes info</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="99" name="Tax" type="Tax.Details.ED">
+        <xsd:annotation>
+          <xsd:documentation>Tax breakdown of all taxes.
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.Taxes.Ticket.ED">
+    <xsd:annotation>
+      <xsd:documentation>Taxes info</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="New" type="TicketingDocument.Taxes.New.ED">
+        <xsd:annotation>
+          <xsd:documentation>Taxes info</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="TicketingDocument.ValueCalculation">
+    <xsd:annotation>
+      <xsd:documentation>Value calculation</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="New" type="FareCalculation.Details">
+        <xsd:annotation>
+          <xsd:documentation>Value calculation</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:simpleType name="Code.AddressVerification">
+    <xsd:annotation>
+      <xsd:documentation>Address verification</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="2" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.AgentType">
+    <xsd:annotation>
+      <xsd:documentation>Agent type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="3" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.AmountValue">
+    <xsd:annotation>
+      <xsd:documentation>Amount value</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="14" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.ApprovalSource">
+    <xsd:annotation>
+      <xsd:documentation>Approval source</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.ApprovalType">
+    <xsd:annotation>
+      <xsd:documentation>Approval type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.AssociationType">
+    <xsd:annotation>
+      <xsd:documentation>Associateion type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.BookingStatus">
+    <xsd:annotation>
+      <xsd:documentation>Booking status</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="2" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.CheckApproval">
+    <xsd:annotation>
+      <xsd:documentation>Check approval</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="18" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.ClassOfService">
+    <xsd:annotation>
+      <xsd:documentation>Class of service</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="2" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.CorporateContract">
+    <xsd:annotation>
+      <xsd:documentation>Corporate Contract</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.CurrencyType">
+    <xsd:annotation>
+      <xsd:documentation>Currency Type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="3" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.DocumentEventActivityType">
+    <xsd:annotation>
+      <xsd:documentation>Activity ttype</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.DocumentStatus">
+    <xsd:annotation>
+      <xsd:documentation>Document status</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="2" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.DocumentType">
+    <xsd:annotation>
+      <xsd:documentation>Document type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="3" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.ElectronicMiscType">
+    <xsd:annotation>
+      <xsd:documentation>.EMD type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.ExtendedPayment">
+    <xsd:annotation>
+      <xsd:documentation>Extended payment</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="2" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.FareBasis">
+    <xsd:annotation>
+      <xsd:documentation>Fare basis</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="15" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.FareCalculationPricing">
+    <xsd:annotation>
+      <xsd:documentation>Fare calculation</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.FeeGroup">
+    <xsd:annotation>
+      <xsd:documentation>Fee group</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="2" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.FilingSource">
+    <xsd:annotation>
+      <xsd:documentation>Filing source</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="4" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.FopVCR">
+    <xsd:annotation>
+      <xsd:documentation>Form of Payment</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.GetTicketingRequestType">
+    <xsd:annotation>
+      <xsd:documentation>Request type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="6" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.GetTicketingResultType">
+    <xsd:annotation>
+      <xsd:documentation>Result type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.IATAIndicators">
+    <xsd:annotation>
+      <xsd:documentation>IATA indicators</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.InvoluntaryReason">
+    <xsd:annotation>
+      <xsd:documentation>Involuntary reason</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.ItemReasonForIssuance">
+    <xsd:annotation>
+      <xsd:documentation>Reason for issuance</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="3" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.ItineraryType">
+    <xsd:annotation>
+      <xsd:documentation>Itinerary type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.JourneyType">
+    <xsd:annotation>
+      <xsd:documentation>Journey type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.OTA">
+    <xsd:annotation>
+      <xsd:documentation>OTA - needs more text</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[0-9A-Z]{1,3}(\.[A-Z]{3}(\.X){0,1}){0,1}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.PaymentType">
+    <xsd:annotation>
+      <xsd:documentation>Payment type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="3" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.RemarkType">
+    <xsd:annotation>
+      <xsd:documentation>.Remark type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="4" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.SegmentType">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="3" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.ServiceCouponStatus">
+    <xsd:annotation>
+      <xsd:documentation>Service coupon status</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="4" />
+      <xsd:minLength value="2" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.SSR">
+    <xsd:annotation>
+      <xsd:documentation>SSR - needs more info</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="4" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.Tax">
+    <xsd:annotation>
+      <xsd:documentation>Tax code </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="3" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.TaxStatus">
+    <xsd:annotation>
+      <xsd:documentation>Tax status</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="3" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.TicketFareDesignator">
+    <xsd:annotation>
+      <xsd:documentation>Ticket fare designator</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="15" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.TicketingDocumentReasonIssuanceCode_ATPCO_RFIC">
+    <xsd:annotation>
+      <xsd:documentation>Issuance code</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.TicketingProviderCode">
+    <xsd:annotation>
+      <xsd:documentation>Provider code</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="3" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.TicketingTransactionType">
+    <xsd:annotation>
+      <xsd:documentation>Transaction type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="4" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.TransactionCategoryType">
+    <xsd:annotation>
+      <xsd:documentation>Category type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="4" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.VirtualPayment">
+    <xsd:annotation>
+      <xsd:documentation>Virtual payment</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="3" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Code.VoucherSeries">
+    <xsd:annotation>
+      <xsd:documentation>Voucher series</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[0-9]{1,8}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Expire_Date">
+    <xsd:annotation>
+      <xsd:documentation>expiration date</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[0-9]{4}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Identifier.Account">
+    <xsd:annotation>
+      <xsd:documentation>Account code</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="20" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Identifier.Affinity">
+    <xsd:annotation>
+      <xsd:documentation>Frequent flyer</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="20" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Identifier.Approval">
+    <xsd:annotation>
+      <xsd:documentation>Approval code</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="8" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Identifier.Deployment">
+    <xsd:annotation>
+      <xsd:documentation>Deployment ID</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="50" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Identifier.Industry">
+    <xsd:annotation>
+      <xsd:documentation>Industry</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="8" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Identifier.Location">
+    <xsd:annotation>
+      <xsd:documentation>Location</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="5" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Identifier.LocationExtended">
+    <xsd:annotation>
+      <xsd:documentation>Extended location</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[0-9A-Za-z]{3,9}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Identifier.StationSession">
+    <xsd:annotation>
+      <xsd:documentation>Station session</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="5" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Identifier.TicketingDocument">
+    <xsd:annotation>
+      <xsd:documentation>Document</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="15" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Identifier.TicketingProviderAccounting">
+    <xsd:annotation>
+      <xsd:documentation>Accoiunting code</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="3" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Identifier.TicketingSettlementAuthorization">
+    <xsd:annotation>
+      <xsd:documentation>Settlement auithorization</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="14" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Identifier.Tier">
+    <xsd:annotation>
+      <xsd:documentation>Tier - needs more text</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="5" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Identifier.Tour">
+    <xsd:annotation>
+      <xsd:documentation>Tour ID</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="15" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Identifier.Transaction">
+    <xsd:annotation>
+      <xsd:documentation>Transaction ID</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="25" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Number.AgencyBilling">
+    <xsd:annotation>
+      <xsd:documentation>Agency Billing number</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="12" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Number.CheckDigit">
+    <xsd:annotation>
+      <xsd:documentation>check digit</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Number.CouponSequence">
+    <xsd:annotation>
+      <xsd:documentation>Coupon sequence</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:integer">
+      <xsd:maxInclusive value="32" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Number.CreditCard">
+    <xsd:annotation>
+      <xsd:documentation>Credit card</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="25" />
+      <xsd:pattern value="[A-Z0-9]{8,25}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Number.CreditCardBin">
+    <xsd:annotation>
+      <xsd:documentation>May be used to send a concealed credit card number (e.g., xxxxxxxxxxxx1111).
+            </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="6" />
+      <xsd:pattern value="[A-Z0-9]{0,6}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Number.DecimalPlace">
+    <xsd:annotation>
+      <xsd:documentation>decimal place</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:integer" />
+  </xsd:simpleType>
+  <xsd:simpleType name="Number.Invoice">
+    <xsd:annotation>
+      <xsd:documentation>Invoice</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="11" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Number.LineNumber">
+    <xsd:annotation>
+      <xsd:documentation>Line number</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:integer">
+      <xsd:maxInclusive value="32" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Number.Station">
+    <xsd:annotation>
+      <xsd:documentation>Station number</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="10" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Number.TicketingExternalCustomer">
+    <xsd:annotation>
+      <xsd:documentation>External customer info</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="30" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Number.TicketingTransactionControl">
+    <xsd:annotation>
+      <xsd:documentation>Transaction control</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="11" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="PNR_Locator">
+    <xsd:annotation>
+      <xsd:documentation>PNR locator</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="8" />
+      <xsd:pattern value="[0-9a-zA-Z]{1,6}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ProperName.29Character">
+    <xsd:annotation>
+      <xsd:documentation>Porper Name</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="29" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="String.FormOfPayment">
+    <xsd:annotation>
+      <xsd:documentation>Form of payment</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="81" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="String.ItemDescription">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="70" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="String.LocationName">
+    <xsd:annotation>
+      <xsd:documentation>Location name</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="24" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="String.Message">
+    <xsd:annotation>
+      <xsd:documentation>Message</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="1000" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="String.ProperName">
+    <xsd:annotation>
+      <xsd:documentation>Proper Name</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="STL:StringLength1to100" />
+  </xsd:simpleType>
+  <xsd:simpleType name="String.ProviderName">
+    <xsd:annotation>
+      <xsd:documentation>Provider name</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="24" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="String.ServiceCoupon">
+    <xsd:annotation>
+      <xsd:documentation>Service coupon</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="30" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="String.Short">
+    <xsd:annotation>
+      <xsd:documentation>short string</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="30" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="String.Text">
+    <xsd:annotation>
+      <xsd:documentation>free text</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="255" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="String.TicketingRemark">
+    <xsd:annotation>
+      <xsd:documentation>Remarks</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="999" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:group name="ElectronicDocumentTypeChoice.CG">
+    <xsd:annotation>
+      <xsd:documentation>Document type choice</xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="Ticket" type="Ticketing.Document.Ticket.ED">
+        <xsd:annotation>
+          <xsd:documentation>An airline electronic ticket is a paperless document which not only allows the passenger to travel on the flights for which the ticket was issued, but also serves as a contract of carriage between the passenger and the airline. In addition, it is an accountable document for the issuing agency for settlement with the airline (directly, or indirectly).
+                    </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="ElectronicMiscDocument" type="Ticketing.Document.EMD.ED">
+        <xsd:annotation>
+          <xsd:documentation>An Electronic Miscellaneous Document is an official IATA standard document to facilitate fulfillment of optional/ancillaries services such as baggage, in flight services and transaction fees.  In addition, it is an accountable document the issuing agency uses for settlement with the validating airline (directly or indirectly).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:choice>
+  </xsd:group>
+  <xsd:group name="FlightStartDateChoice.CG">
+    <xsd:annotation>
+      <xsd:documentation>Flight start date choice</xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="FlightStartDate" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation> Service Coupon Start Date				   Ref:SVC_CPN.SVC_STR_DTM 					   					</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="FlightStartDateRange" type="DateRange">
+        <xsd:annotation>
+          <xsd:documentation>Service Coupon Start Date Range				   Ref:   SVC_CPN.SVC_STR_DTM 					   					</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:choice>
+  </xsd:group>
+  <xsd:group name="GetEDDisplayResultsChoice.CG">
+    <xsd:annotation>
+      <xsd:documentation>Display results choice</xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="DocumentDetailsDisplay">
+        <xsd:annotation>
+          <xsd:documentation>Display document details</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:group ref="ElectronicDocumentTypeChoice.CG" />
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="DocumentHistoryDisplay">
+        <xsd:annotation>
+          <xsd:documentation>Reserved for future use</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:choice>
+            <xsd:element minOccurs="0" name="History" type="TicketingDocument.History.ED">
+              <xsd:annotation>
+                <xsd:documentation>Reserved for future use</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:choice>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:choice>
+  </xsd:group>
+  <xsd:group name="PaymentInstrument.CG">
+    <xsd:annotation>
+      <xsd:documentation>Payment instrument choice</xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="Card" type="Payment.BankCard.ED">
+        <xsd:annotation>
+          <xsd:documentation>Credit card info</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Cash" type="Payment.Cash">
+        <xsd:annotation>
+          <xsd:documentation>Cash payment info</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Check" type="Payment.BankCheck">
+        <xsd:annotation>
+          <xsd:documentation>Check Details</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="GovernmentTravel" type="Payment.GovernmentTravel">
+        <xsd:annotation>
+          <xsd:documentation>Government travel</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Invoice" type="Payment.Invoice">
+        <xsd:annotation>
+          <xsd:documentation>Invoice</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Miscellaneous" type="Payment.Miscellaneous">
+        <xsd:annotation>
+          <xsd:documentation>Will be returned in response as free text. Eg: MSCADEPOSIT</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Other" type="Payment.Other">
+        <xsd:annotation>
+          <xsd:documentation>Other payment</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:choice>
+  </xsd:group>
+  <xsd:attributeGroup name="TicketingDocumentStdAttributes">
+    <xsd:annotation>
+      <xsd:documentation>Standard attributes</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="Version" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Version of the service the service consumer wishes to use.
+                    NOTE: In order for SWSO to be able to capture the version of the service being used in their
+                    logs/statistics,
+                    this attribute needs to be named Version (with a capital letter - which is against our naming
+                    convention).
+                </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:attributeGroup>
+</xsd:schema>

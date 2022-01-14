@@ -28,10 +28,13 @@ namespace NativeApi
         static string FailOverUrl = "failover:(tcp://localhost:61616)"; 
         static string URL = "tcp://localhost:61616";
         static string ENDPOINT = "";
-                
+
         // red app id for the plugin running in SRW 
 
-        static string redAppID = "example-native-7lkkd5c";
+         static string redAppID = "cidEbACm-UW-Ur70l0Xn6g";
+
+        // static string redAppID = "9Qmas0Eii0SI2WejepGgfg";
+
 
         // this will be used to send messages to be broker 
         static IMessageProducer producer;
@@ -297,17 +300,19 @@ namespace NativeApi
                     tokenval += oth.Value;
 
                 }
-                // ReadPNR(tokenval); 
-
+                 ReadPNR(tokenval); 
+                
                 // SendSabreCommand(tokenval); 
-                DesignatePrinter(tokenval); 
+                // DesignatePrinter(tokenval); 
+                // getDailySalesReport(tokenval); 
+               //  GetTicket(tokenval);
             }
 
 
             if (Doc.Root.Name.LocalName.Equals("EventSubscriptionRS"))
             {
                   txtResult.Text = xmlText;
-                //txtResult.Text = "Command Intercepted ";
+               //   txtResult.Text = "Command Intercepted ";
 
             
             }
@@ -321,14 +326,32 @@ namespace NativeApi
                 interceptCommand(command);
             }
          
-        
+ 
 
         }
 
 
         private void interceptCommand(string command)
         {
-             string textmg;
+            txtResult.Text = "Comado Capturado " + command;
+            string textmg;
+
+            if (command.EndsWith("*#*"))
+            {
+                textmg = "<?xml version='1.0' encoding='UTF-8'?>" +
+"<com.sabre.edge.dynamo.nativeapi:CommandInterceptionRS xmlns:com.sabre.edge.dynamo.nativeapi='http://stl.sabre.com/POS/SRW/NextGen/nativeapi/v1.0' command='' />";
+
+            }
+            else
+            {
+                textmg= "<?xml version='1.0' encoding='UTF-8'?>" +
+"<com.sabre.edge.dynamo.nativeapi:CommandInterceptionRS xmlns:com.sabre.edge.dynamo.nativeapi='http://stl.sabre.com/POS/SRW/NextGen/nativeapi/v1.0' command='"+command+"' />";
+            }
+
+
+            SendMessage(textmg);
+            /*
+             
             DialogResult dialogResult = MessageBox.Show("Do you want to Intercept the Command   "+command+"? ", " ", MessageBoxButtons.YesNo);
    
             if (dialogResult == DialogResult.Yes)
@@ -339,13 +362,15 @@ namespace NativeApi
 
                 SendMessage(textmg); 
             }
-            else if (dialogResult == DialogResult.No)
-            {
-                //do something else
-               textmg = "<?xml version='1.0' encoding='UTF-8'?>" +
-"<com.sabre.edge.dynamo.nativeapi:CommandInterceptionRS xmlns:com.sabre.edge.dynamo.nativeapi='http://stl.sabre.com/POS/SRW/NextGen/nativeapi/v1.0' command='"+command+"' />";
-                SendMessage(textmg);
-            }
+
+            */
+            //  else if (dialogResult == DialogResult.No)
+            // {
+            //do something else
+            //  textmg = "<?xml version='1.0' encoding='UTF-8'?>" +
+            //"<com.sabre.edge.dynamo.nativeapi:CommandInterceptionRS xmlns:com.sabre.edge.dynamo.nativeapi='http://stl.sabre.com/POS/SRW/NextGen/nativeapi/v1.0' command='"+command+"' />";
+            //     SendMessage(textmg);
+            // }
         }
 
         private void ReadPNR(string token )
@@ -381,6 +406,35 @@ namespace NativeApi
             
         }
 
+        private void getDailySalesReport(string token)
+        {
+            DailySalesSummary.DailySalesSummaryPortTypeClient client = SalesReport.returnClient(token);
+            DailySalesSummary.MessageHeader message_header = SalesReport.returnMessageHeader();
+            DailySalesSummary.Security security = SalesReport.returnSecurityHeader(token);
+
+
+            // esta linea es para utilizar TLS 1.2 
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+            DailySalesSummary._DailySalesSummaryRS response = null ;
+
+            DailySalesSummary._DailySalesSummaryRQ req = SalesReport.buildRequest();
+            SerializeAndShowWSResponse(req);
+            try
+            {
+                response = client.DailySalesSummaryRQ(ref message_header, ref security, req );
+               
+
+                SerializeAndShowWSResponse(response);
+            }
+            catch (Exception e)
+            {
+
+                MessageBox.Show(e.Message);
+
+            }
+
+
+        }
 
         private void SendSabreCommand(String token)
         {
@@ -420,7 +474,54 @@ namespace NativeApi
 
         }
 
-       private void  DesignatePrinter(String token )
+        private void GetTicket(String token)
+        {
+            GetElectronicDocument.GetElectronicDocumentPortTypeClient client =  ElectronicTicket.returnClient(token);
+
+            GetElectronicDocument.MessageHeader message_header = ElectronicTicket.returnMessageHeader();
+            GetElectronicDocument.Security security = ElectronicTicket.returnSecurityHeader(token);
+
+            // this line is to use TLS 1.2 otherwise it cannot connect to the end point 
+
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+
+
+            GetElectronicDocument.GetElectronicDocumentRS response;
+
+            //string command = txtCommand.Text.ToUpper();
+            string Ticket = "0453850688914";
+            GetElectronicDocument.GetElectronicDocumentRQ req = ElectronicTicket.getPayload(Ticket);
+
+            SerializeAndShowWSResponse(req);
+            try
+            {
+                response = client.GetElectronicDocumentRQ(ref message_header, ref security, req);
+
+                SerializeAndShowWSResponse(response);
+
+                GetElectronicDocument.GetElectronicDocumentRSDocumentDetailsDisplay documents =  response.DocumentDetailsDisplay;
+
+               
+                documents.GetType();
+
+            }
+            catch (Exception e)
+            {
+
+                MessageBox.Show(e.StackTrace + "\"" + e.Message);
+                Debug.Write(e.StackTrace);
+                Debug.Write(e.Message);
+
+            }
+            finally
+            {
+
+            }
+
+
+        }
+
+        private void  DesignatePrinter(String token )
         {
             DesignatePrinter.DesignatePrinterPortTypeClient client = DesignatePrinterService.returnClient(token);
 

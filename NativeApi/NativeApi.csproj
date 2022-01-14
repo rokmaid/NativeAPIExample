@@ -58,7 +58,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Connected Services\DailySalesSummary\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\DesignatePrinter\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\GetElectronicDocument\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -80,7 +90,10 @@
     </Compile>
     <Compile Include="Domain\BFM.cs" />
     <Compile Include="Domain\DesignatePrinterService.cs" />
+    <Compile Include="Domain\ElectronicTicket.cs" />
+    <Compile Include="Domain\PNR.cs" />
     <Compile Include="Domain\SabreCommand.cs" />
+    <Compile Include="Domain\SalesReport.cs" />
     <Compile Include="Domain\TIR.cs" />
     <Compile Include="Domain\Util.cs" />
     <Compile Include="Domain\WSPayloads.cs" />
@@ -147,6 +160,115 @@
     <None Include="Connected Services\BargainFinderMax\xmldsig-core-schema.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Connected Services\DailySalesSummary\envelope.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\msg-header-2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary.AccountingRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary.AgentListRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary.CachedReportRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary.CreditCardRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary.DailySalesSummaryRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary.DetailRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary.ExceptionRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary.MessageHeader.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary.SalesSummaryRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary.Security.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary.StationActivityRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary.StationManagerRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary.StationSummaryRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary.TaxRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary._AccountingRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary._AgentListRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary._CachedReportRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary._CreditCardRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary._DailySalesSummaryRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary._DetailRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary._ExceptionRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary._SalesSummaryRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary._StationActivityRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary._StationManagerRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary._StationSummaryRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\NativeApi.DailySalesSummary._TaxRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\SabreTypeLibrary_Catalog_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\SabreTypeLibrary_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\TicketingTypeLibrary_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\TKT_AsrServices.wsdl" />
+    <None Include="Connected Services\DailySalesSummary\TKT_AsrServices_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\wsse2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\xlink.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DailySalesSummary\xmldsig-core-schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\DesignatePrinter\DesignatePrinterLLS2.wsdl" />
     <None Include="Connected Services\DesignatePrinter\DesignatePrinterLLS2.xsd">
       <SubType>Designer</SubType>
@@ -194,6 +316,43 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\DesignatePrinter\xmldsig-core-schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetElectronicDocument\envelope.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetElectronicDocument\msg-header-2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetElectronicDocument\NativeApi.GetElectronicDocument.GetElectronicDocumentRQResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\GetElectronicDocument\NativeApi.GetElectronicDocument.GetElectronicDocumentRS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\GetElectronicDocument\NativeApi.GetElectronicDocument.MessageHeader.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\GetElectronicDocument\NativeApi.GetElectronicDocument.Security.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\GetElectronicDocument\STL_For_TKT_ElectronicDocumentServices_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetElectronicDocument\TKT_ElectronicDocumentServices_v.wsdl" />
+    <None Include="Connected Services\GetElectronicDocument\TKT_ElectronicDocumentServices_v.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetElectronicDocument\wsse2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetElectronicDocument\xlink.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetElectronicDocument\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GetElectronicDocument\xmldsig-core-schema.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\GetReservation\Air.xsd">
@@ -370,7 +529,9 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\BargainFinderMax\" />
+    <WCFMetadataStorage Include="Connected Services\DailySalesSummary\" />
     <WCFMetadataStorage Include="Connected Services\DesignatePrinter\" />
+    <WCFMetadataStorage Include="Connected Services\GetElectronicDocument\" />
     <WCFMetadataStorage Include="Connected Services\GetReservation\" />
     <WCFMetadataStorage Include="Connected Services\SabreCommand\" />
     <WCFMetadataStorage Include="Connected Services\TravelItineraryRead\" />
@@ -431,6 +592,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\DesignatePrinter\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\DailySalesSummary\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\DailySalesSummary\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\DailySalesSummary\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\GetElectronicDocument\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\GetElectronicDocument\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\GetElectronicDocument\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
